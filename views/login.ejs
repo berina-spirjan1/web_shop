@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Web shop</title>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+</head>
+<body  style="background-image: url(public/images/shop1.jpeg); background-size: cover; background-repeat: no-repeat">
+<div class="login">
+    <h2 class="active"> login </h2>
+
+    <h2><a href="/sign_up" class="nonactive">sign up</a> </h2>
+    <form  action="/login" method="post">
+
+        <input type="text" class="text" name="username">
+            <span>username</span><br><br>
+
+        <input type="password" class="text" name="password">
+            <span>password</span><br>
+
+        <input type="checkbox" id="checkbox-1-1" class="custom-checkbox" />
+        <label for="checkbox-1-1">Keep me signed in</label>
+
+        <button class="loginBox" style="font-family: 'Segoe UI Semibold',serif" type="submit">
+            Login
+        </button>
+
+
+        <hr>
+
+        <a href="/forgot_password" class="forgot-password">Forgot Password?</a>
+    </form>
+
+</div>
+</body></html>

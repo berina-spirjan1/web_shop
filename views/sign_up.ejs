@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign Up</title>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+</head>
+<body  style="background-image: url(public/images/shop1.jpeg); background-size: cover; background-repeat: no-repeat">
+<div class="sign_up">
+    <h2><a  href="/login" class="nonactive">login</a></h2>
+
+    <h2 class="active">sign up</a> </h2>
+    <form action="/sign_up" method="post">
+        <input type="text" class="text" name="ime">
+            <span>first name</span><br><br>
+
+        <input type="text" class="text" name="prezime">
+            <span>last name</span><br><br>
+
+        <input type="text" class="text" name="email">
+            <span>email</span><br><br>
+
+        <input type="text" class="text" name="broj_telefona">
+            <span>mobile number</span><br><br>
+
+        <input type="text" class="text" name="username">
+            <span>username</span><br><br>
+
+        <input type="password" class="text" name="password">
+            <span>password</span><br><br>
+        <input type="password" class="text" name="confirm_password">
+            <span>confirm password</span><br><br>
+
+        <div class="have-account"><a href="/login" style="color: #000000; font-family: 'Segoe UI Semibold', sans-serif; text-decoration: none;">Already have Your account? Login</a> </div>
+
+        <button class="loginBox" style="font-family: 'Segoe UI Semibold',serif; margin-top: 10px" type="submit">
+            Sign Up
+        </button>
+
+
+        <hr>
+
+        <a href="/verify_account" class="forgot-password">Account not verified?</a>
+    </form>
+
+</div>
+</body></html>
