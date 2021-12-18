@@ -18,7 +18,7 @@
 
 <body class="dark-edition">
 <div class="wrapper ">
-    <div class="sidebar" data-color="orange" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
+    <div class="sidebar" data-color="red" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
         <div class="logo"><a href="http://localhost:3000/home/main_administrator" class="simple-text logo-normal">
                 Web shop
             </a></div>
@@ -124,9 +124,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-warning">
-                                    <h4 class="card-title ">LIST OF ORDERS</h4>
-                                    <p class="card-category"> All orders that are registered in our system.</p>
+                                <div class="card-header card-header-danger">
+                                    <h4 class="card-title ">LIST OF ITEMS</h4>
+                                    <p class="card-category"> All items that are registered in our system.</p>
                                 </div>
 
                                 <div class="card-body">
@@ -134,22 +134,26 @@
                                         <table class="table">
                                             <thead class=" text-primary">
                                             <th>ID</th>
-                                            <th>CUSTOMER</th>
-                                            <th>ORDER TIME</th>
-                                            <th>ORDER DATE</th>
+                                            <th>ITEM NAME</th>
+                                            <th>DESCRIPTION</th>
+                                            <th>AMOUNT</th>
                                             <th>PRICE</th>
-                                            <th>CARD NUMBER</th>
+                                            <th>CONTENT</th>
+                                            <th>SHOP</th>
+                                            <th>CATEGORY</th>
                                             <th></th>
                                             </thead>
                                             <tbody>
-                                            <% for(let i = 0; i<orders.length; i++){%>
+                                            <% for(let i = 0; i<items.length; i++){%>
                                                 <tr>
-                                                    <td><%= orders[i].id_narudzbe %></td>
-                                                    <td><%= info[i].ime %> <%= info[i].prezime %></td>
-                                                    <td><%= orders[i].vrijeme_narudzbe %></td>
-                                                    <td><%= orders[i].datum_narudzbe.getDay() %>/<%= orders[i].datum_narudzbe.getMonth() %>/<%= orders[i].datum_narudzbe.getFullYear() %></td>
-                                                    <td><%= orders[i].cijena_ukupne_narudzbe %></td>
-                                                    <td><%= orders[i].broj_kartice %></td>
+                                                    <td><%= items[i].id_artikla %></td>
+                                                    <td><%= items[i].naziv_artikla %></td>
+                                                    <td><%= items[i].opis_artikla %></td>
+                                                    <td><%= items[i].dostupna_kolicina %></td>
+                                                    <td><%= items[i].cijena_artikla %></td>
+                                                    <td><%= items[i].sadrzaj_artikla %></td>
+                                                    <td><%= items[i].naziv_trgovine%></td>
+                                                    <td><%= items[i].naziv_kategorije%></td>
                                                     <td class="td-actions text-right">
                                                         <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
                                                             <i class="material-icons">edit</i>
@@ -165,7 +169,7 @@
                                     </div>
                                 </div>
 
-                            </div><a class="btn btn-warning pull-right" href="http://localhost:3000/home/orders/add_order">Add order</a>
+                            </div><a class="btn btn-danger pull-right" href="http://localhost:3000/home/items/add_item">Add item</a>
                             <div class="clearfix"></div>
                         </div>
                 </div>

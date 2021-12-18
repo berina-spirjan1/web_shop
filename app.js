@@ -12,6 +12,7 @@ const loginRouter = require('./routes/login');
 const homeRouter = require('./routes/home');
 const shopsRouter = require('./routes/shops');
 const ordersRouter = require('./routes/orders');
+const itemsRouter = require('./routes/items');
 const allUsersRouter = require('./routes/allUsers');
 const customerRouter = require('./routes/customer');
 
@@ -48,6 +49,7 @@ app.use('/home', homeRouter);
 app.use('/home/shops', shopsRouter);
 app.use('/home/users', allUsersRouter);
 app.use('/home/orders', ordersRouter);
+app.use('/home/items', itemsRouter);
 app.use('/customer', customerRouter);
 
 // catch 404 and forward to error handler
