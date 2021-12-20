@@ -2,6 +2,7 @@ const express = require('express');
 const pg = require("pg");
 const router = express.Router();
 const saltRounds = 10;
+let alert = require('alert');
 
 const config = {
     user: 'vhaxxure',
@@ -119,8 +120,7 @@ let database = {
                 }
             });
         });
-    },
-
+    }
 }
 
 
@@ -175,6 +175,57 @@ router.post('/add_user',function(req, res, next) {
                         res.redirect('/home/users')
                     }
                 });
+            });
+        }
+    });
+});
+
+router.get('/archive_user',
+    function(req, res, next) {
+        res.redirect('/home/users');
+});
+
+router.post('/archive_user/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`update korisnik
+                          set status = 'arhiviran' 
+                          where id_korisnika = $1`, [req.params.id], function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully archived user');
+                    res.redirect('/home/users');
+                }
+            });
+        }
+    });
+});
+
+router.get('/delete_user',
+    function(req, res, next) {
+        res.redirect('/home/users');
+});
+
+
+router.post('/delete_user/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`delete from korisnik 
+                          where id_korisnika = $1`, [req.params.id], function (err, result) {
+                console.info("------------",result);
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully deleted user!');
+                    res.redirect('/home/users');
+                }
             });
         }
     });

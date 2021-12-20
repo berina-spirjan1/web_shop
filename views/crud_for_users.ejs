@@ -148,15 +148,20 @@
                                                     <td><%= listOfUsers[i].broj_telefona %></td>
                                                     <td><%= listOfUsers[i].status %></td>
                                                     <td class="td-actions text-right">
+
                                                         <button type="button" rel="tooltip" title="Edit user" class="btn btn-white btn-link btn-sm">
                                                             <i class="material-icons">edit</i>
                                                         </button>
-                                                        <button type="button" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
-                                                            <i class="material-icons">close</i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Archive" class="btn btn-white btn-link btn-sm">
-                                                            <i class="material-icons">lock</i>
-                                                        </button>
+                                                        <form action="/home/users/delete_user/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                            <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
+                                                                <i class="material-icons">close</i>
+                                                            </button>
+                                                        </form>
+                                                        <form action="/home/users/archive_user/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                            <button type="submit" rel="tooltip" title="Archive" class="btn btn-white btn-link btn-sm">
+                                                                <i class="material-icons">lock</i>
+                                                            </button>
+                                                        </form>
                                                         <button type="button" rel="tooltip" title="Block" class="btn btn-white btn-link btn-sm">
                                                             <i class="material-icons">mood_bad</i>
                                                         </button>
