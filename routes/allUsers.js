@@ -191,7 +191,7 @@ router.post('/archive_user/:id', function(req, res, next) {
             throw(err);
         else {
             client.query(`update korisnik
-                          set status = 'arhiviran' 
+                          set status = 'deaktiviran' 
                           where id_korisnika = $1`, [req.params.id], function (err, result) {
                 don();
                 if (err)
@@ -204,6 +204,32 @@ router.post('/archive_user/:id', function(req, res, next) {
         }
     });
 });
+
+router.get('/block_user',
+    function(req, res, next) {
+        res.redirect('/home/users');
+    });
+
+router.post('/block_user/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`update korisnik
+                          set status = 'blokiran' 
+                          where id_korisnika = $1`, [req.params.id], function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully blocked user');
+                    res.redirect('/home/users');
+                }
+            });
+        }
+    });
+});
+
 
 router.get('/delete_user',
     function(req, res, next) {

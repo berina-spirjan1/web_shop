@@ -162,9 +162,11 @@
                                                                 <i class="material-icons">lock</i>
                                                             </button>
                                                         </form>
-                                                        <button type="button" rel="tooltip" title="Block" class="btn btn-white btn-link btn-sm">
-                                                            <i class="material-icons">mood_bad</i>
-                                                        </button>
+                                                        <form action="/home/users/block_user/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                            <button type="submit" rel="tooltip" title="Block" class="btn btn-white btn-link btn-sm">
+                                                                <i class="material-icons">mood_bad</i>
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             <%}%>
