@@ -13,6 +13,8 @@ const homeRouter = require('./routes/home');
 const shopsRouter = require('./routes/shops');
 const ordersRouter = require('./routes/orders');
 const itemsRouter = require('./routes/items');
+const chainStoreRouter = require('./routes/chain_store');
+const paymentRouter = require('./routes/payment');
 const allUsersRouter = require('./routes/allUsers');
 const customerRouter = require('./routes/customer');
 
@@ -50,6 +52,8 @@ app.use('/home/shops', shopsRouter);
 app.use('/home/users', allUsersRouter);
 app.use('/home/orders', ordersRouter);
 app.use('/home/items', itemsRouter);
+app.use('/home/payment', paymentRouter);
+app.use('/home/chain_store', chainStoreRouter);
 app.use('/customer', customerRouter);
 
 // catch 404 and forward to error handler
