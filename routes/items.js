@@ -15,15 +15,16 @@ const config = {
 const pool = new pg.Pool(config);
 
 let database={
-    getAllShops: function(req,res,next){
+    getAllItems: function(req,res,next){
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
             client.query(`select *
-                          from trgovina t, artikal a, artikal_trgovina at, kategorija k
+                          from trgovina t, artikal a, artikal_trgovina at, kategorija_artikla k
                           where at.id_trgovine = t.id_trgovine
-                          and a.id_kategorije = k.id_kategorije
+                          and a.id_kategorija_artikla = k.id_kategorija_artikla
                           order by a.naziv_artikla`,function (err,result) {
+
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -53,7 +54,7 @@ let database={
 
 
 
-router.get('/', database.getAllShops,
+router.get('/', database.getAllItems,
     function(req, res, next) {
         res.render('crud_for_items',{
             items: req.niz_svih_trgovina
@@ -77,7 +78,7 @@ router.post('/add_item',function(req, res, next) {
         if(err)
             throw(err);
         else {
-            client.query(`INSERT INTO artikal(naziv_artikla, opis_artikla, dostupna_kolicina, sadrzaj_artikla, id_kategorije)
+            client.query(`INSERT INTO artikal(naziv_artikla, opis_artikla, dostupna_kolicina, sadrzaj_artikla, id_kategorija_artikla)
                           VALUES ($1,$2,$3,$4, $5)`,[name, description, amount, content, category], function (err,result) {
                 done();
                 if (err)
