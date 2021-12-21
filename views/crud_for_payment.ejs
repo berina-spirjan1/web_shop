@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/payment">
+                    <a class="nav-link" href="http://localhost:3000/home/chain_store">
                         <i class="material-icons">shop_two</i>
                         <p>Chain store</p>
                     </a>
@@ -148,7 +148,7 @@
                                             <thead class=" text-primary">
                                             <th>ID</th>
                                             <th>TYPE OF PAYMENT</th>
-                                            <th></th>
+                                            <th>EDIT</th>
                                             </thead>
                                             <tbody>
                                             <% for(let i = 0; i<payment_types.length; i++){%>
@@ -164,7 +164,7 @@
                                                                 </button>
                                                             </form>
                                                             <form method="post" action="/home/payment/delete_payment/<%= payment_types[i].id_nacin_placanja %>">
-                                                                <button type="button" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
+                                                                <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
                                                                     <i class="material-icons">close</i>
                                                                 </button>
                                                             </form>
@@ -180,7 +180,7 @@
                                     </div>
                                 </div>
 
-                            </div><a class="btn btn-primary pull-right" href="http://localhost:3000/home/orders/add_order">Add payment type</a>
+                            </div><a class="btn btn-primary pull-right" href="http://localhost:3000/home/payment/add_payment">Add payment type</a>
                             <div class="clearfix"></div>
                         </div>
                     </div>
