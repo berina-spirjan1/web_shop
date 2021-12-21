@@ -34,6 +34,21 @@ let database={
             });
         });
     },
+    getAllDifferentShops: function(req,res,next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query("select distinct * from trgovina order by id_trgovine",function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.niz_trgovina = result.rows;
+                    next();
+                }
+            });
+        });
+    },
 }
 
 
@@ -43,6 +58,36 @@ router.get('/', database.getAllShops,
         res.render('crud_for_items',{
             items: req.niz_svih_trgovina
         });
+});
+
+router.get('/add_item', database.getAllDifferentShops,
+    function(req, res, next) {
+        res.render('add_new_item',{shops: req.niz_trgovina});
+});
+
+
+router.post('/add_item',function(req, res, next) {
+    let name = req.body.name;
+    let description = req.body.description;
+    let amount = req.body.amount;
+    let content = req.body.content;
+    let category = req.body.category;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`INSERT INTO artikal(naziv_artikla, opis_artikla, dostupna_kolicina, sadrzaj_artikla, id_kategorije)
+                          VALUES ($1,$2,$3,$4, $5)`,[name, description, amount, content, category], function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else {
+                    res.redirect('/home/items')
+                }
+            });
+        }
+    });
 });
 
 module.exports = router;
