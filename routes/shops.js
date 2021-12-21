@@ -15,6 +15,7 @@ const config = {
 const pool = new pg.Pool(config);
 
 const {ensureAuthenticatedMainAdministrator} = require('../authentication/mainAdministrator');
+const alert = require("alert");
 
 let database = {
     getAllShops: function(req,res,next){
@@ -211,6 +212,32 @@ router.post('/add_shop',function(req, res, next) {
                     throw(err);
                 else {
                     res.redirect('/home/shops')
+                }
+            });
+        }
+    });
+});
+
+router.get('/delete_shop',
+    function(req, res, next) {
+        res.redirect('/home/shops');
+    });
+
+
+router.post('/delete_shop/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`delete from trgovina 
+                          where id_trgovine = $1`, [req.params.id], function (err, result) {
+                console.info("------------",result);
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully deleted shop!');
+                    res.redirect('/home/shops');
                 }
             });
         }

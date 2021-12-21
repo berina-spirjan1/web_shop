@@ -148,12 +148,16 @@
                                                     <td><%= chainStore[i].naziv_lanca_trgovina%></td>
                                                     <td><%= sales[i].ime%> <%= sales[i].prezime%></td>
                                                     <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
-                                                            <i class="material-icons">edit</i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
-                                                            <i class="material-icons">close</i>
-                                                        </button>
+                                                        <div class="row">
+                                                            <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
+                                                                <i class="material-icons">edit</i>
+                                                            </button>
+                                                            <form method="post" action="/home/shops/delete_shop/<%= listOfShops[i].id_trgovine %>">
+                                                                <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
+                                                                    <i class="material-icons">close</i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             <%}%>
