@@ -148,26 +148,45 @@
                                                     <td><%= listOfUsers[i].broj_telefona %></td>
                                                     <td><%= listOfUsers[i].status %></td>
                                                     <td class="td-actions text-right">
-                                                        <form method="get" action="/home/users/update_user/<%= listOfUsers[i].id_korisnika %>">
-                                                            <button type="submit" rel="tooltip" title="Edit user" class="btn btn-white btn-link btn-sm">
-                                                                <i class="material-icons">edit</i>
-                                                            </button>
-                                                        </form>
-                                                        <form action="/home/users/delete_user/<%= listOfUsers[i].id_korisnika %>" method="post">
-                                                            <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
-                                                                <i class="material-icons">close</i>
-                                                            </button>
-                                                        </form>
-                                                        <form action="/home/users/archive_user/<%= listOfUsers[i].id_korisnika %>" method="post">
-                                                            <button type="submit" rel="tooltip" title="Archive" class="btn btn-white btn-link btn-sm">
-                                                                <i class="material-icons">lock</i>
-                                                            </button>
-                                                        </form>
-                                                        <form action="/home/users/block_user/<%= listOfUsers[i].id_korisnika %>" method="post">
-                                                            <button type="submit" rel="tooltip" title="Block" class="btn btn-white btn-link btn-sm">
-                                                                <i class="material-icons">mood_bad</i>
-                                                            </button>
-                                                        </form>
+                                                        <div class="row">
+                                                            <form method="get" action="/home/users/update_user/<%= listOfUsers[i].id_korisnika %>">
+                                                                <button type="submit" rel="tooltip" title="Edit user" class="btn btn-white btn-link btn-sm">
+                                                                    <i class="material-icons">edit</i>
+                                                                </button>
+                                                            </form>
+                                                            <form action="/home/users/delete_user/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                                <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
+                                                                    <i class="material-icons">close</i>
+                                                                </button>
+                                                            </form>
+                                                            <% if(listOfUsers[i].id_tip_korisnika === 2 || listOfUsers[i].id_tip_korisnika === 3 && listOfUsers[i].status !== 'deaktiviran'){ %>
+                                                                <form action="/home/users/archive_user/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                                    <button type="submit" rel="tooltip" title="Archive" class="btn btn-white btn-link btn-sm">
+                                                                        <i class="material-icons">lock_open</i>
+                                                                    </button>
+                                                                </form>
+                                                            <%}else if(listOfUsers[i].id_tip_korisnika === 2 || listOfUsers[i].id_tip_korisnika === 3 && listOfUsers[i].status === 'deaktiviran'){%>
+                                                                <form action="/home/users/archive_user/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                                    <button type="submit" rel="tooltip" title="Archive" class="btn btn-white btn-link btn-sm">
+                                                                        <i class="material-icons" style="color: #00bcd4">lock</i>
+                                                                    </button>
+                                                                </form>
+                                                            <%}%>
+                                                            <% if(listOfUsers[i].id_tip_korisnika === 2 || listOfUsers[i].id_tip_korisnika === 3 && listOfUsers[i].status !== 'blokiran'){ %>
+                                                                <form action="/home/users/block_user/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                                    <button type="submit" rel="tooltip" title="Block" class="btn btn-white btn-link btn-sm">
+                                                                        <i class="material-icons">block</i>
+                                                                    </button>
+                                                                </form>
+                                                            <%}else if(listOfUsers[i].id_tip_korisnika === 2 || listOfUsers[i].id_tip_korisnika === 3 && listOfUsers[i].status === 'blokiran'){%>
+                                                                <form action="/home/users/block_user/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                                    <button type="submit" rel="tooltip" title="Block" class="btn btn-white btn-link btn-sm">
+                                                                        <i class="material-icons" style="color: #00bcd4">block</i>
+                                                                    </button>
+                                                                </form>
+                                                            <%}%>
+                                                        </div>
+
                                                     </td>
                                                 </tr>
                                             <%}%>

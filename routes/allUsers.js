@@ -192,7 +192,9 @@ router.post('/archive_user/:id', function(req, res, next) {
         else {
             client.query(`update korisnik
                           set status = 'deaktiviran' 
-                          where id_korisnika = $1`, [req.params.id], function (err, result) {
+                          where id_korisnika = $1
+                          and id_tip_korisnika = 2
+                          or id_tip_korisnika = 3`, [req.params.id], function (err, result) {
                 don();
                 if (err)
                     throw(err);
@@ -217,7 +219,9 @@ router.post('/block_user/:id', function(req, res, next) {
         else {
             client.query(`update korisnik
                           set status = 'blokiran' 
-                          where id_korisnika = $1`, [req.params.id], function (err, result) {
+                          where id_korisnika = $1
+                          and id_tip_korisnika = 2
+                          or id_tip_korisnika = 3`, [req.params.id], function (err, result) {
                 don();
                 if (err)
                     throw(err);
