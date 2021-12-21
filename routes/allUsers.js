@@ -257,4 +257,45 @@ router.post('/delete_user/:id', function(req, res, next) {
     });
 });
 
+router.get('/update_user/:id', database.getAllDifferentPositions,
+    function(req, res, next) {
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select * 
+                          from korisnik k,tip_korisnika tk 
+                          where k.id_korisnika = $1 and k.id_tip_korisnika = tk. id_tip_korisnika`,[req.params.id],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    console.info("-------------",result.rows[0]);
+                    res.render('update_user', {data: result.rows[0], positions: req.niz_pozicija});
+                    next();
+                }
+            });
+        });
+});
+
+router.post('/update_user/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`update korisnik
+                          set status = 'deaktiviran' 
+                          where id_korisnika = $1`, [req.params.id], function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully archived user');
+                    res.redirect('/home/users');
+                }
+            });
+        }
+    });
+});
+
+
 module.exports = router;
