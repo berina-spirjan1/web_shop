@@ -244,5 +244,28 @@ router.post('/delete_shop/:id', function(req, res, next) {
     });
 });
 
+router.get('/delete_all',
+    function(req, res, next) {
+        res.redirect('/home/shops');
+    });
+
+router.post('/delete_all', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`delete from trgovina`, function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully deleted all shops from database!');
+                    res.redirect('/home/shops');
+                }
+            });
+        }
+    });
+});
+
 
 module.exports = router;
