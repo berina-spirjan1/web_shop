@@ -47,6 +47,7 @@ let database = {
                 if(err)
                     res.sendStatus(500);
                 else{
+                    console.info("-------------",result.rows);
                     req.niz_svih_pozicija = result.rows;
                     next();
                 }
@@ -193,8 +194,8 @@ router.post('/archive_user/:id', function(req, res, next) {
             client.query(`update korisnik
                           set status = 'deaktiviran' 
                           where id_korisnika = $1
-                          and id_tip_korisnika = 2
-                          or id_tip_korisnika = 3`, [req.params.id], function (err, result) {
+                          and (id_tip_korisnika = 2
+                          or id_tip_korisnika = 3)`, [req.params.id], function (err, result) {
                 don();
                 if (err)
                     throw(err);
@@ -220,8 +221,8 @@ router.post('/block_user/:id', function(req, res, next) {
             client.query(`update korisnik
                           set status = 'blokiran' 
                           where id_korisnika = $1
-                          and id_tip_korisnika = 2
-                          or id_tip_korisnika = 3`, [req.params.id], function (err, result) {
+                          and (id_tip_korisnika = 2
+                          or id_tip_korisnika = 3)`, [req.params.id], function (err, result) {
                 don();
                 if (err)
                     throw(err);
@@ -323,5 +324,60 @@ router.post('/delete_all', function(req, res, next) {
         }
     });
 });
+
+router.get('/unarchived_user',
+    function(req, res, next) {
+        res.redirect('/home/users');
+    });
+
+router.post('/unarchived_user/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`update korisnik
+                          set status = 'aktivan' 
+                          where id_korisnika = $1
+                          and (id_tip_korisnika = 2
+                          or id_tip_korisnika = 3)`, [req.params.id], function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully unarchived user');
+                    res.redirect('/home/users');
+                }
+            });
+        }
+    });
+});
+
+router.get('/unblock_user',
+    function(req, res, next) {
+        res.redirect('/home/users');
+    });
+
+router.post('/unblock_user/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`update korisnik
+                          set status = 'aktivan' 
+                          where id_korisnika = $1
+                          and (id_tip_korisnika = 2
+                          or id_tip_korisnika = 3)`, [req.params.id], function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully unblocked user');
+                    res.redirect('/home/users');
+                }
+            });
+        }
+    });
+});
+
 
 module.exports = router;
