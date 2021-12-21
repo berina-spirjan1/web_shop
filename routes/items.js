@@ -94,7 +94,7 @@ router.post('/add_item',function(req, res, next) {
 
 router.get('/delete_all',
     function(req, res, next) {
-        res.redirect('/home/users');
+        res.redirect('/home/items');
     });
 
 router.post('/delete_all', function(req, res, next) {
@@ -108,7 +108,7 @@ router.post('/delete_all', function(req, res, next) {
                     throw(err);
                 else{
                     alert('Successfully deleted all items from database!');
-                    res.redirect('/home/users');
+                    res.redirect('/home/items');
                 }
             });
         }
