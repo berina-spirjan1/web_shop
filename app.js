@@ -14,8 +14,10 @@ const shopsRouter = require('./routes/shops');
 const ordersRouter = require('./routes/orders');
 const itemsRouter = require('./routes/items');
 const chainStoreRouter = require('./routes/chain_store');
+const userTypeRouter = require('./routes/user_type');
 const paymentRouter = require('./routes/payment');
 const allUsersRouter = require('./routes/allUsers');
+const shopCategoryRouter = require('./routes/shop_category');
 const customerRouter = require('./routes/customer');
 
 const app = express();
@@ -53,6 +55,8 @@ app.use('/home/users', allUsersRouter);
 app.use('/home/orders', ordersRouter);
 app.use('/home/items', itemsRouter);
 app.use('/home/payment', paymentRouter);
+app.use('/home/user_type', userTypeRouter);
+app.use('/home/shop_category', shopCategoryRouter);
 app.use('/home/chain_store', chainStoreRouter);
 app.use('/customer', customerRouter);
 
