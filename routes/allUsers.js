@@ -297,5 +297,27 @@ router.post('/update_user/:id', function(req, res, next) {
     });
 });
 
+router.get('/delete_all',
+    function(req, res, next) {
+        res.redirect('/home/users');
+});
+
+router.post('/delete_all', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`delete from korisnik`, function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully deleted all users from database!');
+                    res.redirect('/home/users');
+                }
+            });
+        }
+    });
+});
 
 module.exports = router;
