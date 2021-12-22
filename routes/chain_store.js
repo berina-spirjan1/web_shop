@@ -157,8 +157,6 @@ router.get('/add_new_chain_store', database.getAllDifferentSalesAdministrators,
 
 router.post('/add_new_chain_store',function(req, res, next) {
 
-    console.info("DODAJEEEEM",req.body);
-
     let chain_store_name = req.body.chain_store_name;
     let sales_administrator = req.body.sales_administrator;
 
