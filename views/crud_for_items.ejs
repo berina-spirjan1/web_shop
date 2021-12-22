@@ -185,12 +185,18 @@
                                                     <td><%= items[i].naziv_trgovine%></td>
                                                     <td><%= items[i].naziv_kategorije%></td>
                                                     <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
-                                                            <i class="material-icons">edit</i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
-                                                            <i class="material-icons">close</i>
-                                                        </button>
+                                                        <div class="row">
+                                                            <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
+                                                                <i class="material-icons">edit</i>
+                                                            </button>
+                                                            <form method="post" action="/home/items/delete_item/<%= items[i].id_artikla %>">
+                                                                <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
+                                                                    <i class="material-icons">close</i>
+                                                                </button>
+                                                            </form>
+
+                                                        </div>
+
                                                     </td>
                                                 </tr>
                                             <%}%>

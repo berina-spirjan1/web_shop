@@ -111,4 +111,34 @@ router.post('/delete_all', function(req, res, next) {
 });
 
 
+router.get('/add_new_shop_category',
+    function(req, res, next) {
+        res.render('add_new_shop_category');
+    });
+
+router.post('/add_new_shop_category',function(req, res, next) {
+    console.info("------------------",req.body);
+
+    let category_name = req.body.category_name;
+    let category_logo = req.body.category_logo;
+    let category_color = req.body.category_color;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`INSERT INTO kategorija(naziv_kategorije, logo_kategorije, boja_kategorije)
+                          VALUES ($1,$2,$3)`,[category_name, category_logo, category_color], function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else {
+                    res.redirect('/home/shop_category')
+                }
+            });
+        }
+    });
+});
+
+
 module.exports = router;

@@ -117,5 +117,30 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
+router.get('/delete_item',
+    function(req, res, next) {
+        res.redirect('/home/items');
+    });
+
+
+router.post('/delete_item/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`delete from artikal
+                          where id_artikla = $1`, [req.params.id], function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully deleted item!');
+                    res.redirect('/home/items');
+                }
+            });
+        }
+    });
+});
+
 
 module.exports = router;

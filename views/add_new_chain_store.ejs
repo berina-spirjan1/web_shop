@@ -5,19 +5,17 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-       Shops
+        Add new chain store
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-    <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-    <!-- CSS Files -->
     <link rel='stylesheet' href='/stylesheets/material-dashboard.css' />
 </head>
 
 <body class="dark-edition">
 <div class="wrapper ">
-    <div class="sidebar" data-color="green" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
+    <div class="sidebar" data-color="purple" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
         <div class="logo"><a href="http://localhost:3000/home/main_administrator" class="simple-text logo-normal">
                 Web shop
             </a></div>
@@ -35,13 +33,13 @@
                         <p>User Profile</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item ">
                     <a class="nav-link" href="http://localhost:3000/home/shops">
                         <i class="material-icons">location_city</i>
                         <p>Shops</p>
                     </a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="http://localhost:3000/home/shop_category">
                         <i class="material-icons">store</i>
                         <p>Shop category</p>
@@ -105,7 +103,6 @@
         </div>
     </div>
     <div class="main-panel">
-        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
             <div class="container-fluid">
                 <div class="navbar-wrapper">
@@ -150,67 +147,63 @@
 
         <div class="content">
             <div class="container-fluid">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header card-header-success">
-                                    <h4 class="card-title ">LIST OF SHOP CATEGORIES</h4>
-                                    <p class="card-category"> All shop categories that are registered in our system.</p>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class=" text-primary">
-                                            <th>ID</th>
-                                            <th>NAME</th>
-                                            <th>LOGO OF CATEGORY</th>
-                                            <th>NUMBER OF SHOPS</th>
-                                            <th>EDIT</th>
-                                            </thead>
-                                            <tbody>
-                                            <% for(let i = 0; i<categories.length; i++){%>
-                                                <tr>
-                                                    <td><%= categories[i].id_kategorije %></td>
-                                                    <td><%= categories[i].naziv_kategorije %></td>
-                                                    <td style="padding-left: 70px"><i class="material-icons" style="color: <%= categories[i].boja_kategorije %>"><%= categories[i].logo_kategorije %></i></td>
-                                                    <% if(number_of_shops.length-1<i){%>
-                                                        <td style="padding-left: 80px">0</td>
-                                                    <%}else{%>
-                                                        <td style="padding-left: 80px"><%= number_of_shops[i].count%></td>
-                                                    <%}%>
-                                                    <td class="td-actions text-right">
-                                                        <div class="row">
-                                                            <button type="button" rel="tooltip" title="Edit shop category" class="btn btn-white btn-link btn-sm">
-                                                                <i class="material-icons">edit</i>
-                                                            </button>
-                                                            <form method="post" action="/home/shop_category/delete_shop_category/<%= categories[i].id_kategorije %>">
-                                                                <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
-                                                                    <i class="material-icons">close</i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            <%}%>
-                                            </tbody>
-                                        </table>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header card-header-success">
+                                <h4 class="card-title">Add chain store</h4>
+                                <p class="card-category">Do you want to expand our base with a new item category? Just go ahead.</p>
+                            </div>
+                            <div class="card-body">
+                                <form action="/home/chain_store/add_new_chain_store" method="post" >
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">Chain store name</label>
+                                                <input type="text" class="form-control" id="chain_store_name" name="chain_store_name">
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-10">
-                                <form method="post" action="/home/shop_category/delete_all">
-                                    <button type="submit" class="btn btn-success pull-right">Delete all</button>
+                                    <br><br>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="type_of_category">Sales administator</label>
+                                            <div class="form-group">
+                                                <select name="sales_administrator" id="sales_administrator" class="btn btn-success">
+                                                    <% for(let i = 0; i< sales.length; i++){%>
+                                                        <option class = "select-option" value="<%= sales[i].id_korisnika%>" ><%= sales[i].ime%> <%= sales[i].prezime%></option>
+                                                    <%}%>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <button type="submit" class="btn btn-success pull-right">Add</button>
                                     <div class="clearfix"></div>
+
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-profile">
+                            <div class="card-avatar">
+                                <a href="#pablo">
+                                    <img class="img" src="https://www.pngitem.com/pimgs/m/22-220721_circled-user-male-type-user-colorful-icon-png.png" />
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-category">Main administrator</h6>
+                                <h4 class="card-title"></h4>
+                                <p class="card-description">
+                                    No matter how many customers you have, each is an individual. The day you start thinking of them as this amorphous ‘collection’ and stop thinking of them as people is the day you start going out of business.
+                                </p>
+                                <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
 
                             </div>
-                            <div class="col-2">
-                                <a class="btn btn-success pull-right" href="http://localhost:3000/home/shop_category/add_new_shop_category">Add shop category</a>
-                                <div class="clearfix"></div>
-                            </div>
                         </div>
+                    </div>
+                </div>
             </div>
         </div>
         <script>
@@ -220,33 +213,6 @@
         </script>
     </div>
 </div>
-        <script>
-            function updateShop(id) {
-                let shop = document.getElementById(id).value;
-                let category_type = $("#"+id+"b").val();
-
-                let category;
-                let category_name;
-                category_type = category_type.split('$');
-                category = category_type[0];
-                category_name = category_type[1];
-
-                $.ajax({
-                    url:'/home/shops/update',
-                    method: 'put',
-                    data: {
-                        id,
-                        shop,
-                        category
-                    },
-                    success:function (result) {
-                        $('#' + id + 'a').text(shop);
-                        $('#' + id + 'c').text(category_name);
-                        $('.skriveno').hide();
-                    }
-                });
-            }
-        </script>
 
 <script src="../assets/js/core/jquery.min.js"></script>
 <script src="../assets/js/core/popper.min.js"></script>

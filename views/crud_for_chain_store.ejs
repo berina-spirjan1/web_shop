@@ -175,17 +175,21 @@
                                                 <tr>
                                                     <td><%= store[i].id_lanca_trgovina %></td>
                                                     <td><%= store[i].naziv_lanca_trgovina %></td>
-                                                    <td style="padding-left: 100px"><%= number_of_shops[i].count%></td>
+                                                    <% if(number_of_shops.length-1<i){%>
+                                                        <td style="padding-left: 100px">0</td>
+                                                    <%}else{%>
+                                                        <td style="padding-left: 100px"><%= number_of_shops[i].count%></td>
+                                                    <%}%>
                                                     <td><%= sales[i].ime %> <%= sales[i].prezime%></td>
 
                                                     <td class="td-actions text-right">
                                                         <div class="row">
-                                                            <form method="post" action="/home/payment/update_chain_store">
+                                                            <form method="post" action="/home/chain_store/update_chain_store">
                                                                 <button type="button" rel="tooltip" title="Edit chain store" class="btn btn-white btn-link btn-sm">
                                                                     <i class="material-icons">edit</i>
                                                                 </button>
                                                             </form>
-                                                            <form method="post" action="/home/payment/delete_chain_store/<%= store[i].id_lanca_trgovina %>">
+                                                            <form method="post" action="/home/chain_store/delete_chain_store/<%= store[i].id_lanca_trgovina %>">
                                                                 <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
                                                                     <i class="material-icons">close</i>
                                                                 </button>
@@ -202,7 +206,7 @@
                                     </div>
                                 </div>
 
-                            </div><a class="btn btn-success pull-right" href="http://localhost:3000/home/payment/add_chain_store">Add chain store</a>
+                            </div><a class="btn btn-success pull-right" href="http://localhost:3000/home/chain_store/add_new_chain_store">Add chain store</a>
                             <div class="clearfix"></div>
                         </div>
                     </div>
