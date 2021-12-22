@@ -174,7 +174,12 @@
                                                     <td><%= categories[i].id_kategorija_artikla %></td>
                                                     <td><%= categories[i].naziv_kategorije %></td>
                                                     <td style="padding-left: 70px"><i class="material-icons" style="color: <%= categories[i].boja_kategorije %>"><%= categories[i].logo_kategorije %></i></td>
-                                                    <td style="padding-left: 80px"><%= number_of_shops[i].count%></td>
+                                                    <% if(number_of_shops.length-1<i){%>
+                                                        <td style="padding-left: 80px">0</td>
+                                                    <%}else{%>
+                                                        <td style="padding-left: 80px"><%= number_of_shops[i].count%></td>
+                                                    <%}%>
+
                                                     <td class="td-actions text-right">
                                                         <div class="row">
                                                             <button type="button" rel="tooltip" title="Edit item category" class="btn btn-white btn-link btn-sm">
@@ -203,7 +208,7 @@
 
                             </div>
                             <div class="col-2">
-                                <a class="btn btn-danger pull-right" href="http://localhost:3000/home/item_category/add_item_category">Add item category</a>
+                                <a class="btn btn-danger pull-right" href="http://localhost:3000/home/item_category/add_new_item">Add item category</a>
                                 <div class="clearfix"></div>
                             </div>
                         </div>

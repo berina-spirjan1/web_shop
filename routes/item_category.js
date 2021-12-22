@@ -36,7 +36,7 @@ let database={
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select count(*)
+            client.query(`select count(*), ka.id_kategorija_artikla
                           from artikal a, kategorija_artikla ka
                           where a.id_kategorija_artikla = ka.id_kategorija_artikla
                           group by ka.id_kategorija_artikla
@@ -73,8 +73,8 @@ router.post('/delete_item_category/:id', function(req, res, next) {
         if (err)
             throw(err);
         else {
-            client.query(`delete from kategorija 
-                          where id_kategorije = $1`, [req.params.id], function (err, result) {
+            client.query(`delete from kategorija_artikla 
+                          where id_kategorija_artikla = $1`, [req.params.id], function (err, result) {
                 don();
                 if (err)
                     throw(err);
