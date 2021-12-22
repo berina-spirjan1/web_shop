@@ -64,7 +64,6 @@ let database={
                 if(err)
                     res.sendStatus(500);
                 else{
-                    console.info("ISPISUJEM",result.rows);
                     req.trgovci = result.rows;
                     next();
                 }
@@ -83,7 +82,6 @@ let database={
                 if(err)
                     res.sendStatus(500);
                 else{
-                    console.info("-s-s--s-s-s",result.rows);
                     req.niz_trgovaca = result.rows;
                     next();
                 }
