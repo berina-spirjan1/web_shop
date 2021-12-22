@@ -171,10 +171,10 @@
                                                     <td style="padding-left: 80px"><%= number_of_shops[i].count%></td>
                                                     <td class="td-actions text-right">
                                                         <div class="row">
-                                                            <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
+                                                            <button type="button" rel="tooltip" title="Edit shop category" class="btn btn-white btn-link btn-sm">
                                                                 <i class="material-icons">edit</i>
                                                             </button>
-                                                            <form method="post" action="/home/shops/delete_shop/<%= categories[i].id_kategorije %>">
+                                                            <form method="post" action="/home/shop_category/delete_shop_category/<%= categories[i].id_kategorije %>">
                                                                 <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
                                                                     <i class="material-icons">close</i>
                                                                 </button>
