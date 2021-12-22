@@ -67,7 +67,7 @@ router.get('/delete_shop_category',
     });
 
 
-router.post('/delete_user_type/:id', function(req, res, next) {
+router.post('/delete_shop_category/:id', function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
