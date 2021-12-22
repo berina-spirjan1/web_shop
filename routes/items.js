@@ -21,31 +21,32 @@ let database={
             if(err)
                 res.end(err);
             client.query(`select *
-                          from trgovina t, artikal a, artikal_trgovina at, kategorija_artikla k
+                          from  artikal a, trgovina t, artikal_trgovina at, kategorija_artikla k
                           where at.id_trgovine = t.id_trgovine
                           and a.id_kategorija_artikla = k.id_kategorija_artikla
-                          order by a.naziv_artikla`,function (err,result) {
+                          and a.id_artikla = at.id_artikla
+                          order by a.id_artikla`,function (err,result) {
 
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
-                    req.niz_svih_trgovina = result.rows;
+                    req.niz_svih_informacija = result.rows;
                     next();
                 }
             });
         });
     },
-    getAllDifferentShops: function(req,res,next){
+    getAllDifferentCategories: function(req,res,next){
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query("select distinct * from trgovina order by id_trgovine",function (err,result) {
+            client.query("select * from kategorija_artikla order by id_kategorija_artikla",function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
-                    req.niz_trgovina = result.rows;
+                    req.niz_kategorija = result.rows;
                     next();
                 }
             });
@@ -58,13 +59,13 @@ let database={
 router.get('/', database.getAllItems,
     function(req, res, next) {
         res.render('crud_for_items',{
-            items: req.niz_svih_trgovina
+            items: req.niz_svih_informacija
         });
 });
 
-router.get('/add_item', database.getAllDifferentShops,
+router.get('/add_item', database.getAllDifferentCategories,
     function(req, res, next) {
-        res.render('add_new_item',{shops: req.niz_trgovina});
+        res.render('add_new_item',{itemCategory: req.niz_kategorija});
 });
 
 
@@ -73,14 +74,15 @@ router.post('/add_item',function(req, res, next) {
     let description = req.body.description;
     let amount = req.body.amount;
     let content = req.body.content;
+    let price = req.body.price;
     let category = req.body.category;
 
     pool.connect(function (err,client,done) {
         if(err)
             throw(err);
         else {
-            client.query(`INSERT INTO artikal(naziv_artikla, opis_artikla, dostupna_kolicina, sadrzaj_artikla, id_kategorija_artikla)
-                          VALUES ($1,$2,$3,$4, $5)`,[name, description, amount, content, category], function (err,result) {
+            client.query(`INSERT INTO artikal(naziv_artikla, opis_artikla, dostupna_kolicina, cijena_artikla, sadrzaj_artikla, id_kategorija_artikla)
+                          VALUES ($1,$2,$3,$4, $5, $6)`,[name, description, amount, price, content, category], function (err,result) {
                 done();
                 if (err)
                     throw(err);
