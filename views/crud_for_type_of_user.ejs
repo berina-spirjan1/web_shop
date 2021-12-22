@@ -174,7 +174,11 @@
                                                 <tr>
                                                     <td><%= user_types[i].id_tip_korisnika %></td>
                                                     <td><%= user_types[i].pozicija_korisnika %></td>
-                                                    <td style="padding-left: 80px"><%= number_of_users[i].count %></td>
+                                                    <% if(number_of_users.length-1<i){%>
+                                                        <td style="padding-left: 80px">0</td>
+                                                    <%}else{%>
+                                                        <td style="padding-left: 80px"><%= number_of_users[i].count%></td>
+                                                    <%}%>
 
                                                     <td class="td-actions text-right">
                                                         <div class="row">
@@ -213,7 +217,7 @@
 
                         </div>
                         <div class="col-2">
-                            <a href="http://localhost:3000/home/user_type/add_user_type" class="btn btn-info pull-right">Add user</a>
+                            <a href="http://localhost:3000/home/user_type/add_user_type" class="btn btn-info pull-right">Add user type</a>
                             <div class="clearfix"></div>
                         </div>
                     </div>

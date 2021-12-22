@@ -91,5 +91,32 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
+router.get('/add_payment',
+    function(req, res, next) {
+        res.render('add_payment');
+    });
+
+router.post('/add_payment',function(req, res, next) {
+
+    let payment = req.body.payment;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`INSERT INTO nacin_placanja(vrsta_placanja)
+                          VALUES ($1)`,[payment], function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else {
+                    res.redirect('/home/payment')
+                }
+            });
+        }
+    });
+});
+
+
 
 module.exports = router;

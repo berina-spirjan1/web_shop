@@ -111,5 +111,33 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
+router.get('/add_user_type',
+    function(req, res, next) {
+        res.render('add_user_type');
+    });
+
+router.post('/add_user_type',function(req, res, next) {
+
+    console.info("ispisujem",req.body)
+
+    let position = req.body.position;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`INSERT INTO tip_korisnika(pozicija_korisnika)
+                          VALUES ($1)`,[position], function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else {
+                    res.redirect('/home/user_type')
+                }
+            });
+        }
+    });
+});
+
 
 module.exports = router;
