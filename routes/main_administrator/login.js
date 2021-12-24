@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 
 router.get('/', function(req, res, next) {
-    res.render('login' );
+    res.render('./registration/login' );
 });
 
 router.post('/', (req,res,next) =>{

@@ -16,7 +16,7 @@ const config = {
 
 const pool = new pg.Pool(config);
 
-const {ensureAuthenticatedMainAdministrator} = require('../authentication/mainAdministrator');
+const {ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 const bcrypt = require("bcrypt");
 
 let database = {
@@ -132,7 +132,7 @@ router.get('/', database.getAllUsers,
     database.getAllChainStoresFromShop,
     // ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
-        res.render('crud_for_users',{
+        res.render('./main_administrator/crud_for_users',{
             listOfUsers: req.niz_svih_korisnika,
             positions: req.niz_svih_pozicija,
             categories: req.niz_svih_kategorija,
@@ -143,7 +143,7 @@ router.get('/', database.getAllUsers,
 router.get('/add_user', database.getAllDifferentPositions,
                              database.getAllStatus,
                              function(req, res, next) {
-    res.render('add_new_user',{
+    res.render('./main_administrator/add_new_user',{
         positions: req.niz_pozicija,
         status: req.niz_statusa
     });

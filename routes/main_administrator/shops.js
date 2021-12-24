@@ -14,7 +14,7 @@ const config = {
 
 const pool = new pg.Pool(config);
 
-const {ensureAuthenticatedMainAdministrator} = require('../authentication/mainAdministrator');
+const {ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 const alert = require("alert");
 
 let database = {
@@ -151,7 +151,7 @@ router.get('/', database.getAllShops,
                 database.getAllChainStoresFromShop,
                 // ensureAuthenticatedMainAdministrator,
                 function(req, res, next) {
-    res.render('crud_for_shops',{
+    res.render('./main_administrator/crud_for_shops',{
         listOfShops: req.niz_svih_trgovina,
         sales: req.niz_svih_menadzera,
         categories: req.niz_svih_kategorija,
@@ -188,7 +188,7 @@ router.get('/add_shop', database.getAllDifferentCategories,
                              database.getAllDifferentChainStores,
                              database.getAllDifferentSalesAdministrators,
     function(req, res, next) {
-    res.render('add_new_shop',{
+    res.render('./main_administrator/add_new_shop',{
         categories: req.niz_kategorija,
         stores: req.niz_lanca_trgovina,
         sales: req.niz_trgovaca

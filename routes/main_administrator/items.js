@@ -58,14 +58,14 @@ let database={
 
 router.get('/', database.getAllItems,
     function(req, res, next) {
-        res.render('crud_for_items',{
+        res.render('./main_administrator/crud_for_items',{
             items: req.niz_svih_informacija
         });
 });
 
 router.get('/add_item', database.getAllDifferentCategories,
     function(req, res, next) {
-        res.render('add_new_item',{itemCategory: req.niz_kategorija});
+        res.render('./main_administrator/add_new_item',{itemCategory: req.niz_kategorija});
 });
 
 

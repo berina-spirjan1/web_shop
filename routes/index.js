@@ -99,13 +99,13 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/sign_up', function(req, res, next) {
-  res.render('sign_up' );
+  res.render('./registration/sign_up' );
 });
 
 router.post('/sign_up',database.Validation,database.CreateNewUser, function (req, res, next) {});
 
 router.get('/verify_account', function(req, res, next) {
-  res.render('verify_account' );
+  res.render('./registration/verify_account' );
 });
 
 router.post('/verify_account', function(req, res, next) {
@@ -165,7 +165,7 @@ router.get('/successfully_verified_account', function(req, res, next) {
 
 
 router.get('/forgot_password', function(req, res, next) {
-  res.render('forgot_password');
+  res.render('./registration/forgot_password');
 });
 
 router.post('/forgot_password', function(req, res, next) {
@@ -221,7 +221,7 @@ router.post('/forgot_password', function(req, res, next) {
 
 
 router.get('/reset_password', function(req, res, next) {
-  res.render('reset_password');
+  res.render('./registration/reset_password');
 });
 
 router.post('/reset_password', function(req, res, next) {

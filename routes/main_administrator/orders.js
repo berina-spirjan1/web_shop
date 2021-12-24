@@ -83,7 +83,7 @@ let database = {
 router.get('/', database.getAllOrders,
     database.getInfoAboutCustomerForOrder,
     function(req, res, next) {
-        res.render('crud_for_orders',{
+        res.render('./main_administrator/crud_for_orders',{
             orders: req.niz_svih_narudzbi,
             info: req.informacije_o_kupcu
         });
@@ -92,7 +92,7 @@ router.get('/', database.getAllOrders,
 router.get('/add_order', database.getAllTypesOfPayment,
                               database.getAllCustomers,
                               function(req, res, next) {
-    res.render('add_new_order',{
+    res.render('./main_administrator/add_new_order',{
         payment: req.niz_nacin_placanja,
         customers: req.niz_svih_kupaca
     });

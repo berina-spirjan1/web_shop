@@ -108,21 +108,7 @@
                 </div>
             </div>
         </nav>
-        <div class="card card-chart">
-            <div class="card-header card-header-danger">
-                <div class="ct-chart" id="completedTasksChart"></div>
-            </div>
-        </div>
-        <div class="card card-chart">
-            <div class="card-header card-header-success">
-                <div class="ct-chart" id="dailySalesChart"></div>
-            </div>
-        </div>
-        <div class="card card-chart">
-            <div class="card-header card-header-warning">
-                <div class="ct-chart" id="websiteViewsChart"></div>
-            </div>
-        </div>
+
         <div class="content">
             <div class="container-fluid">
                 <div class="container-fluid">
@@ -135,35 +121,21 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class=" text-info">
-                                            <th>ID</th>
-                                            <th>NAME</th>
-                                            <th>EMAIL</th>
-                                            <th>POSITION</th>
-                                            <th>PHONE NUMBER</th>
-                                            <th>STATUS</th>
-                                            <th></th>
-                                            </thead>
-                                            <tbody>
-                                            <% for(let i = 0; i<listOfUsers.length; i++){%>
-                                                <tr>
-                                                    <td><%= listOfUsers[i].id_korisnika %></td>
-                                                    <td><%= listOfUsers[i].ime %> <%= listOfUsers[i].prezime %></td>
-                                                    <td><%= listOfUsers[i].email %></td>
-                                                    <td><%= positions[i].pozicija_korisnika %></td>
-                                                    <td><%= listOfUsers[i].broj_telefona %></td>
-                                                    <td><%= listOfUsers[i].status %></td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit user" class="btn btn-white btn-link btn-sm">
-                                                            <i class="material-icons">edit</i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
-                                                            <i class="material-icons">close</i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            <%}%>
+                                            <div class="card card-chart">
+                                                <div class="card-header card-header-danger">
+                                                    <div class="ct-chart" id="completedTasksChart"></div>
+                                                </div>
+                                            </div>
+                                            <div class="card card-chart">
+                                                <div class="card-header card-header-success">
+                                                    <div class="ct-chart" id="dailySalesChart"></div>
+                                                </div>
+                                            </div>
+                                            <div class="card card-chart">
+                                                <div class="card-header card-header-warning">
+                                                    <div class="ct-chart" id="websiteViewsChart"></div>
+                                                </div>
+                                            </div>
                                             </tbody>
                                         </table>
                                     </div>

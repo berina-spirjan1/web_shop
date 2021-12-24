@@ -208,7 +208,7 @@ router.get('/main_administrator', database.getTotalNumberOfSalesAdministrators,
                                   database.getFiveNewCustomers,
                                   database.getFiveNewSalesAdministrators,
                                   function(req, res, next) {
-    res.render('main_administrator_dashboard',
+    res.render('./main_administrator/main_administrator_dashboard',
         {sales: req.ukupan_broj_administratora_prodaje,
                 customers: req.ukupan_broj_kupaca,
                 items: req.ukupan_broj_artikala,
@@ -223,7 +223,7 @@ router.get('/main_administrator', database.getTotalNumberOfSalesAdministrators,
 });
 
 router.get('/user',function(req, res, next) {
-    res.render('main_administrator_profile',{
+    res.render('./main_administrator/main_administrator_profile',{
         data: req.user
     });
 });

@@ -17,35 +17,35 @@ const pool = new pg.Pool(config);
 
 
 let database={
-    getAllTypesOfUser:function(req,res,next){
+    getAllCategoriesForShops:function(req,res,next){
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query("select * from tip_korisnika order by id_tip_korisnika",function (err,result) {
+            client.query("select * from kategorija order by id_kategorije",function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
-                    req.tip_korisnika = result.rows;
+                    req.niz_kategorija = result.rows;
                     next();
                 }
             });
         });
     },
-    getAllNumberOfUsers:function(req,res,next){
+    getAllNumberOfShops:function(req,res,next){
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
             client.query(`select count(*)
-                          from korisnik k, tip_korisnika tk
-                          where k.id_tip_korisnika = tk.id_tip_korisnika
-                          group by tk.id_tip_korisnika
-                          order by tk.id_tip_korisnika`,function (err,result) {
+                          from trgovina t, kategorija k
+                          where k.id_kategorije = t.id_kategorije
+                          group by k.id_kategorije
+                          order by k.id_kategorije`,function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
-                    req.broj_korisnika = result.rows;
+                    req.broj_prodavnica = result.rows;
                     next();
                 }
             });
@@ -54,33 +54,32 @@ let database={
 }
 
 
-router.get('/', database.getAllTypesOfUser,
-                     database.getAllNumberOfUsers,
+router.get('/', database.getAllCategoriesForShops,
+                     database.getAllNumberOfShops,
     function(req, res, next) {
-        res.render('crud_for_type_of_user',{user_types: req.tip_korisnika, number_of_users: req.broj_korisnika});
+        res.render('./main_administrator/crud_for_shop_category',{categories: req.niz_kategorija, number_of_shops: req.broj_prodavnica});
     });
 
 
-router.get('/delete_user_type',
+router.get('/delete_shop_category',
     function(req, res, next) {
-        res.redirect('/home/user_type');
+        res.redirect('/home/shop_category');
     });
 
 
-router.post('/delete_user_type/:id', function(req, res, next) {
+router.post('/delete_shop_category/:id', function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
         else {
-            client.query(`delete from tip_korisnika 
-                          where id_tip_korisnika = $1`, [req.params.id], function (err, result) {
-                console.info("------------",result);
+            client.query(`delete from kategorija 
+                          where id_kategorije = $1`, [req.params.id], function (err, result) {
                 don();
                 if (err)
                     throw(err);
                 else{
-                    alert('Successfully deleted type of user!');
-                    res.redirect('/home/user_type');
+                    alert('Successfully deleted shop category!');
+                    res.redirect('/home/shop_category');
                 }
             });
         }
@@ -90,7 +89,7 @@ router.post('/delete_user_type/:id', function(req, res, next) {
 
 router.get('/delete_all',
     function(req, res, next) {
-        res.redirect('/home/user_type');
+        res.redirect('/home/shop_category');
     });
 
 router.post('/delete_all', function(req, res, next) {
@@ -98,41 +97,42 @@ router.post('/delete_all', function(req, res, next) {
         if (err)
             throw(err);
         else {
-            client.query(`delete from tip_korisnika`, function (err, result) {
+            client.query(`delete from kategorija`, function (err, result) {
                 don();
                 if (err)
                     throw(err);
                 else{
-                    alert('Successfully deleted all types of user!');
-                    res.redirect('/home/user_type');
+                    alert('Successfully deleted all shop categories!');
+                    res.redirect('/home/shop_category');
                 }
             });
         }
     });
 });
 
-router.get('/add_user_type',
+
+router.get('/add_new_shop_category',
     function(req, res, next) {
-        res.render('add_user_type');
+        res.render('./main_administrator/add_new_shop_category');
     });
 
-router.post('/add_user_type',function(req, res, next) {
+router.post('/add_new_shop_category',function(req, res, next) {
 
-    console.info("ispisujem",req.body)
-
-    let position = req.body.position;
+    let category_name = req.body.category_name;
+    let category_logo = req.body.category_logo;
+    let category_color = req.body.category_color;
 
     pool.connect(function (err,client,done) {
         if(err)
             throw(err);
         else {
-            client.query(`INSERT INTO tip_korisnika(pozicija_korisnika)
-                          VALUES ($1)`,[position], function (err,result) {
+            client.query(`INSERT INTO kategorija(naziv_kategorije, logo_kategorije, boja_kategorije)
+                          VALUES ($1,$2,$3)`,[category_name, category_logo, category_color], function (err,result) {
                 done();
                 if (err)
                     throw(err);
                 else {
-                    res.redirect('/home/user_type')
+                    res.redirect('/home/shop_category')
                 }
             });
         }

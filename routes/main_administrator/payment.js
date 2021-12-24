@@ -37,7 +37,7 @@ let database={
 
 router.get('/', database.getAllTypesOfPayment,
                      function(req, res, next) {
-    res.render('crud_for_payment',{payment_types: req.tip_placanja});
+    res.render('./main_administrator/crud_for_payment',{payment_types: req.tip_placanja});
 });
 
 
@@ -93,7 +93,7 @@ router.post('/delete_all', function(req, res, next) {
 
 router.get('/add_payment',
     function(req, res, next) {
-        res.render('add_payment');
+        res.render('./main_administrator/add_payment');
     });
 
 router.post('/add_payment',function(req, res, next) {

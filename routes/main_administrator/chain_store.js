@@ -95,7 +95,7 @@ router.get('/', database.getAllChainStore,
                      database.getAllNumberOfShops,
                      database.getAllSalesAdministrators,
     function(req, res, next) {
-    res.render('crud_for_chain_store',{store: req.lanci_trgovina, sales: req.trgovci, number_of_shops: req.broj_trgovina});
+    res.render('./main_administrator/crud_for_chain_store',{store: req.lanci_trgovina, sales: req.trgovci, number_of_shops: req.broj_trgovina});
 });
 
 
@@ -150,7 +150,7 @@ router.post('/delete_all', function(req, res, next) {
 
 router.get('/add_new_chain_store', database.getAllDifferentSalesAdministrators,
     function(req, res, next) {
-        res.render('add_new_chain_store',{
+        res.render('./main_administrator/add_new_chain_store',{
             sales: req.niz_trgovaca
         });
 });

@@ -287,14 +287,14 @@
                                     <th>Email</th>
                                     </thead>
                                     <tbody>
-                                        <% for(let i = 0; i<listOfCustomers.length; i++){%>
-                                            <tr>
-                                                <td><%= listOfCustomers[i].id_korisnika%></td>
-                                                <td><%= listOfCustomers[i].ime%> <%= listOfCustomers[i].prezime%></td>
-                                                <td><%= listOfCustomers[i].username%></td>
-                                                <td><%= listOfCustomers[i].email%></td>
-                                            </tr>
-                                        <%}%>
+                                    <% for(let i = 0; i<listOfCustomers.length; i++){%>
+                                        <tr>
+                                            <td><%= listOfCustomers[i].id_korisnika%></td>
+                                            <td><%= listOfCustomers[i].ime%> <%= listOfCustomers[i].prezime%></td>
+                                            <td><%= listOfCustomers[i].username%></td>
+                                            <td><%= listOfCustomers[i].email%></td>
+                                        </tr>
+                                    <%}%>
                                     </tbody>
                                 </table>
                             </div>
@@ -523,4 +523,3 @@
 </script>
 </body>
 
-</html>
