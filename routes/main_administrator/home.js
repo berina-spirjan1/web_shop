@@ -219,7 +219,9 @@ router.get('/main_administrator', database.getTotalNumberOfSalesAdministrators,
                 deactivated: req.ukupan_broj_deaktivnih_korisnika,
                 blocked: req.ukupan_broj_blokiranih_korisnika,
                 listOfCustomers: req.niz_svih_kupaca,
-                listOfAdministrators: req.niz_svih_administratora});
+                listOfAdministrators: req.niz_svih_administratora,
+                name_surname: [req.user.ime, req.user.prezime]
+        });
 });
 
 router.get('/user',function(req, res, next) {
