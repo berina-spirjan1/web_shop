@@ -228,10 +228,6 @@ router.get('/user',function(req, res, next) {
     });
 });
 
-router.get('/sales_administrator', function(req, res, next) {
-    res.render('index',{title:'GOTOVOOO2'});
-});
-
 router.get('/customer', function(req, res, next) {
     res.render('index',{title:'GOTOVOOO3'});
 });
