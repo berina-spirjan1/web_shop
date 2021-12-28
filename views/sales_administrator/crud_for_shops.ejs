@@ -177,12 +177,37 @@
                                                     <td><%= categories[i].naziv_kategorije%></td>
                                                     <td><%= chainStore[i].naziv_lanca_trgovina%></td>
                                                     <td><%= sales[i].ime%> <%= sales[i].prezime%></td>
+                                                    <td class="td-actions text-right">
+                                                        <div class="row">
+                                                            <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
+                                                                <i class="material-icons">edit</i>
+                                                            </button>
+                                                            <form method="post" action="/home/shops/delete_shop/<%= listOfShops[i].id_trgovine %>">
+                                                                <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
+                                                                    <i class="material-icons">close</i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             <%}%>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <form method="post" action="/home/shops/delete_all">
+                                    <button type="submit" class="btn btn-success pull-right">Delete all</button>
+                                    <div class="clearfix"></div>
+                                </form>
+
+                            </div>
+                            <div class="col-2">
+                                <a class="btn btn-success pull-right" href="http://localhost:3000/home/shops/add_shop">Add shop</a>
+                                <div class="clearfix"></div>
+                            </div>
                         </div>
             </div>
         </div>
