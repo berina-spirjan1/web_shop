@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <link rel='stylesheet' href='/stylesheets/material-dashboard.css' />
+    <script src="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 </head>
 
 <body class="dark-edition">
@@ -182,7 +183,7 @@
     <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-    <script src="../assets/js/plugins/chartist.min.js"></script>
+    <script src="../../utility/chartist.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-notify.js"></script>
 
     <script>
@@ -346,6 +347,18 @@
                 });
             });
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            if ($('#dailySalesChart').length !== 0) {
+                dataDailySalesChart = {
+                    labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                    series: [
+                        [12, 17, 7, 17, 23, 18, 38]
+                    ]
+                };
+                new Chartist.Line('#dailySalesChart', dataDailySalesChart);
+        }});
     </script>
 </div></body>
 </html>

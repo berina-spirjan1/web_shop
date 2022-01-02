@@ -179,6 +179,32 @@ let database = {
                 }
             });
         });
+    },
+    getNumberOfOrdersForSingleDay: function (req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select max(y.count) as najvise_po_danu, y.naziv_lanca_trgovina, y.datum_narudzbe
+                          from (select lc.naziv_lanca_trgovina, count(t.id_lanca_trgovina), n.datum_narudzbe
+                                from trgovina t, artikal_trgovina at, artikal_narudzba an, narudzba n, korpa k, lanac_trgovina lc
+                                where t.id_trgovine = at.id_trgovine
+                                and at.id = an.id_artikal_trgovina
+                                and lc.id_lanca_trgovina = t.id_lanca_trgovina
+                                and an.id_narudzbe = n.id_narudzbe
+                                and k.id_korpe = an.id_korpe
+                                group by lc.naziv_lanca_trgovina, n.datum_narudzbe
+                                order by n.datum_narudzbe) y
+                          group by y.naziv_lanca_trgovina, y.datum_narudzbe
+                          order by y.datum_narudzbe`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.niz_proracuna_po_danima = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -234,8 +260,8 @@ router.get('/customer', function(req, res, next) {
     res.render('index',{title:'GOTOVOOO3'});
 });
 
-router.get('/statistics', function(req, res, next) {
-    res.render('index',{title:'GOTOVOOO4'});
+router.get('/statistics',database.getNumberOfOrdersForSingleDay, function(req, res, next) {
+    res.render('./main_administrator/statistics',{singleDayOrders: req.niz_proracuna_po_danima});
 });
 
 

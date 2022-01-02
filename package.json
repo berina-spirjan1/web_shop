@@ -10,6 +10,7 @@
     "alert": "^5.0.10",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
+    "chartist": "^0.11.4",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",

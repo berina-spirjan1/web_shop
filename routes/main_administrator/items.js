@@ -21,9 +21,10 @@ let database={
             if(err)
                 res.end(err);
             client.query(`select *
-                          from  artikal a, trgovina t, artikal_trgovina at, kategorija_artikla k
+                          from  artikal a, trgovina t, artikal_trgovina at, kategorija_artikla k, artikal_kategorija_artikla aka
                           where at.id_trgovine = t.id_trgovine
-                          and a.id_kategorija_artikla = k.id_kategorija_artikla
+                          and aka.id_kategorija_artikla = k.id_kategorija_artikla
+                          and aka.id_artikla = a.id_artikla
                           and a.id_artikla = at.id_artikla
                           order by a.id_artikla`,function (err,result) {
 
