@@ -36,12 +36,6 @@
                         <p>User Profile</p>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/shops">
-                        <i class="material-icons">location_city</i>
-                        <p>Shops</p>
-                    </a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost:3000/home/shop_category">
                         <i class="material-icons">store</i>
@@ -168,19 +162,21 @@
                                             <th>CUSTOMER</th>
                                             <th>ORDER TIME</th>
                                             <th>ORDER DATE</th>
-                                            <th>PRICE</th>
-                                            <th>CARD NUMBER</th>
+                                            <th>PRICE (BAM)</th>
+                                            <th>ITEMS</th>
+                                            <th>SHOPS</th>
                                             <th></th>
                                             </thead>
                                             <tbody>
                                             <% for(let i = 0; i<orders.length; i++){%>
                                                 <tr>
-                                                    <td><%= orders[i].id_narudzbe %></td>
-                                                    <td><%= info[i].ime %> <%= info[i].prezime %></td>
+                                                    <td><%= orders[i].id_korpe %></td>
+                                                    <td><%= orders[i].ime %> <%= orders[i].prezime %></td>
                                                     <td><%= orders[i].vrijeme_narudzbe %></td>
                                                     <td><%= orders[i].datum_narudzbe.getDay() %>/<%= orders[i].datum_narudzbe.getMonth() %>/<%= orders[i].datum_narudzbe.getFullYear() %></td>
-                                                    <td><%= orders[i].cijena_ukupne_narudzbe %></td>
-                                                    <td><%= orders[i].broj_kartice %></td>
+                                                    <td><%= orders[i].racun %></td>
+                                                    <td><%= orders[i].naziv_artikla %></td>
+                                                    <td><%= orders[i].naziv_trgovine %></td>
                                                     <td class="td-actions text-right">
                                                         <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
                                                             <i class="material-icons">edit</i>

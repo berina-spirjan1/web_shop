@@ -19,7 +19,18 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query("select * from narudzba order by datum_narudzbe",function (err,result) {
+            client.query(`select k.id_korpe, sum(at.kolicina*a.cijena_artikla) as racun,
+                          n.datum_narudzbe, n.vrijeme_narudzbe, t.naziv_trgovine, a.naziv_artikla, ko.ime, ko. prezime
+                          from korpa k, artikal_trgovina at, artikal a, narudzba n, artikal_narudzba an, trgovina t, korisnik ko
+                          where at.id_trgovine = t.id_trgovine
+                          and k.id_korpe = an.id_korpe
+                          and an.id_artikal_trgovina = at.id
+                          and ko.id_korisnika = k.id_kupca
+                          and n.id_narudzbe = an.id_narudzbe
+                          and a.id_artikla = at.id_artikla
+                          group by a.naziv_artikla, n.datum_narudzbe, n.vrijeme_narudzbe, t.naziv_trgovine, k.id_korpe, ko.ime, ko.prezime
+                          order by k.id_korpe`,
+                function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -81,11 +92,9 @@ let database = {
 }
 
 router.get('/', database.getAllOrders,
-    database.getInfoAboutCustomerForOrder,
     function(req, res, next) {
         res.render('./main_administrator/crud_for_orders',{
-            orders: req.niz_svih_narudzbi,
-            info: req.informacije_o_kupcu
+            orders: req.niz_svih_narudzbi
         });
     });
 

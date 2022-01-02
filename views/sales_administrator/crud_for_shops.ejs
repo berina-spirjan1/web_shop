@@ -24,7 +24,7 @@
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/main_administrator">
+                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator">
                         <i class="material-icons">dashboard</i>
                         <p>Homepage</p>
                     </a>
@@ -36,33 +36,9 @@
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="http://localhost:3000/home/shops">
+                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator/shops">
                         <i class="material-icons">location_city</i>
                         <p>Shops</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/shop_category">
-                        <i class="material-icons">store</i>
-                        <p>Shop category</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/chain_store">
-                        <i class="material-icons">shop_two</i>
-                        <p>Chain store</p>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/users">
-                        <i class="material-icons">people</i>
-                        <p>Customers</p>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/user_type">
-                        <i class="material-icons">people</i>
-                        <p>User types</p>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -71,13 +47,7 @@
                         <p>Items</p>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/item_category">
-                        <i class="material-icons">redeem</i>
-                        <p>Item category</p>
-                    </a>
-                </li>
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a class="nav-link" href="http://localhost:3000/home/orders">
                         <i class="material-icons">shopping_basket</i>
                         <p>Orders</p>
@@ -86,13 +56,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost:3000/home/payment">
                         <i class="material-icons">payment</i>
-                        <p>Payment</p>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/statistics">
-                        <i class="material-icons">pie_chart</i>
-                        <p>Statistic</p>
+                        <p>Bill</p>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -176,13 +140,12 @@
                                                     <td><%= listOfShops[i].naziv_trgovine %></td>
                                                     <td><%= categories[i].naziv_kategorije%></td>
                                                     <td><%= chainStore[i].naziv_lanca_trgovina%></td>
-                                                    <td><%= sales[i].ime%> <%= sales[i].prezime%></td>
                                                     <td class="td-actions text-right">
                                                         <div class="row">
                                                             <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
                                                                 <i class="material-icons">edit</i>
                                                             </button>
-                                                            <form method="post" action="/home/shops/delete_shop/<%= listOfShops[i].id_trgovine %>">
+                                                            <form method="post" action="/home/sales_administrator/shops/delete_shop/<%= listOfShops[i].id_trgovine %>">
                                                                 <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
                                                                     <i class="material-icons">close</i>
                                                                 </button>
@@ -198,14 +161,14 @@
                         </div>
                         <div class="row">
                             <div class="col-10">
-                                <form method="post" action="/home/shops/delete_all">
+                                <form method="post" action="/home/sales_administrator/shops/delete_all">
                                     <button type="submit" class="btn btn-success pull-right">Delete all</button>
                                     <div class="clearfix"></div>
                                 </form>
 
                             </div>
                             <div class="col-2">
-                                <a class="btn btn-success pull-right" href="http://localhost:3000/home/shops/add_shop">Add shop</a>
+                                <a class="btn btn-success pull-right" href="http://localhost:3000/home/sales_administrator/shops/add_shop">Add shop</a>
                                 <div class="clearfix"></div>
                             </div>
                         </div>

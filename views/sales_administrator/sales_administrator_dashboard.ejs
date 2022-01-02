@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/shops">
+                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator/shops">
                         <i class="material-icons">location_city</i>
                         <p>Shops</p>
                     </a>
@@ -150,11 +150,61 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-danger card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">access_alarm</i>
+                                </div>
+                                <p class="card-category">Pending orders</p>
+                                <h3 class="text-danger"><%= pending_orders %></h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">alarm</i> Hurry up to confirm it!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-success card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">check</i>
+                                </div>
+                                <p class="card-category">Approved orders</p>
+                                <h3 class="text-success"><%= approved_orders %></h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">favorite</i> Well done!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-warning card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">clear</i>
+                                </div>
+                                <p class="card-category">Rejected orders</p>
+                                <h3 class="text-warning"><%=  rejected_orders %></h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">sentiment_dissatisfied</i> We are sorry for this.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-6 col-md-12">
                         <div class="card">
                             <div class="card-header card-header-primary">
                                 <h4 class="card-title">SHOPS</h4>
-                                <p class="card-category">Last registered shops</p>
+                                <p class="card-category">Stores that you manage</p>
                             </div>
                             <div class="card-body table-responsive">
                                 <table class="table table-hover">
@@ -173,10 +223,37 @@
                                     <%}%>
                                     </tbody>
                                 </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-info">
+                                <h4 class="card-title">CHAIN STORES MANAGING</h4>
+                                <p class="card-category">Chain stores that you manage</p>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="text-info">
+                                    <th>ID</th>
+                                    <th>Chain store</th>
+                                    </thead>
+                                    <tbody>
+                                    <% for(let i = 0; i<list_of_chain_stores.length; i++){%>
+                                        <tr>
+                                            <td><%= list_of_chain_stores[i].id_lanca_trgovina%></td>
+                                            <td><%= list_of_chain_stores[i].naziv_lanca_trgovina%></td>
+                                        </tr>
+                                    <%}%>
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <script>

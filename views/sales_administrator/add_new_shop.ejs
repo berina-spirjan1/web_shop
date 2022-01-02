@@ -22,7 +22,7 @@
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/main_administrator">
+                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator">
                         <i class="material-icons">dashboard</i>
                         <p>Homepage</p>
                     </a>
@@ -33,34 +33,10 @@
                         <p>User Profile</p>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/shops">
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator/shops">
                         <i class="material-icons">location_city</i>
                         <p>Shops</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/shop_category">
-                        <i class="material-icons">store</i>
-                        <p>Shop category</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/chain_store">
-                        <i class="material-icons">shop_two</i>
-                        <p>Chain store</p>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/users">
-                        <i class="material-icons">people</i>
-                        <p>Customers</p>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/user_type">
-                        <i class="material-icons">people</i>
-                        <p>User types</p>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -69,13 +45,7 @@
                         <p>Items</p>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/item_category">
-                        <i class="material-icons">redeem</i>
-                        <p>Item category</p>
-                    </a>
-                </li>
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a class="nav-link" href="http://localhost:3000/home/orders">
                         <i class="material-icons">shopping_basket</i>
                         <p>Orders</p>
@@ -84,13 +54,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost:3000/home/payment">
                         <i class="material-icons">payment</i>
-                        <p>Payment</p>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/statistics">
-                        <i class="material-icons">pie_chart</i>
-                        <p>Statistic</p>
+                        <p>Bill</p>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -155,7 +119,7 @@
                                 <p class="card-category">Do you want to expand our base with a new store? Just go ahead.</p>
                             </div>
                             <div class="card-body">
-                                <form action="/home/shops/add_shop" method="post" >
+                                <form action="/home/sales_administrator/shops/add_shop" method="post" >
                                     <div class="row">
                                         <div class="col-md-10">
                                             <div class="form-group">

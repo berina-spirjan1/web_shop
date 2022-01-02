@@ -19,14 +19,19 @@ const alert = require("alert");
 
 let database = {
     getAllShops: function(req,res,next){
+
+        let id_trgovca = req.user.id_korisnika;
+        console.info("OVO JE ID TRGOVCA",id_trgovca);
+
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query("select * from trgovina order by id_trgovine",function (err,result) {
+            client.query("select * from trgovina where id_menadzera =$1 order by id_trgovine ",[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
+                    console.info("pokupljeni podaci",result.rows);
                     req.niz_svih_trgovina = result.rows;
                     next();
                 }
@@ -149,13 +154,16 @@ router.get('/', database.getAllShops,
                 database.getAllSalesAdministratorsFromShops,
                 database.getAllCategoriesFromShops,
                 database.getAllChainStoresFromShop,
-                // ensureAuthenticatedMainAdministrator,
                 function(req, res, next) {
-    res.render('./main_administrator/crud_for_shops',{
+
+    console.info("USAO SAM");
+    console.info("-----------------------",req.user.ime);
+
+    res.render('./sales_administrator/crud_for_shops',{
         listOfShops: req.niz_svih_trgovina,
         sales: req.niz_svih_menadzera,
         categories: req.niz_svih_kategorija,
-        chainStore: req.niz_svih_lanaca_trgovina
+        chainStore: req.niz_svih_lanaca_trgovina,
     });
 });
 
@@ -188,7 +196,7 @@ router.get('/add_shop', database.getAllDifferentCategories,
                              database.getAllDifferentChainStores,
                              database.getAllDifferentSalesAdministrators,
     function(req, res, next) {
-    res.render('./main_administrator/add_new_shop',{
+    res.render('./sales_administrator/add_new_shop',{
         categories: req.niz_kategorija,
         stores: req.niz_lanca_trgovina,
         sales: req.niz_trgovaca
@@ -211,7 +219,7 @@ router.post('/add_shop',function(req, res, next) {
                 if (err)
                     throw(err);
                 else {
-                    res.redirect('/home/shops')
+                    res.redirect('/home/sales_administrator/shops')
                 }
             });
         }
@@ -220,7 +228,7 @@ router.post('/add_shop',function(req, res, next) {
 
 router.get('/delete_shop',
     function(req, res, next) {
-        res.redirect('/home/shops');
+        res.redirect('/home/sales_administrator/shops');
     });
 
 
@@ -237,7 +245,7 @@ router.post('/delete_shop/:id', function(req, res, next) {
                     throw(err);
                 else{
                     alert('Successfully deleted shop!');
-                    res.redirect('/home/shops');
+                    res.redirect('/home/sales_administrator/shops');
                 }
             });
         }
@@ -246,7 +254,7 @@ router.post('/delete_shop/:id', function(req, res, next) {
 
 router.get('/delete_all',
     function(req, res, next) {
-        res.redirect('/home/shops');
+        res.redirect('/home/sales_administrator/shops');
     });
 
 router.post('/delete_all', function(req, res, next) {
@@ -260,7 +268,7 @@ router.post('/delete_all', function(req, res, next) {
                     throw(err);
                 else{
                     alert('Successfully deleted all shops from database!');
-                    res.redirect('/home/shops');
+                    res.redirect('/home/sales_administrator/shops');
                 }
             });
         }
