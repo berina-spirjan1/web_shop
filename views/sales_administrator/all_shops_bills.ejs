@@ -141,12 +141,21 @@
                                                     <td><%= bill[i].id_korpe %></td>
                                                     <td><%= bill[i].ime %> <%= bill[i].prezime %></td>
                                                     <td><%= bill[i].pojedinacni_racun %></td>
-                                                    <% for(let j = 0; j<bill[i].artikli.length; j++){%>
-                                                        <td><%= bill[i].artikli[j] %></td>
-                                                    <%}%>
-                                                    <% for(let j = 0; j<bill[i].prodavnice.length; j++){%>
-                                                        <td><%= bill[i].prodavnice[j] %></td>
-                                                    <%}%>
+                                                    <td>
+                                                        <select name="type_of_payment" id="type_of_payment" class="btn btn-info">
+                                                            <% for(let j = 0; j<bill[i].artikli.length; j++){%>
+                                                                <option class = "select-option"><%= bill[i].artikli[j] %></option>
+                                                            <%}%>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select name="type_of_payment" id="type_of_payment" class="btn btn-info">
+                                                            <% for(let j = 0; j<bill[i].prodavnice.length; j++){%>
+                                                                <option class = "select-option"><%= bill[i].prodavnice[j] %></option>
+                                                            <%}%>
+                                                        </select>
+                                                    </td>
+
                                                 </tr>
                                             <%}%>
                                             </tbody>
@@ -154,21 +163,20 @@
                                                 <th></th>
                                                 <th></th>
                                                 <th></th>
-                                                <th style="font-size: 18px;">TOTAL</th>
+                                                <th></th>
+                                                <th style="font-size: 18px;margin-left: 50px;">TOTAL</th>
                                             </thread>
                                             <tbody>
                                                 <th>ALL PRICE FOR YOUR SHOPS</th>
                                                 <th></th>
                                                 <th></th>
-                                                <th style="font-size: 15px;"><%= total %> BAM</th>
+                                                <th></th>
+                                                <th style="font-size: 15px; margin-left: 50px;"><%= total %> BAM</th>
                                             </tbody>
 
                                         </table>
                                     </div>
                                 </div>
-
-                            </div><a class="btn btn-primary pull-right" href="http://localhost:3000/home/payment/add_payment">Add payment type</a>
-                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
