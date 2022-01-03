@@ -96,7 +96,7 @@ router.get('/', database.getAllOrders,
         res.render('./main_administrator/crud_for_orders',{
             orders: req.niz_svih_narudzbi
         });
-    });
+});
 
 router.get('/add_order', database.getAllTypesOfPayment,
                               database.getAllCustomers,
