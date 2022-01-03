@@ -14,14 +14,12 @@ const config = {
 
 const pool = new pg.Pool(config);
 
-const {ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 const alert = require("alert");
 
 let database = {
     getAllShops: function(req,res,next){
 
         let id_trgovca = req.user.id_korisnika;
-        console.info("OVO JE ID TRGOVCA",id_trgovca);
 
         pool.connect(function (err,client,done) {
             if(err)
@@ -31,7 +29,6 @@ let database = {
                 if(err)
                     res.sendStatus(500);
                 else{
-                    console.info("pokupljeni podaci",result.rows);
                     req.niz_svih_trgovina = result.rows;
                     next();
                 }
@@ -161,10 +158,11 @@ router.get('/', database.getAllShops,
         sales: req.niz_svih_menadzera,
         categories: req.niz_svih_kategorija,
         chainStore: req.niz_svih_lanaca_trgovina,
+        sale: [req.user.ime, req.user.prezime]
     });
 });
 
-router.put('/update',ensureAuthenticatedMainAdministrator, function(req, res, next) {
+router.put('/update', function(req, res, next) {
     let id = req.body.id;
     let shop_name = req.body.shop;
     let category = req.body.category;

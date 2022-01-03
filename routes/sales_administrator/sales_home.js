@@ -420,21 +420,6 @@ router.get('/', database.getNumberOfShopsForCurrentSales,
     });
 });
 
-router.get('/shops', database.getAllShopsFromDatabase,
-    database.getAllSalesAdministratorsFromShops,
-    database.getAllCategoriesFromShops,
-    database.getAllChainStoresFromShop,
-    // ensureAuthenticatedMainAdministrator,
-    function(req, res, next) {
-        res.render('./sales_administrator/crud_for_shops',{
-            listOfShops: req.niz_svih_trgovina,
-            sales: req.niz_svih_menadzera,
-            categories: req.niz_svih_kategorija,
-            chainStore: req.niz_svih_lanaca_trgovina
-        });
-});
-
-
 
 router.get('/shops/add_shop', database.getAllDifferentCategories,
     database.getAllDifferentChainStores,

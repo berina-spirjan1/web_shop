@@ -283,7 +283,7 @@ router.get('/', function(req, res, next) {
         res.redirect('/home/main_administrator');
     }
     else if(req.user.id_tip_korisnika === 3) {
-        res.redirect('/home/sales_administrator/shops_items/add_new_tag');
+        res.redirect('/home/sales_administrator/shops');
     }
     else {
         res.redirect('/home/customer');
