@@ -145,7 +145,7 @@
                                                     <td><%= allOrders[i].id_korpe %></td>
                                                     <td><%= allOrders[i].ime %> <%= allOrders[i].prezime %></td>
                                                     <td><%= allOrders[i].pojedinacni_racun %></td>
-                                                    <td><%= allOrders[i].datum_narudzbe.getDay() %>/<%= allOrders[i].datum_narudzbe.getMonth() %>/<%= allOrders[i].datum_narudzbe.getFullYear() %></td>
+                                                    <td><%= allOrders[i].datum_narudzbe.getDay()+1 %>/<%= allOrders[i].datum_narudzbe.getMonth()+1 %>/<%= allOrders[i].datum_narudzbe.getFullYear() %></td>
                                                     <td>
                                                         <select name="type_of_payment" id="type_of_payment" class="btn btn-warning">
                                                             <% for(let j = 0; j<allOrders[i].vrijeme_narudzbi.length; j++){%>
