@@ -75,4 +75,32 @@ router.get('/edit_shop_item/:id', function(req, res, next) {
 });
 
 
+router.get('/add_new_tag',
+    function(req, res, next) {
+        res.render('./sales_administrator/add_tags_for_items');
+    });
+
+router.post('/add_new_tag',function(req, res, next) {
+
+    let tag_name = req.body.tag_name;
+    let tag_color = req.body.tag_color;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`INSERT INTO tagovi_za_artikle(naziv_taga, boja_taga)
+                          VALUES ($1,$2)`,[tag_name, tag_color], function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else {
+                    res.redirect('/home/sales_administrator/shops_items/add_new_tag');
+                }
+            });
+        }
+    });
+});
+
+
 module.exports = router;

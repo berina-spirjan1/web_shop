@@ -112,7 +112,7 @@ let database = {
     },
     getAllDifferentChainStores: function(req,res,next){
         pool.connect(function (err,client,done) {
-            if(err)
+            if(err)1
                 res.end(err);
             client.query(`select distinct l.naziv_lanca_trgovina, l.id_lanca_trgovina
                           from lanac_trgovina l, trgovina t
@@ -155,9 +155,6 @@ router.get('/', database.getAllShops,
                 database.getAllCategoriesFromShops,
                 database.getAllChainStoresFromShop,
                 function(req, res, next) {
-
-    console.info("USAO SAM");
-    console.info("-----------------------",req.user.ime);
 
     res.render('./sales_administrator/crud_for_shops',{
         listOfShops: req.niz_svih_trgovina,
