@@ -47,6 +47,32 @@ router.get('/', database.getAllItemsFromYourShops,function(req, res, next) {
     res.render('./sales_administrator/crud_for_items_from_shops',{items_from_shops: req.artikli_iz_trgovina});
 });
 
+router.get('/edit_shop_item/:id', function(req, res, next) {
+
+    let id_trgovca = req.user.id_korisnika;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            res.end(err);
+        client.query(`select a.id_artikla, a.cijena_artikla, a.naziv_artikla, a.dostupna_kolicina
+                      from artikal a, trgovina t, artikal_trgovina at
+                      where a.id_artikla = at.id_artikla
+                      and t.id_trgovine = at.id_trgovine
+                      and t.id_menadzera = $1
+                      and t.id_trgovine = $2
+                      order by a.id_artikla`,[id_trgovca, req.params.id],function (err,result) {
+            done();
+            if(err)
+                res.sendStatus(500);
+            else{
+                req.artikli = result.rows;
+                res.render('./sales_administrator/crud_for_items',{items: req.artikli});
+                next();
+            }
+        });
+    });
+
+});
 
 
 module.exports = router;
