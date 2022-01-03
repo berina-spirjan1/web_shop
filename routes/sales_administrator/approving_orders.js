@@ -196,6 +196,33 @@ router.post('/delivery/:id', function(req, res, next) {
     });
 });
 
+router.get('/deliver_all',
+    function(req, res, next) {
+        res.redirect('/home/sales_administrator/approving_orders');
+});
+
+router.post('/deliver_all', database.getListOfAcceptedOrders, function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            for(let i = 0; i<req.prihvacene_narudzbe.length;i++){
+                client.query(`update korpa
+                              set status = 2
+                              where id_korpe = $1`, [req.prihvacene_narudzbe[i].id_korpe], function (err, result) {
+                    don();
+                    if (err)
+                        throw(err);
+                    else{
+                        alert('Successfully delivered all orders!');
+                        res.redirect('/home/sales_administrator/approving_orders');
+                    }
+                });
+            }
+
+        }
+    });
+});
 
 
 module.exports = router;
