@@ -194,14 +194,14 @@ router.get('/add_shop', database.getAllDifferentCategories,
     res.render('./sales_administrator/add_new_shop',{
         categories: req.niz_kategorija,
         stores: req.niz_lanca_trgovina,
-        sales: req.niz_trgovaca
+        sales: [req.user.id_korisnika, req.user.ime, req.user.prezime]
     });
 });
 
 router.post('/add_shop',function(req, res, next) {
     let shop_name = req.body.shop_name;
     let category = req.body.category;
-    let sales_administrator = req.body.sales_administrator;
+    let sales_administrator = req.user.id_korisnika;
     let chain_store = req.body.chain_store;
 
     pool.connect(function (err,client,done) {
