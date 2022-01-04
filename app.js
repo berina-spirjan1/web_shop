@@ -68,7 +68,7 @@ app.use('/home/user_type', userTypeRouter);
 app.use('/home/shop_category', shopCategoryRouter);
 app.use('/home/item_category', itemCategoryRouter);
 app.use('/home/chain_store', chainStoreRouter);
-app.use('/customer', customerRouter);
+app.use('/home/customer', customerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
