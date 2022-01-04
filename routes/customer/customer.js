@@ -93,7 +93,7 @@ router.get('/', database.getMostPopularItems,
                      database.getRandomItems,
                      database.getItemsFromUserTags,
     function(req, res, next) {
-    res.render('./customer/homepage',{
+    res.render('./customers/homepage',{
         most_popular: req.najpopularniji_artikli,
         random: req.nasumicni_artikli,
         items_from_interest: req.artikli_na_osnovu_interesa
