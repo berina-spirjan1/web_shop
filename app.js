@@ -23,7 +23,7 @@ const paymentRouter = require('./routes/main_administrator/payment');
 const allUsersRouter = require('./routes/main_administrator/allUsers');
 const shopCategoryRouter = require('./routes/main_administrator/shop_category');
 const itemCategoryRouter = require('./routes/main_administrator/item_category');
-const customerRouter = require('./routes/customer');
+const customerRouter = require('./routes/customer/customer');
 
 const app = express();
 const passport = require('passport');
