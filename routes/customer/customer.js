@@ -86,17 +86,48 @@ let database = {
                 }
             });
         });
+    },
+    getPopularItemsWithImage: function(req,res,next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select y.id_artikla, y.naziv_artikla, y.dostupna_kolicina, y.cijena_artikla, y.opis_artikla, 
+                          y.sadrzaj_artikla, ((y.suma_ocjene)/max(y.broj_ocjena)) as prosjek, y.path
+                          from(select a.id_artikla, a.naziv_artikla, a.dostupna_kolicina, a.cijena_artikla, a.opis_artikla, a.sadrzaj_artikla, f.path,
+                               sum(o.ocjena)as suma_ocjene,count(o.ocjena) as broj_ocjena
+                               from artikal a, ocjene_artikala oa, ocjena o, fotografija f
+                               where a.id_artikla = oa.id_artikal
+                               and f.id_fotografije = a.id_naslovnica
+                               and o.id_ocjena = oa.id_ocjene
+                               group by a.id_artikla, a.naziv_artikla, a.dostupna_kolicina, a.cijena_artikla, a.opis_artikla,
+                                    a.sadrzaj_artikla, f.path) y
+                          group by y.id_artikla, y.naziv_artikla, y.dostupna_kolicina, y.cijena_artikla, y.opis_artikla,y.sadrzaj_artikla, y.suma_ocjene, y.path
+                          order by prosjek desc
+                          limit 1`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.najpopularniji_artikli_sa_slikom = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
 router.get('/', database.getMostPopularItems,
                      database.getRandomItems,
                      database.getItemsFromUserTags,
+                     database.getPopularItemsWithImage,
     function(req, res, next) {
+    console.info("ISPISUJEM",req.najpopularniji_artikli)
     res.render('./customers/homepage',{
         most_popular: req.najpopularniji_artikli,
         random: req.nasumicni_artikli,
-        items_from_interest: req.artikli_na_osnovu_interesa
+        items_from_interest: req.artikli_na_osnovu_interesa,
+        pined_item: req.najpopularniji_artikli_sa_slikom,
+        user_info: [req.user.ime, req.user.prezime]
     });
 });
 
