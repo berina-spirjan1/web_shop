@@ -72,18 +72,18 @@
                 <div class="col-md-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Owl_shopping_by_mimooh.svg/655px-Owl_shopping_by_mimooh.svg.png" width="170" height="137">
                     <h4 style="color:#9a9fa9; font-family: 'Segoe UI Black',serif">Grocery delivery and more</h4>
-                    <p>Find everything you need! From supermarkets to shops, from pharmacies to florists - if it's in your city, you can count on us to bring it to you.</p>
+                    <p style="font-size:12px;">Find everything you need! From supermarkets to shops, from pharmacies to florists - if it's in your city, you can count on us to bring it to you.</p>
 
                 </div>
                 <div class="col-md-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Changing_Careers_Window_Shopping_Cartoon.svg/1104px-Changing_Careers_Window_Shopping_Cartoon.svg.png" width="170" height="137">
                     <h4 style="color:#9a9fa9; font-family: 'Segoe UI Black',serif">Fast delivery</h4>
-                    <p>We are proud of how fast we are. Order or send anything in your city and we will pick it up and deliver it to you in a few minutes.</p>
+                    <p style="font-size:12px;">We are proud of how fast we are. Order or send anything in your city and we will pick it up and deliver it to you in a few minutes.</p>
                 </div>
                 <div class="col-md-4">
                     <img src="https://dearsystems.com.cn/wp-content/uploads/2019/12/ecommerce.svg" width="170" height="137">
                     <h4 style="color:#9a9fa9; font-family: 'Segoe UI Black',serif">Very reasonable prices</h4>
-                    <p>Visit our store and save money, because promotions are an integral part of our customers' satisfaction</p>
+                    <p style="font-size:12px;">Visit our store and save money, because promotions are an integral part of our customers' satisfaction</p>
                 </div>
             </div>
 
@@ -99,7 +99,7 @@
                 <div class="half-of-section">
                     <div class="first-half-text-center">
                         <h2>Special price</h2>
-                        <p>Save time and energy. We have prepared special discounts from stores as well as special discounts for delivery.</p>
+                        <p >Save time and energy. We have prepared special discounts from stores as well as special discounts for delivery.</p>
                         <a href="/home/customer/catalogs" class="btn btn-info btn-outline-info btn-lg">See more</a>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
             <div class="scrolling-wrapper">
                 <%for(let i=0; i<most_popular.length;i++){%>
                 <div class="card" style="width: 18rem;margin-right:20px; margin-bottom: 20px; background: #0b3251">
-                    <img class="card-img-top" style="height: 300px; width: 255px" src="https://images.pexels.com/photos/736230/pexels-photo-736230.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Card image cap">
+                    <img class="card-img-top" style="height: 300px; width: 255px" src="<%= most_popular[i].slike_artikla[0]%>" alt="Card image cap">
                     <div class="card-body" style="color: white">
                         <p class="card-text"><%=most_popular[i].naziv_artikla%></p>
                         <p class="card-text" style="color: grey; line-height: 1.5em; height: 3em; overflow: hidden;text-transform: capitalize"><%=most_popular[i].opis_artikla%></p>
@@ -139,7 +139,7 @@
             <div class="scrolling-wrapper">
                 <%for(let i=0; i<random.length;i++){%>
                 <div class="card" style="width: 18rem;margin-right:20px; margin-bottom: 20px; background: #0b3251">
-                    <img class="card-img-top" style="height: 300px; width: 255px" src="https://images.pexels.com/photos/736230/pexels-photo-736230.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Card image cap">
+                    <img class="card-img-top" style="height: 300px; width: 255px" src="<%= random[i].slike_artikla[0]%>" alt="Card image cap">
                     <div class="card-body" style="color: white">
                         <p class="card-text"><%=random[i].naziv_artikla%></p>
                         <p class="card-text" style="color: grey; line-height: 1.5em; height: 3em; overflow: hidden; text-transform: capitalize"><%=random[i].opis_artikla%></p>
@@ -153,7 +153,7 @@
             <div class="scrolling-wrapper">
                 <%for(let i=0; i<items_from_interest.length;i++){%>
                 <div class="card" style="width: 18rem;margin-right:20px; margin-bottom: 20px; background: #0b3251;">
-                    <img class="card-img-top" style="height: 300px; width: 255px" src="https://images.pexels.com/photos/736230/pexels-photo-736230.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Card image cap">
+                    <img class="card-img-top" style="height: 300px; width: 255px" src="<%= items_from_interest[i].slike_artikla[0]%>" alt="Card image cap">
                     <div class="card-body" style="color: white">
                         <p class="card-text"><%=items_from_interest[i].naziv_artikla%></p>
                         <p class="card-text" style="color: grey; line-height: 1.5em; height: 3em; overflow: hidden; text-transform: capitalize"><%=items_from_interest[i].opis_artikla%></p>
@@ -171,7 +171,7 @@
         <div class="row" style="padding-right: 200px; padding-left: 200px">
             <div class="col-md-4">
                 <h4 style="color:#9a9fa9; font-family: 'Segoe UI Black',serif">LUXURY SHOPS</h4>
-                <p>If you have any suggestions for the advancement of our branch, or if you want to leave us some comments, feel free to do so.</p>
+                <p style="font-size:12px; margin-top: 20px;">If you have any suggestions for the advancement of our branch, or if you want to leave us some comments, feel free to do so.</p>
 
             </div>
             <div class="col-md-4">

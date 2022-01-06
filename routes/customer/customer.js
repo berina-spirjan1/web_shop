@@ -21,16 +21,19 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select y.id_artikla, y.naziv_artikla, y.dostupna_kolicina, y.cijena_artikla, y.opis_artikla, y.sadrzaj_artikla, ((y.suma_ocjene)/max(y.broj_ocjena)) as prosjek
+            client.query(`select y.id_artikla, y.naziv_artikla, y.dostupna_kolicina, y.cijena_artikla, y.opis_artikla, y.sadrzaj_artikla,
+                          ((y.suma_ocjene)/max(y.broj_ocjena)) as prosjek, y.slike_artikla
                           from(select a.id_artikla, a.naziv_artikla, a.dostupna_kolicina, a.cijena_artikla, a.opis_artikla, a.sadrzaj_artikla,
-                               sum(o.ocjena)as suma_ocjene,count(o.ocjena) as broj_ocjena
-                               from artikal a, ocjene_artikala oa, ocjena o
+                               sum(o.ocjena)as suma_ocjene,count(o.ocjena) as broj_ocjena, array_agg(f.path) as slike_artikla
+                               from artikal a, ocjene_artikala oa, ocjena o, fotografija f, artikal_fotografija af
                                where a.id_artikla = oa.id_artikal
                                and o.id_ocjena = oa.id_ocjene
+                               and f.id_fotografije = af.id_fotografije
+                               and a.id_artikla = af.id_artikla
                                group by a.id_artikla, a.naziv_artikla, a.dostupna_kolicina, a.cijena_artikla, a.opis_artikla,
                                a.sadrzaj_artikla) y
                           group by y.id_artikla, y.naziv_artikla, y.dostupna_kolicina, y.cijena_artikla, y.opis_artikla,
-                                   y.sadrzaj_artikla, y.suma_ocjene
+                                   y.sadrzaj_artikla, y.suma_ocjene, y.slike_artikla
                           order by prosjek desc`,function (err,result) {
                 done();
                 if(err)
@@ -46,8 +49,11 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`SELECT x.id_artikla, x.sadrzaj_artikla, x.naziv_artikla, x.opis_artikla, x.cijena_artikla, x.dostupna_kolicina
-                          FROM artikal x
+            client.query(`SELECT x.id_artikla, x.sadrzaj_artikla, x.naziv_artikla, x.opis_artikla, x.cijena_artikla, x.dostupna_kolicina,array_agg(f.path) as slike_artikla
+                          FROM artikal x,fotografija f, artikal_fotografija af
+                          where x.id_artikla = af.id_artikla
+                          and f.id_fotografije = af.id_fotografije
+                          group by x.id_artikla, x.sadrzaj_artikla, x.naziv_artikla, x.opis_artikla, x.cijena_artikla, x.dostupna_kolicina
                           ORDER BY RANDOM()
                           LIMIT 10`,function (err,result) {
                 done();
@@ -67,9 +73,12 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select a.id_artikla, a.cijena_artikla, a.naziv_artikla, a.opis_artikla, a.dostupna_kolicina,a.sadrzaj_artikla
-                          from artikal a, interesi_korisnika ik, kategorija k, kategorija_artikla ak, artikal_tagovi at, artikal_kategorija_artikla aka, trgovina t
+            client.query(`select a.id_artikla, a.cijena_artikla, a.naziv_artikla, a.opis_artikla, a.dostupna_kolicina,a.sadrzaj_artikla, array_agg(f.path) as slike_artikla
+                          from artikal a, interesi_korisnika ik, kategorija k, kategorija_artikla ak, artikal_tagovi at, artikal_kategorija_artikla aka,
+                               trgovina t, fotografija f, artikal_fotografija af
                           where ik.id_kategorija_artikla = ak.id_kategorija_artikla
+                          and f.id_fotografije = af.id_fotografije
+                          and a.id_artikla = af.id_artikla
                           and at.id_taga = ik.id_tagovi_artikla
                           and at.id_artikla = a.id_artikla
                           and ik.id_korisnika = $1
@@ -130,6 +139,23 @@ let database = {
                 }
             });
         });
+    },
+    getInformationsAboutSingleItem: function (req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select lt.naziv_lanca_trgovina, f.path, lt.id_lanca_trgovina
+                          from lanac_trgovina lt, fotografija f
+                          where lt.id_logo = f.id_fotografije`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.lanci_trgovina = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -150,6 +176,32 @@ router.get('/', database.getMostPopularItems,
     });
 });
 
+
+router.get('/single_item',function(req, res, next){
+   res.render('./customer/single_item_page',{
+
+   });
+});
+
+router.post('/single_item/:id',function(req, res, next){
+
+    let item_id = req.params.id;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            res.end(err);
+        client.query(`select`,function (err,result) {
+            done();
+            if(err)
+                res.sendStatus(500);
+            else{
+                req.lanci_trgovina = result.rows;
+                next();
+            }
+        });
+    });
+
+});
 
 
 
