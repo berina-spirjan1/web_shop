@@ -1,3 +1,4 @@
+
 .popular_items{
     padding: 20px;
     margin-right: 20px;
@@ -22,15 +23,15 @@
     overflow: hidden;
     text-align: center;
     align-items: center;
-    height: 130px;
-    width: 130px;
+    height: 110px;
+    width: 110px;
     padding: 7px 0px;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075)!important;
     border: 1px solid #0B3251;
 }
 .category-item h6{
     margin: 0px;
-    font-family: "Segoe UI Black", serif;
+    font-family: "Segoe UI Semibold", serif;
     text-transform: uppercase;
     font-size: 14px;
     text-decoration: none;
@@ -41,11 +42,23 @@
     outline: none !important;
     text-decoration: none;
 }
+.category-item img{
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin: 2px 0 8px 0;
+}
+
+.chain_stores_scroll {
+    margin-bottom: 70px;
+    display: flex;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
 
 .img-fluid {
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
 }
 .welcome-animation{
     margin-top: -100px;
@@ -78,7 +91,8 @@
 .scrolling-wrapper {
     display: flex;
     overflow-x: scroll;
-    overflow: hidden;
+    overflow: paged-x-controls;
+    white-space: nowrap;
 }
 
 .most-popular-title{
@@ -93,4 +107,97 @@
     font-size: 24px;
     margin-bottom: 30px;
     margin-top: 70px;
+}
+.interest-title{
+    font-family: "Segoe UI Black", serif;
+    color: grey;
+    font-size: 24px;
+    margin-bottom: 30px;
+    margin-top: 70px;
+}
+.chain_stores-title{
+    font-family: "Segoe UI Black", serif;
+    color: grey;
+    font-size: 24px;
+    margin-bottom: 20px;
+    margin-top: 70px;
+}
+.card {
+    /*float: left;*/
+    max-width: 33.333%;
+    padding: .75rem;
+    margin-bottom: 2rem;
+    border: 0;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.card > img {
+    margin-bottom: .75rem;
+    width: 80%;
+}
+
+.card-text {
+    font-size: 85%;
+}
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+strong {
+    font-weight: bold;
+}
+.line {
+    background-color: #5e5e5e;
+    border-radius: 12px;
+    display: inline-table;
+    height: 4px;
+    margin: 0 0 51px;
+    width: 70px;
+}
+
+.half-of-section {
+    width: 50%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    background-size: cover;
+    background-position: center;
+}
+
+.first-half-text-center {
+    position: relative;
+    padding: 72px 96px 36px 118px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.half-image-section {
+    width: 50%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    background-size: cover;
+    background-position: center;
+}
+.first-part-for-shops{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 80px;
+    row-gap: 80px;
+    align-items: center;
+    justify-items: center;
+    place-items: center;
 }

@@ -113,6 +113,23 @@ let database = {
                 }
             });
         });
+    },
+    getAllChainStores: function(req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select lt.naziv_lanca_trgovina, f.path, lc.id_lanca_trgovina
+                          from lanac_trgovina lt, fotografija f
+                          where lt.id_logo = f.id_fotografije`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.lanci_trgovina = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -120,16 +137,20 @@ router.get('/', database.getMostPopularItems,
                      database.getRandomItems,
                      database.getItemsFromUserTags,
                      database.getPopularItemsWithImage,
+                     database.getAllChainStores,
     function(req, res, next) {
-    console.info("ISPISUJEM",req.najpopularniji_artikli)
+    console.info("ISPISUJEM",req.lanci_trgovina)
     res.render('./customers/homepage',{
         most_popular: req.najpopularniji_artikli,
         random: req.nasumicni_artikli,
         items_from_interest: req.artikli_na_osnovu_interesa,
         pined_item: req.najpopularniji_artikli_sa_slikom,
-        user_info: [req.user.ime, req.user.prezime]
+        user_info: [req.user.ime, req.user.prezime],
+        chain_stores: req.lanci_trgovina
     });
 });
+
+
 
 
 
