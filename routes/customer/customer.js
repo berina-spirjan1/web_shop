@@ -118,7 +118,7 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select lt.naziv_lanca_trgovina, f.path, lc.id_lanca_trgovina
+            client.query(`select lt.naziv_lanca_trgovina, f.path, lt.id_lanca_trgovina
                           from lanac_trgovina lt, fotografija f
                           where lt.id_logo = f.id_fotografije`,function (err,result) {
                 done();
@@ -139,7 +139,7 @@ router.get('/', database.getMostPopularItems,
                      database.getPopularItemsWithImage,
                      database.getAllChainStores,
     function(req, res, next) {
-    console.info("ISPISUJEM",req.lanci_trgovina)
+
     res.render('./customers/homepage',{
         most_popular: req.najpopularniji_artikli,
         random: req.nasumicni_artikli,
