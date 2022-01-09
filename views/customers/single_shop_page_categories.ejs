@@ -106,34 +106,38 @@
     </div>
 </section>
 <div class="row">
-    <div class="col-sm-1" style="margin-left: 90px"></div>
-    <div class="col-md-4">
+    <div class="col-sm-2" style="margin-left: 75px"></div>
+    <div class="col-md-2">
         <div class="bg-white rounded border shadow-sm mb-4">
             <div class="p-3 border-bottom">
-                <% for(let i=0; i<items.length;i++){%>
-                    <div class="item" style="margin-bottom: 20px;">
-                        <div class="list-card h-100 rounded overflow-hidden position-relative shadow-sm" style="background: #0b3251; color: white">
-                            <div class="list-card-image">
-                                <div class="item-logo" style="background-image: url(<%=images[i].slike_artikla[0]%>);"></div>
-                                <a href="/home/customer/single_item/<%=items[i].id_artikla%>">
-                                    <div class="background-for-card" style="background-image: url(<%=items[i].path%>);"></div>
-                                </a>
+                <% for(let i=0; i<categories.length;i++){%>
+                <div class="item" style="margin-bottom: 20px;">
+                    <div class="list-card h-100 rounded overflow-hidden position-relative shadow-sm" style="background: #06203d; color: white">
+                        <div class="list-card-image">
+                            <div class="item-logo" style="background-color: <%=categories[i].boja_kategorije%>;">
+                                <i class="material-icons" style="margin-left: 25px; margin-top: 20px;"><%=categories[i].logo_kategorije%></i>
                             </div>
-                            <div class="p-3 position-relative">
-                                <div class="list-card-body">
-                                    <h6 class="mb-1">
-                                        <a href="/home/customer/single_item/<%=images[i].id_artikla%>"  style="color: white">
-                                            <%=items[i].naziv_artikla%>
-                                        </a>
+                            <a href="/home/customer/single_item/<%=categories[i].id_kategorija_artikla%>">
+                                <div class="background-for-card" style="background-color: <%=categories[i].boja_kategorije%>;"></div>
+                            </a>
+                        </div>
+                        <div class="p-3 position-relative">
+                            <div class="list-card-body">
+                                <h6 class="mb-1" style="text-transform: uppercase">
+                                    <a href="/home/customer/single_shop/<%= info[0].id_trgovine%>/single_category/<%=categories[i].id_kategorija_artikla%>" style="color: white">
+                                        <%=categories[i].naziv_kategorije%>
+                                    </a>
 
-                                    </h6>
-                                </div>
-                                <button class="btn btn-outline-info" style="margin-top: 10px; margin-left: 370px;" title="Add to cart">
-                                    <i class="material-icons">shopping_basket</i>
-                                </button>
+                                </h6>
                             </div>
+                            <button class="btn btn-outline-info" style="margin-top: 10px; margin-left: 120px;"
+                                    title="See all items for current category"
+                                    href="/home/customer/single_shop/<%= info[0].id_trgovine%>/single_category/<%=categories[i].id_kategorija_artikla%>">
+                                <i class="material-icons">pan_tool</i>
+                            </button>
                         </div>
                     </div>
+                </div>
                 <%}%>
             </div>
         </div>
