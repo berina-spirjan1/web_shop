@@ -266,6 +266,42 @@ router.get('/single_item/:id/description',database.getInfoAboutSingleItem,
         });
 });
 
+router.get('/single_item/:id/content',database.getInfoAboutSingleItem,
+    database.getCoverImage,
+    database.getMarkOfItem,
+    function(req, res, next){
+
+        res.render('./customers/single_item_page_content',{
+            single_item: req.informacije_o_artiklu,
+            cover_image: req.pozadina,
+            mark_of_item: req.ocjena
+        });
+});
+
+router.get('/single_item/:id/shops',database.getInfoAboutSingleItem,
+    database.getCoverImage,
+    database.getMarkOfItem,
+    function(req, res, next){
+
+        res.render('./customers/single_item_page_shops',{
+            single_item: req.informacije_o_artiklu,
+            cover_image: req.pozadina,
+            mark_of_item: req.ocjena
+        });
+});
+
+router.get('/single_item/:id/images',database.getInfoAboutSingleItem,
+    database.getCoverImage,
+    database.getMarkOfItem,
+    function(req, res, next){
+
+        res.render('./customers/single_item_page_images',{
+            single_item: req.informacije_o_artiklu,
+            cover_image: req.pozadina,
+            mark_of_item: req.ocjena
+        });
+});
+
 
 
 
