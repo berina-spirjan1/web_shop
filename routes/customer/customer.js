@@ -219,6 +219,30 @@ let database = {
                 }
             });
         });
+    },
+    getCoverImageForShops: function(req, res, next){
+        let id_artikla = req.params.id;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select f.path as pozadina, t.naziv_trgovine as naziv_trgovine
+                          from fotografija f, artikal a, trgovina t, artikal_trgovina at
+                          where t.id_pozadina = f.id_fotografije
+                          and at.id_artikla = a.id_artikla
+                          and a.id_artikla = at.id_trgovine
+                          and a.id_artikla = $1
+                          group by t.id_trgovine, pozadina, naziv_trgovine
+                          order by t.id_trgovine`,[id_artikla],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.pozadine_prodavnica = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -281,12 +305,14 @@ router.get('/single_item/:id/content',database.getInfoAboutSingleItem,
 router.get('/single_item/:id/shops',database.getInfoAboutSingleItem,
     database.getCoverImage,
     database.getMarkOfItem,
+    database.getCoverImageForShops,
     function(req, res, next){
-
+    console.info("ISIPISI",req.pozadine_prodavnica[0])
         res.render('./customers/single_item_page_shops',{
             single_item: req.informacije_o_artiklu,
             cover_image: req.pozadina,
-            mark_of_item: req.ocjena
+            mark_of_item: req.ocjena,
+            cover_images_shops: req.pozadine_prodavnica
         });
 });
 
