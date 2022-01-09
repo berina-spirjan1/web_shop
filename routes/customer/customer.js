@@ -274,7 +274,7 @@ router.get('/single_item/:id',database.getInfoAboutSingleItem,
    res.render('./customers/single_item_page',{
         single_item: req.informacije_o_artiklu,
         cover_image: req.pozadina,
-        mark_of_item: req.ocjena
+        mark_of_item: Math.round(req.ocjena[0].prosjek,2)
    });
 });
 
@@ -320,7 +320,6 @@ router.get('/single_item/:id/images',database.getInfoAboutSingleItem,
     database.getCoverImage,
     database.getMarkOfItem,
     function(req, res, next){
-
         res.render('./customers/single_item_page_images',{
             single_item: req.informacije_o_artiklu,
             cover_image: req.pozadina,

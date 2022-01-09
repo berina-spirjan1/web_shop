@@ -238,7 +238,7 @@ strong {
     line-height: 1;
     max-height: 3.6em;
     word-break: break-word;
-    margin-top: -10rem;
+    margin-top: -15rem;
 }
 @media (min-width: 768px) and (max-width: 991.98px){
     .item-nav {

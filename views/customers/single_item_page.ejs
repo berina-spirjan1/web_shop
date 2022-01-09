@@ -77,6 +77,9 @@
                                     </div>
                                 <%}%>
                             </div>
+                            <div class="btn btn-outline-info" style="margin-right: 10px; margin-top: 20px; margin-left:5px;font-family: 'Segoe UI Semibold',serif">
+                               ADD TO CART
+                            </div>
                         </div>
                     </div>
                         <div class="card pined-item-picture">
@@ -91,45 +94,60 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul class="nav">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/home/customer/single_item/<%= single_item[0].id_artikla%>/description">Description 📑</a>
+                        <li class="nav-item" >
+                            <a class="nav-link" style="color: white"  href="/home/customer/single_item/<%= single_item[0].id_artikla%>/description">Description 📑</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/home/customer/single_item/<%= single_item[0].id_artikla%>/content">Item content 📜</a>
+                            <a class="nav-link" style="color: white" href="/home/customer/single_item/<%= single_item[0].id_artikla%>/content">Item content 📜</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/home/customer/single_item/<%= single_item[0].id_artikla%>/shops">Shops 🏪</a>
+                            <a class="nav-link" style="color: white" href="/home/customer/single_item/<%= single_item[0].id_artikla%>/shops">Shops 🏪</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/home/customer/single_item/<%= single_item[0].id_artikla%>/images">Images 📸️</a>
+                            <a class="nav-link" style="color: white" href="/home/customer/single_item/<%= single_item[0].id_artikla%>/images">Images 📸️</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
-    <div class="item">
-        <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-            <div class="list-card-image">
-                <div class="logores" style="background-image: url('https://korpa.ba/restaurant_uploads/2ZwnKNKT7uxK7g7oMlPpvfNsKA3ZEKA4.jpg');"></div>
-                <a href="/partner/sweets-co">
-                    <div class="slikares  " href="/partner/sweets-co" style="background-image: url('https://korpa.ba/restaurant_uploads/bOsk2PiFLbF7fpUEL2NGkS2dPiVgkH48.jpg');"></div>
-                </a>
-            </div>
-            <div class="p-3 position-relative">
-                <div class="list-card-body">
-                    <h6 class="mb-1">
-                        <a href="/partner/sweets-co" class="text-black">
-                           Prodavnica
-                        </a>
-                    </h6>
-
-
-                </div>
-
-            </div>
-        </div>
+<div style="margin-left: 240px;
+            margin-top: 50px; font-family: 'Segoe UI Black',serif; color: grey; margin-bottom: 50px;" >
+    <div style="margin-left: -15px; margin-bottom: 40px;font-size: 20px; color: #0b3251">PRIMARY INFORMATION'S ABOUT ITEM: </div>
+    <div class="row"><div style="color: #0b3251">MARK:</div>
+        <% if(mark_of_item === 1){%>
+            <i class="material-icons" style="color: yellow">star</i>
+        <%}else if(mark_of_item===2){%>
+            <i class="material-icons" style="color: yellow"> star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+        <%}else if(mark_of_item ===3){%>
+            <i class="material-icons" style="color: yellow">star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+        <%}else if(mark_of_item===4){%>
+            <i class="material-icons" style="color: yellow">star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+        <%}else{%>
+            <i class="material-icons" style="color: yellow">star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+            <i class="material-icons" style="color: yellow">star</i>
+        <%}%>
     </div>
+    <div class="row" style="margin-left: -15px"><div style="color: #0b3251; margin-right: 5px">AMOUNT OF ITEM: </div> <%= single_item[0].dostupna_kolicina%></div>
+    <div class="row" style="margin-left: -15px"><div style="color: #0b3251; margin-right: 5px">PRICE: </div> <%= single_item[0].cijena_artikla%> KM</div>
+    <div class="row" style="margin-left: -18px; margin-top: 50px">
+        <% for(let i=0; i<single_item[0].nazivi_kategorija.length;i++){%>
+            <button class="btn btn-outline-dark" style="color: <%= single_item[0].boje_kategorija[i]%>;margin-right: 20px; cursor: auto">
+                <i class="material-icons"><%= single_item[0].logo_kategorije[i]%></i>
+                <div><%= single_item[0].nazivi_kategorija[i]%></div>
+            </button>
+        <%}%>
+    </div>
+</div>
 </body>
 <footer>
     <section class="section pt-5 pb-5 text-center" style="background: rgba(3,16,33,0.89); color: grey">
@@ -156,7 +174,6 @@
                 </form>
             </div>
         </div>
-
     </section>
 </footer>
 </html>
