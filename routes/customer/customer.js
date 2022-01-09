@@ -140,24 +140,89 @@ let database = {
             });
         });
     },
-    getInformationsAboutSingleItem: function (req, res, next){
+    getInfoAboutSingleItem: function (req,res,next) {
+        let id_artikla = req.params.id;
+
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select lt.naziv_lanca_trgovina, f.path, lt.id_lanca_trgovina
-                          from lanac_trgovina lt, fotografija f
-                          where lt.id_logo = f.id_fotografije`,function (err,result) {
+            client.query(`select a.id_artikla, a.naziv_artikla, a.cijena_artikla, a.opis_artikla, a.sadrzaj_artikla, a.dostupna_kolicina,
+                          array_agg(distinct f.path) as slike_artikla, array_agg(distinct tag.naziv_taga) as nazivi_taga,
+                          array_agg(distinct tag.boja_taga) as boje_taga, array_agg(distinct ka.logo_kategorije) as logo_kategorije,
+                          array_agg(distinct ka.naziv_kategorije) as nazivi_kategorija, array_agg(distinct ka.boja_kategorije) as boje_kategorija,
+                          array_agg(distinct t.naziv_trgovine) as naziv_trgovine, array_agg(distinct lt.naziv_lanca_trgovina) as lanac_trgovina
+                          from artikal a, artikal_fotografija af, fotografija f, tagovi_za_artikle tag, artikal_tagovi atag, kategorija_artikla ka,
+                               artikal_kategorija_artikla aka, artikal_trgovina at, trgovina t, lanac_trgovina lt
+                          where a.id_artikla = af.id_artikla
+                          and atag.id_artikla = a.id_artikla
+                          and aka.id_artikla = a.id_artikla
+                          and lt.id_lanca_trgovina = t.id_lanca_trgovina
+                          and ka.id_kategorija_artikla = aka.id_kategorija_artikla
+                          and a.id_artikla = $1
+                          and at.id_artikla = a.id_artikla
+                          and at.id_trgovine = t.id_trgovine
+                          and tag.id_taga = atag.id_taga
+                          and af.id_fotografije = f.id_fotografije
+                          group by a.id_artikla, a.naziv_artikla, a.cijena_artikla, a.opis_artikla, a.sadrzaj_artikla, a.dostupna_kolicina
+                          order by a.id_artikla`,[id_artikla],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
-                    req.lanci_trgovina = result.rows;
+                    req.informacije_o_artiklu = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getCoverImage: function(req,res,next){
+
+        let id_artikla = req.params.id;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select f.path
+                          from artikal a, fotografija f
+                          where a.id_naslovnica = f.id_fotografije
+                          and a.id_artikla = $1`,[id_artikla],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.pozadina = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getMarkOfItem: function(req, res, next){
+        let id_artikla = req.params.id;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select (y.suma_ocjena*1.00)/x.broj_ocjena as prosjek
+                          from(select sum(o.ocjena) as suma_ocjena
+                               from ocjena o, artikal a, ocjene_artikala oa
+                               where o.id_ocjena = oa.id_ocjene
+                               and a.id_artikla = oa.id_artikal
+                               and a.id_artikla = $1) y, (select count(o1.id_ocjena) as broj_ocjena
+                                                          from ocjena o1, ocjene_artikala oa1
+                                                          where o1.id_ocjena = oa1.id_ocjene) x`,[id_artikla],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.ocjena = result.rows;
                     next();
                 }
             });
         });
     }
 }
+
+
 
 router.get('/', database.getMostPopularItems,
                      database.getRandomItems,
@@ -177,30 +242,17 @@ router.get('/', database.getMostPopularItems,
 });
 
 
-router.get('/single_item',function(req, res, next){
-   res.render('./customer/single_item_page',{
+router.get('/single_item/:id',database.getInfoAboutSingleItem,
+                                   database.getCoverImage,
+                                   database.getMarkOfItem,
+    function(req, res, next){
 
+   console.info("ISPISUJEM",req.informacije_o_artiklu) ;
+   res.render('./customers/single_item_page',{
+        single_item: req.informacije_o_artiklu,
+        cover_image: req.pozadina,
+        mark_of_item: req.ocjena
    });
-});
-
-router.post('/single_item/:id',function(req, res, next){
-
-    let item_id = req.params.id;
-
-    pool.connect(function (err,client,done) {
-        if(err)
-            res.end(err);
-        client.query(`select`,function (err,result) {
-            done();
-            if(err)
-                res.sendStatus(500);
-            else{
-                req.lanci_trgovina = result.rows;
-                next();
-            }
-        });
-    });
-
 });
 
 
