@@ -247,12 +247,23 @@ router.get('/single_item/:id',database.getInfoAboutSingleItem,
                                    database.getMarkOfItem,
     function(req, res, next){
 
-   console.info("ISPISUJEM",req.informacije_o_artiklu) ;
    res.render('./customers/single_item_page',{
         single_item: req.informacije_o_artiklu,
         cover_image: req.pozadina,
         mark_of_item: req.ocjena
    });
+});
+
+router.get('/single_item/:id/description',database.getInfoAboutSingleItem,
+    database.getCoverImage,
+    database.getMarkOfItem,
+    function(req, res, next){
+
+        res.render('./customers/single_item_page_description',{
+            single_item: req.informacije_o_artiklu,
+            cover_image: req.pozadina,
+            mark_of_item: req.ocjena
+        });
 });
 
 
