@@ -25,7 +25,7 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Shops</a>
+                    <a class="nav-link" href="/home/customer/shops">Shops</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -123,16 +123,8 @@
             </div>
             <h2 class="most-popular-title">MOST POPULAR ITEMS</h2>
             <div class="scrolling-wrapper">
-                <%for(let i=0; i<most_popular.length;i++){%>
-                <div class="card" style="width: 18rem;margin-right:20px; margin-bottom: 20px; background: #0b3251">
-                    <img class="card-img-top" style="height: 300px; width: 255px" src="<%= most_popular[i].slike_artikla[0]%>" alt="Card image cap">
-                    <div class="card-body" style="color: white">
-                        <p class="card-text"><%=most_popular[i].naziv_artikla%></p>
-                        <p class="card-text" style="color: grey; line-height: 1.5em; height: 3em; overflow: hidden;text-transform: capitalize"><%=most_popular[i].opis_artikla%></p>
-                        <p class="price"><%=most_popular[i].cijena_artikla%> KM</p>
-                        <p><button class="btn btn-info" style="margin-bottom: -10px">Add to Cart</button></p>
-                    </div>
-                </div>
+                <%for(let i=0; i<top_rated_shops.length;i++){%>
+
                 <%}%>
             </div>
             <h2 class="random-title">MAYBE YOU WILL BE INTEREST FOR</h2>

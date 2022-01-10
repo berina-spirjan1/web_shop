@@ -431,6 +431,54 @@ let database = {
                 }
             });
         });
+    },
+    getShopsTopRated: function (req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select (y.suma*1.00)/count(o1.id_ocjene_trgovina) as prosjek, y.naziv_trgovine, y.id_trgovine, y.path
+                          from (select sum(o.ocjena) as suma, t.naziv_trgovine, t.id_trgovine, f.path
+                                from ocjena o, trgovina t, ocjene_trgovina ot, fotografija f
+                                where o.id_ocjena = ot.id_ocjene
+                                and f.id_fotografije = t.id_pozadina
+                                and t.id_trgovine = ot.id_trgovine
+                                group by  t.naziv_trgovine, t.id_trgovine, f.path
+                                order by t.id_trgovine) y, ocjene_trgovina o1
+                          group by y.id_trgovine, y.naziv_trgovine, y.suma, y.path`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.najbolje_ocjenjene_prodavnice = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getImagesForChainStores: function (req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select y.naziv_trgovine, y.id_trgovine, y.path
+                          from (select t.naziv_trgovine, t.id_trgovine, f.path
+                                from ocjena o, trgovina t, ocjene_trgovina ot, fotografija f, lanac_trgovina lt
+                                where o.id_ocjena = ot.id_ocjene
+                                and f.id_fotografije = lt.id_logo
+                                and lt.id_lanca_trgovina = t.id_lanca_trgovina
+                                and t.id_trgovine = ot.id_trgovine
+                                group by  t.naziv_trgovine, t.id_trgovine, f.path
+                                order by t.id_trgovine) y, ocjene_trgovina o1
+                        group by y.id_trgovine, y.naziv_trgovine, y.path
+                        order by y.id_trgovine`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.slike_za_lance_trgovina = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -451,6 +499,16 @@ router.get('/', database.getMostPopularItems,
         user_info: [req.user.ime, req.user.prezime],
         chain_stores: req.lanci_trgovina
     });
+});
+router.get('/shops',database.getAllChainStores,
+                         database.getShopsTopRated,
+                         database.getImagesForChainStores,
+    function (req, res, next){
+   res.render('./customers/all_shops',{
+       chain_stores: req.lanci_trgovina,
+       top_rated_shops: req.najbolje_ocjenjene_prodavnice,
+       images: req.slike_za_lance_trgovina
+   }) ;
 });
 
 
