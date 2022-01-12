@@ -377,11 +377,16 @@ div.desc {
     border-radius: 5px;
     border: 1px solid #fff;
 }
-.cijena {
+.price {
     color: #135083;
     font-size: 16px;
     font-family: "Segoe UI Semibold", serif;
 }
 .mb-0, .my-0 {
     margin-bottom: 0!important;
+    margin-left: 0px!important;
+}
+
+.subtitle {
+    color: #777777;
 }

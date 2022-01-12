@@ -63,18 +63,17 @@
                 <div class="col-md-12">
                     <div class="bg-white rounded border shadow-sm mb-4">
                         <div class="gold-members p-3 border-bottom">
-                            <a class="btn btn-outline-info btn-sm add_to_cart float-right mt-4 ml-1" href="javascript:void(0)">
+                            <a class="btn btn-outline-info btn-sm add_to_cart float-right mt-4 ml-1">
                                 <span class="d-none d-sm-inline">Add</span>
                             </a>
                             <div class="media">
                                 <div class="mr-3">
-                                    <div class="img_rest" style="background-image:url(<%= cover_images[i].slike_artikala[j]%>);" data-toggle="modal" data-bigimage="/product_uploads/f66QGm55BvpD4sotdm2njicrvcq41Bc8.jpg" data-target="#myModal"></div>
-                                    <%= console.log("ISPISUJEM",cover_images[i].slike_artikala[j])%>
+                                    <div class="img_rest" style="background-image:url(<%= cover_images[i].slike_artikala[j]%>);"></div>
                                 </div>
                                 <div class="media-body">
                                     <h6 class="mb-1"><%= all_items[i].naziv_artikla[j]%> </h6>
-                                    <p class="podnaslov"><%= all_items[i].opis_artikla[j]%></p>
-                                    <p class="cijena mb-0">  <%= all_items[i].cijena_artikla[j]%> KM </p>
+                                    <p class="subtitle"><%= all_items[i].opis_artikla[j]%></p>
+                                    <p class="price mb-0">  <%= all_items[i].cijena_artikla[j]%> KM </p>
                                 </div>
                             </div>
                         </div>
