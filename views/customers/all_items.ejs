@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All items</title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/customer.css' />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body style="background: #031428; font-family: 'Segoe UI', sans-serif">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: #06203d;padding-left: 50px; padding-right: 50px">
+    <a class="navbar-brand" href="#">LUXURY SHOPS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/customer/shops">Shops</a>
+            </li>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Items
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item active" href="/home/customer/all_items">List of all items</a>
+                    <a class="dropdown-item" href="#">Catalogs</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Orders
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">List of all your orders</a>
+                    <a class="dropdown-item" href="#">List of orders that are waiting to delivery</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="material-icons">local_grocery_store</i></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="container" style="margin-top: 20px;">
+    <%for(let i = 0; i<all_items.length; i++){%>
+        <div class="row">
+            <h4 class="mb-3 ml-1 mt-2 col-md-12 category-name"><%= all_items[i].naziv_kategorije%><i class="material-icons" style="margin-left: 5px; align-items: center; color:<%= all_items[i].boja_kategorije%> "><%= all_items[i].logo_kategorije%></i> </h4>
+            <% for(let j = 0;j<all_items[i].id_artikla.length;j++){%>
+                <div class="col-md-12">
+                    <div class="bg-white rounded border shadow-sm mb-4">
+                        <div class="gold-members p-3 border-bottom">
+                            <a class="btn btn-outline-info btn-sm add_to_cart float-right mt-4 ml-1" href="javascript:void(0)">
+                                <span class="d-none d-sm-inline">Add</span>
+                            </a>
+                            <div class="media">
+                                <div class="mr-3">
+                                    <div class="img_rest" style="background-image:url(<%= cover_images[i].slike_artikala[j]%>);" data-toggle="modal" data-bigimage="/product_uploads/f66QGm55BvpD4sotdm2njicrvcq41Bc8.jpg" data-target="#myModal"></div>
+                                    <%= console.log("ISPISUJEM",cover_images[i].slike_artikala[j])%>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="mb-1"><%= all_items[i].naziv_artikla[j]%> </h6>
+                                    <p class="podnaslov"><%= all_items[i].opis_artikla[j]%></p>
+                                    <p class="cijena mb-0">  <%= all_items[i].cijena_artikla[j]%> KM </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+
+
+        </div>
+    <%}%>
+
+</div>
+</body>
+<footer>
+    <section class="section pt-5 pb-5 text-center" style="background: rgba(3,16,33,0.89); color: grey">
+        <div class="row" style="padding-right: 200px; padding-left: 200px">
+            <div class="col-md-4">
+                <h4 style="color:#9a9fa9; font-family: 'Segoe UI Black',serif">LUXURY SHOPS</h4>
+                <p style="font-size:12px; margin-top: 20px;">If you have any suggestions for the advancement of our branch, or if you want to leave us some comments, feel free to do so.</p>
+
+            </div>
+            <div class="col-md-4">
+
+                <h4 style="color:#9a9fa9; font-family: 'Segoe UI Black',serif">CONTACT INFORMATIONS</h4>
+                <p style="margin-top: 20px;">Email Us at<br>
+                    <a href="mailto:zendev2021@gmail.com" style="text-decoration: none; color: #9a9fa9; font-family: 'Segoe UI Black',serif; text-align: center">zendev2021@gmail.com</a>
+                </p>
+            </div>
+            <div class="col-md-4">
+
+                <h4 style="color:#9a9fa9; font-family: 'Segoe UI Black',serif">NEWS</h4>
+                <div style="margin-top: 20px"></div>
+                <form class="my-2 my-lg-1" style="align-items: center;">
+                    <input class="form-control mr-md-4" type="email" placeholder="We will send you e-mail for special prices" aria-label="Search">
+                    <br><button class="btn btn-outline-info my-2 my-sm-0" type="submit">SUBSCRIBE</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</footer>
+</html>
