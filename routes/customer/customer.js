@@ -479,6 +479,57 @@ let database = {
                 }
             });
         });
+    },
+    getAllItems: function (req, res, next) {
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select distinct ka.naziv_kategorije, ka.logo_kategorije, ka.boja_kategorije, ka.id_kategorija_artikla,
+                                 array_agg(distinct a.id_artikla) as id_artikla, array_agg(distinct a.naziv_artikla) as naziv_artikla,
+                                 array_agg(distinct a.opis_artikla) as opis_artikla, array_agg(distinct a.cijena_artikla) as cijena_artikla,
+                                 array_agg(distinct t.naziv_trgovine)
+                          from artikal a, trgovina t, artikal_trgovina at, fotografija f, artikal_fotografija af, kategorija_artikla ka, artikal_kategorija_artikla aka
+                          where a.id_artikla = at.id_artikla
+                          and ka.id_kategorija_artikla = aka.id_kategorija_artikla
+                          and a.id_artikla = aka.id_artikla
+                          and at.id_trgovine = t.id_trgovine
+                          and af.id_artikla = a.id_artikla
+                          and f.id_fotografije = af.id_fotografije
+                          group by  ka.id_kategorija_artikla, ka.naziv_kategorije, ka.logo_kategorije, ka.boja_kategorije
+                          order by ka.id_kategorija_artikla`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.svi_artikli = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getCoverImagesForAllItems: function(req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select distinct ka.naziv_kategorije, ka.logo_kategorije, ka.boja_kategorije, ka.id_kategorija_artikla, array_agg(distinct f.path) as slike_artikala
+                          from artikal a, trgovina t, artikal_trgovina at, fotografija f, artikal_fotografija af, kategorija_artikla ka, artikal_kategorija_artikla aka
+                          where a.id_artikla = at.id_artikla
+                          and ka.id_kategorija_artikla = aka.id_kategorija_artikla
+                          and a.id_artikla = aka.id_artikla
+                          and at.id_trgovine = t.id_trgovine
+                          and af.id_artikla = a.id_artikla
+                          and f.id_fotografije = af.id_fotografije
+                          group by  ka.id_kategorija_artikla, ka.naziv_kategorije, ka.logo_kategorije, ka.boja_kategorije
+                          order by ka.id_kategorija_artikla`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.naslovnice_svih_artikala = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -627,7 +678,16 @@ router.get('/single_shop/:id/categories/:id_category',
             images: req.slike,
             categories: req.kategorije_artikala_za_prodavnicu
         });
-    });
+});
 
+router.get('/all_items',database.getAllItems,
+                                     database.getCoverImagesForAllItems,
+    function (req, res, next) {
+    console.info("SVI ARTIKLI ISPISUJEM",req.svi_artikli);
+    res.render('./customers/all_items',{
+        cover_images: req.naslovnice_svih_artikala,
+        all_items: req.svi_artikli
+    })
+})
 
 module.exports = router;
