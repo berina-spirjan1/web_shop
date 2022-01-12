@@ -121,10 +121,18 @@
                     </div>
                 <%}%>
             </div>
-            <h2 class="most-popular-title">MOST POPULAR ITEMS</h2>
+            <h2 class="random-title">MOST POPULAR</h2>
             <div class="scrolling-wrapper">
-                <%for(let i=0; i<top_rated_shops.length;i++){%>
-
+                <%for(let i=0; i<most_popular.length;i++){%>
+                    <div class="card" style="width: 18rem;margin-right:20px; margin-bottom: 20px; background: #0b3251">
+                        <img class="card-img-top" style="height: 300px; width: 255px" src="<%= most_popular[i].slike_artikla[0]%>" alt="Card image cap">
+                        <div class="card-body" style="color: white">
+                            <p class="card-text"><%=most_popular[i].naziv_artikla%></p>
+                            <p class="card-text" style="color: grey; line-height: 1.5em; height: 3em; overflow: hidden; text-transform: capitalize"><%=most_popular[i].opis_artikla%></p>
+                            <p class="price"><%=most_popular[i].cijena_artikla%> KM</p>
+                            <p><button class="btn btn-info" style="margin-bottom: -10px">Add to Cart</button></p>
+                        </div>
+                    </div>
                 <%}%>
             </div>
             <h2 class="random-title">MAYBE YOU WILL BE INTEREST FOR</h2>
@@ -141,7 +149,7 @@
                 </div>
                 <%}%>
             </div>
-            <h2 class="interest-title">MAYBE YOU WILL BE INTEREST FOR</h2>
+            <h2 class="interest-title">YOU INTEREST FOR</h2>
             <div class="scrolling-wrapper">
                 <%for(let i=0; i<items_from_interest.length;i++){%>
                 <div class="card" style="width: 18rem;margin-right:20px; margin-bottom: 20px; background: #0b3251;">

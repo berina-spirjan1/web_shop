@@ -490,7 +490,6 @@ router.get('/', database.getMostPopularItems,
                      database.getPopularItemsWithImage,
                      database.getAllChainStores,
     function(req, res, next) {
-
     res.render('./customers/homepage',{
         most_popular: req.najpopularniji_artikli,
         random: req.nasumicni_artikli,
