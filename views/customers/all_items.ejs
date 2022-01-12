@@ -62,10 +62,13 @@
             <% for(let j = 0;j<all_items[i].id_artikla.length;j++){%>
                 <div class="col-md-12">
                     <div class="bg-white rounded border shadow-sm mb-4">
-                        <div class="gold-members p-3 border-bottom">
-                            <a class="btn btn-outline-info btn-sm add_to_cart float-right mt-4 ml-1">
-                                <span class="d-none d-sm-inline">Add</span>
-                            </a>
+                        <div class="p-3 border-bottom">
+                            <form method="post" action="/home/customer/basket/<%=all_items[i].id_artikla[j]%>">
+                                <button type="submit" class="btn btn-outline-info btn-sm add_to_cart float-right mt-4 ml-1">
+                                    <span class="d-none d-sm-inline">Add</span>
+                                </button>
+                            </form>
+
                             <div class="media">
                                 <div class="mr-3">
                                     <div class="img_rest" style="background-image:url(<%= cover_images[i].slike_artikala[j]%>);"></div>

@@ -533,6 +533,31 @@ let database = {
     }
 }
 
+let helpers = {
+    count: function (req,res,next) {
+        if(typeof req.user !== "undefined") {
+            pool.connect(function (err, client, done) {
+                if (err)
+                    throw(err);
+                else {
+                    client.query("select count(*) br from trenutna_korpa where id_kupca = $1;", [req.user.id_korisnika], function (err, result) {
+                        done();
+                        req.count = result.rows[0].count;
+                        if (err)
+                            throw(err);
+                        else {
+                            next();
+                        }
+                    });
+                }
+            });
+        }else{
+            req.count = 0;
+            next();
+        }
+    }
+}
+
 
 
 router.get('/', database.getMostPopularItems,
@@ -681,13 +706,68 @@ router.get('/single_shop/:id/categories/:id_category',
 });
 
 router.get('/all_items',database.getAllItems,
-                                     database.getCoverImagesForAllItems,
+                             database.getCoverImagesForAllItems,
     function (req, res, next) {
-    console.info("SVI ARTIKLI ISPISUJEM",req.svi_artikli);
+
     res.render('./customers/all_items',{
         cover_images: req.naslovnice_svih_artikala,
         all_items: req.svi_artikli
-    })
+    });
+
 })
+
+router.get('/basket',function(req, res, next){
+    res.render('./customers/market_basket');
+})
+
+router.post('/basket/:id',helpers.count,function(req, res, next){
+
+    let id_artikla= req.params.id;
+    // let id_kupca = req.user.id_korisnika;
+    let id_kupca = 3;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`insert into trenutna_korpa(id_artikla, id_kupca)
+                          values($1,$2);`, [id_artikla, id_kupca],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else {
+                    let count = req.count;
+                    count.parseInt;
+                    count++;
+                    res.send(count.toString());
+                }
+            });
+        }
+    });
+});
+
+router.get('/delete_from_basket/:id', function (req,res,next){
+
+    let id_kupca = req.user.id_korisnika;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`delete from trenutna_korpa 
+                          where id_trenutne_korpe = (select distinct id_trenutne_korpe 
+                                                     from trenutna_korpa
+                                                     where id_kupca = $1 
+                                                     and id_artikala = $2 
+                                                     limit 1);`,[req.user.id_korisnika,req.params.id],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else
+                    res.redirect('/home/customer/basket');
+            });
+        }
+    });
+});
 
 module.exports = router;
