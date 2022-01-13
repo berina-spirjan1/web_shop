@@ -3,6 +3,7 @@ const router = express.Router();
 
 const pg = require("pg");
 const alert = require("alert");
+const nodemailer = require("nodemailer");
 
 const config = {
     user: 'vhaxxure',
@@ -530,6 +531,29 @@ let database = {
                 }
             });
         });
+    },
+    getAllItemsFromBasket: function (req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select y.naziv_artikla,y.cijena_artikla, y.kolicina, y.naziv_trgovine, y.id_artikla
+                          from(select  a.naziv_artikla, a.cijena_artikla, count(a.id_artikla) as kolicina, t.naziv_trgovine, a.id_artikla
+                          from artikal a, trgovina t, artikal_trgovina at, trenutna_korpa tk
+                          where a.id_artikla = at.id_artikla
+                          and t.id_trgovine = at.id_trgovine
+                          and tk.id_artikla = a.id_artikla
+                          group by a.naziv_artikla, a.cijena_artikla, t.naziv_trgovine, a.id_artikla) y
+                          group by y.naziv_artikla, y.cijena_artikla, y.naziv_trgovine, y.id_artikla, y.kolicina
+                          order by y.cijena_artikla`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.korpa = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -540,9 +564,9 @@ let helpers = {
                 if (err)
                     throw(err);
                 else {
-                    client.query("select count(*) br from trenutna_korpa where id_kupca = $1;", [req.user.id_korisnika], function (err, result) {
+                    client.query("select count(*) as brojac from trenutna_korpa where id_kupca = $1;", [req.user.id_korisnika], function (err, result) {
                         done();
-                        req.count = result.rows[0].count;
+                        req.brojac = result.rows[0].brojac;
                         if (err)
                             throw(err);
                         else {
@@ -552,9 +576,53 @@ let helpers = {
                 }
             });
         }else{
-            req.count = 0;
+            req.brojac = 0;
             next();
         }
+    },
+    SendEmailForSuccessfullyOrdering:function (req,res,next) {
+
+        let id_kupca = req.user.id_korisnika;
+
+        pool.connect(function (err, client, done) {
+            if (err)
+                throw(err);
+            else {
+                client.query(`select email from korisnik where id_korisnika = $1`, [id_kupca], function (err, result) {
+                    done();
+                    if (err)
+                        throw(err);
+                    else{
+
+                        let email = result.rows[0].email;
+
+                        let mail = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                                user: 'zendev2021@gmail.com', // Your email id
+                                pass: 'zendev123' // Your password
+                            }
+                        });
+
+                        let mailOptions = {
+                            from: 'zendev2021@gmail.com',
+                            to: email,
+                            subject: "Thank you for ordering items 😃",
+                            text: "Your order is sent to our shops. Please wait for delivery.",
+
+                        };
+
+                        mail.sendMail(mailOptions,function(error,info) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log("Successfully sent email." + info.response);
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 }
 
@@ -716,15 +784,16 @@ router.get('/all_items',database.getAllItems,
 
 })
 
-router.get('/basket',function(req, res, next){
-    res.render('./customers/market_basket');
+router.get('/basket',database.getAllItemsFromBasket,function(req, res, next){
+    res.render('./customers/market_basket',{
+        basket: req.korpa
+    });
 })
 
 router.post('/basket/:id',helpers.count,function(req, res, next){
 
     let id_artikla= req.params.id;
-    // let id_kupca = req.user.id_korisnika;
-    let id_kupca = 3;
+    let id_kupca = req.user.id_korisnika;
 
     pool.connect(function (err,client,done) {
         if(err)
@@ -736,10 +805,10 @@ router.post('/basket/:id',helpers.count,function(req, res, next){
                 if (err)
                     throw(err);
                 else {
-                    let count = req.count;
-                    count.parseInt;
-                    count++;
-                    res.send(count.toString());
+                    let brojac = req.brojac;
+                    brojac.parseInt;
+                    brojac++;
+                    alert("Successfully added item to your basket!");
                 }
             });
         }
@@ -749,6 +818,7 @@ router.post('/basket/:id',helpers.count,function(req, res, next){
 router.get('/delete_from_basket/:id', function (req,res,next){
 
     let id_kupca = req.user.id_korisnika;
+    let id_artikla = req.params.id;
 
     pool.connect(function (err,client,done) {
         if(err)
@@ -758,8 +828,8 @@ router.get('/delete_from_basket/:id', function (req,res,next){
                           where id_trenutne_korpe = (select distinct id_trenutne_korpe 
                                                      from trenutna_korpa
                                                      where id_kupca = $1 
-                                                     and id_artikala = $2 
-                                                     limit 1);`,[req.user.id_korisnika,req.params.id],function (err,result) {
+                                                     and id_artikla = $2 
+                                                     limit 1);`,[id_kupca,id_artikla],function (err,result) {
                 done();
                 if (err)
                     throw(err);
@@ -769,5 +839,54 @@ router.get('/delete_from_basket/:id', function (req,res,next){
         }
     });
 });
+
+router.get('/delete_all_amount_from_basket/:id', function (req,res,next){
+
+    let id_kupca = req.user.id_korisnika;
+    let id_artikla = req.params.id;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`delete from trenutna_korpa 
+                          where id_trenutne_korpe in (select distinct id_trenutne_korpe 
+                                                     from trenutna_korpa
+                                                     where id_kupca = $1 
+                                                     and id_artikla = $2);`,[id_kupca,id_artikla],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else
+                    res.redirect('/home/customer/basket');
+            });
+        }
+    });
+});
+
+router.get('/delete_all_from_basket', function (req, res, next){
+
+    let id_kupca = req.user.id_korisnika;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`delete from trenutna_korpa 
+                          where id_kupca = $1);`,[id_kupca],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else
+                    res.redirect('/home/customer/basket');
+            });
+        }
+    });
+})
+
+router.get('/successfully_ordering',helpers.SendEmailForSuccessfullyOrdering,function(req, res, next){
+    alert('You successfully order items. Check your email for confirmation 😉');
+    res.redirect('/home/customer');
+})
 
 module.exports = router;

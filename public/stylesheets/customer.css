@@ -390,3 +390,9 @@ div.desc {
 .subtitle {
     color: #777777;
 }
+.shopping-animation{
+    margin-top: 100px;
+    margin-left: 600px;
+    height: 100px;
+    width: 100px;
+}
