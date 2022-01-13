@@ -22,7 +22,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/home/customer">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/home/customer/shops">Shops</a>
@@ -46,7 +46,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="material-icons">local_grocery_store</i></a>
+                    <a class="nav-link" href="/home/customer/basket"><i class="material-icons">local_grocery_store</i></a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -130,7 +130,7 @@
                             <p class="card-text"><%=most_popular[i].naziv_artikla%></p>
                             <p class="card-text" style="color: grey; line-height: 1.5em; height: 3em; overflow: hidden; text-transform: capitalize"><%=most_popular[i].opis_artikla%></p>
                             <p class="price"><%=most_popular[i].cijena_artikla%> KM</p>
-                            <p><button class="btn btn-info" style="margin-bottom: -10px">Add to Cart</button></p>
+                            <p><button onclick="AddItemIntoShoppingBasket(<%=most_popular[i].id_artikla%>)" class="btn btn-info" style="margin-bottom: -10px">Add to Cart</button></p>
                         </div>
                     </div>
                 <%}%>
@@ -144,7 +144,7 @@
                         <p class="card-text"><%=random[i].naziv_artikla%></p>
                         <p class="card-text" style="color: grey; line-height: 1.5em; height: 3em; overflow: hidden; text-transform: capitalize"><%=random[i].opis_artikla%></p>
                         <p class="price"><%=random[i].cijena_artikla%> KM</p>
-                        <p><button class="btn btn-info" style="margin-bottom: -10px">Add to Cart</button></p>
+                        <p><button onclick="AddItemIntoShoppingBasket(<%=random[i].id_artikla%>)" class="btn btn-info" style="margin-bottom: -10px">Add to Cart</button></p>
                     </div>
                 </div>
                 <%}%>
@@ -158,7 +158,7 @@
                         <p class="card-text"><%=items_from_interest[i].naziv_artikla%></p>
                         <p class="card-text" style="color: grey; line-height: 1.5em; height: 3em; overflow: hidden; text-transform: capitalize"><%=items_from_interest[i].opis_artikla%></p>
                         <p class="price"><%=items_from_interest[i].cijena_artikla%> KM</p>
-                        <p><button class="btn btn-info" style="margin-bottom: -10px">Add to Cart</button></p>
+                        <p><button onclick="AddItemIntoShoppingBasket(<%=items_from_interest[i].id_artikla%>)" class="btn btn-info" style="margin-bottom: -10px">Add to Cart</button></p>
                     </div>
                 </div>
                 <%}%>
@@ -194,4 +194,9 @@
 
     </section>
 </footer>
+<script>
+    function AddItemIntoShoppingBasket(item_id){
+        window.location.href="/home/customer/basket/" + item_id;
+    }
+</script>
 </html>
