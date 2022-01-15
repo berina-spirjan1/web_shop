@@ -952,4 +952,73 @@ router.get('/all_orders',database.getAllMyOrders,function(req, res, next){
     })
 })
 
+router.get('/delete_from_order/:id', function (req,res,next){
+
+    let id_kupca = req.user.id_korisnika;
+    let id_artikla = req.params.id;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`delete from narudzba
+                          where id_narudzbe = (select distinct id_narudzbe 
+                                                     from narudzba
+                                                     where id_kupca = $1 
+                                                     and id_artikla = $2 
+                                                     limit 1);`,[id_kupca,id_artikla],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else
+                    res.redirect('/home/customer/all_orders');
+            });
+        }
+    });
+});
+
+router.get('/delete_all_amount_from_order/:id', function (req,res,next){
+
+    let id_kupca = req.user.id_korisnika;
+    let id_artikla = req.params.id;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`delete from narudzba
+                          where id_narudzbe in (select distinct id_narudzbe
+                                                     from narudzba
+                                                     where id_kupca = $1 
+                                                     and id_artikla = $2);`,[id_kupca,id_artikla],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else
+                    res.redirect('/home/customer/all_orders');
+            });
+        }
+    });
+});
+
+router.get('/delete_all_from_order', function (req, res, next){
+
+    let id_kupca = req.user.id_korisnika;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`delete from narudzba 
+                          where id_kupca = $1);`,[id_kupca],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else
+                    res.redirect('/home/customer/all_orders');
+            });
+        }
+    });
+})
+
 module.exports = router;
