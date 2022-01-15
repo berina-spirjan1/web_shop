@@ -564,6 +564,33 @@ let database = {
                 }
             });
         });
+    },
+    getAllMyOrders: function(req, res, next){
+        let id_kupca = req.user.id_korisnika;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select y.naziv_artikla,y.cijena_artikla, y.kolicina, y.naziv_trgovine,y.id_artikla, y.status
+                          from(select  a.naziv_artikla, a.cijena_artikla, count(a.id_artikla) as kolicina, t.naziv_trgovine,
+                                       a.id_artikla, n.status
+                          from artikal a, trgovina t, artikal_trgovina at, narudzba n
+                          where a.id_artikla = at.id_artikla
+                          and t.id_trgovine = at.id_trgovine
+                          and n.id_artikla = a.id_artikla
+                          and n.id_kupca = 3
+                          group by a.naziv_artikla, a.cijena_artikla, t.naziv_trgovine,a.id_artikla, n.status) y
+                          group by y.naziv_artikla, y.cijena_artikla, y.naziv_trgovine, y.id_artikla,y.kolicina, y.status
+                          order by y.cijena_artikla;`,[id_kupca],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.moje_narudzbe = result.rows[0].broj;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -909,29 +936,20 @@ router.post('/successfully_ordering', database.getAllItemsFromBasket,
         if (err)
             throw(err);
         else {
-
-            const d = new Date();
-            let day = d.getDate().toString();
-            let month = (d.getMonth() + 1).toString();
-            let year = d.getFullYear().toString();
-            let fullDate = '' + year + '-' + month + '-' + day;
-            let hours = d.getHours().toString();
-            let minutes = d.getMinutes().toString();
-            let seconds = d.getSeconds().toString();
-            let fullTime = '' + hours + ':' + minutes + ':' + seconds;
-
-            for (let i = 0; i < req.korpa.length; i++) {
-
-                client.query(`call KreirajNarudzbe($1, $2, $3, $4,$5)`,
-                    [req.broj + i + 1, req.korpa[i].id_artikla, id_kupca, fullDate, fullTime], function (err, result) {
+                client.query(`call ZavrsiKorpu($1);`,
+                    [id_kupca], function (err, result) {
                         done();
                         if (err)
                             throw(err);
                 });
-            }
-
         }
     });
+});
+
+router.get('/all_orders',database.getAllMyOrders,function(req, res, next){
+    res.render('./customers/my_orders',{
+        all_my_orders: req.moje_narudzbe
+    })
 })
 
 module.exports = router;
