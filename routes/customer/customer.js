@@ -586,7 +586,7 @@ let database = {
                 if(err)
                     res.sendStatus(500);
                 else{
-                    req.moje_narudzbe = result.rows[0].broj;
+                    req.moje_narudzbe = result.rows;
                     next();
                 }
             });
