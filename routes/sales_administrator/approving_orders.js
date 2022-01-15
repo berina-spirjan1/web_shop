@@ -235,10 +235,8 @@ router.post('/deliver_all', database.getListOfAcceptedOrders, function(req, res,
         if (err)
             throw(err);
         else {
-            for(let i = 0; i<req.prihvacene_narudzbe.length;i++){
-                client.query(`update narudzba
-                              set status = 2
-                              where id_korpe = $1`, [req.prihvacene_narudzbe[i].id_korpe], function (err, result) {
+
+                client.query(`call IsporuciNarudzbe($1);`, [req.user.id_korisnika], function (err, result) {
                     don();
                     if (err)
                         throw(err);
@@ -247,7 +245,7 @@ router.post('/deliver_all', database.getListOfAcceptedOrders, function(req, res,
                         res.redirect('/home/sales_administrator/approving_orders');
                     }
                 });
-            }
+
 
         }
     });
