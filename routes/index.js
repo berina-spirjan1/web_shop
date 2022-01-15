@@ -86,7 +86,7 @@ let database = {
             res.sendStatus(500);
           else {
             // req.flash('success_msg', 'Sada ste registrovani, prijavite se');
-            res.redirect('/login');
+            res.redirect('/add_location/'+username);
           }
         });
       });
@@ -266,6 +266,37 @@ router.post('/reset_password', function(req, res, next) {
     req.flash(type, msg);
     res.redirect('/login');
   });
+})
+
+router.get('/add_location/:name', function (req, res, next){
+  res.render('./customers/maps',{name: req.params.name});
+})
+
+router.post('/add_location/:name',function(req, res, next){
+
+  const adresa = JSON.parse(req.body.adresa);
+
+  pool.query(
+      'insert into adresa(latituda, longituda, ulica, grad) values ($1,$2,$3,$4) returning id_adresa',
+      [adresa.latitude,adresa.longitude, adresa.formattedAddress,adresa.addressComponents.city], (err, resp) => {
+        if (err) {
+          return res.render('error');
+        }
+
+        pool.query('update korisnik set id_adresa=$1 where username = $2', [resp.rows[0].id_adresa, req.params.name],
+            (err, resp) => {
+              if (err) {
+                console.error(err);
+                return res.render('error');
+              }
+              else{
+                console.log("OVO SE SALJE",resp);
+              }
+              res.status(200).json({ msg: 'Successfully registered.' });
+            }
+        );
+      }
+  );
 })
 
 

@@ -533,23 +533,33 @@ let database = {
         });
     },
     getAllItemsFromBasket: function (req, res, next){
+
+        let id_kupca = req.user.id_korisnika;
+
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select y.naziv_artikla,y.cijena_artikla, y.kolicina, y.naziv_trgovine, y.id_artikla
-                          from(select  a.naziv_artikla, a.cijena_artikla, count(a.id_artikla) as kolicina, t.naziv_trgovine, a.id_artikla
-                          from artikal a, trgovina t, artikal_trgovina at, trenutna_korpa tk
-                          where a.id_artikla = at.id_artikla
-                          and t.id_trgovine = at.id_trgovine
-                          and tk.id_artikla = a.id_artikla
-                          group by a.naziv_artikla, a.cijena_artikla, t.naziv_trgovine, a.id_artikla) y
-                          group by y.naziv_artikla, y.cijena_artikla, y.naziv_trgovine, y.id_artikla, y.kolicina
-                          order by y.cijena_artikla`,function (err,result) {
+            client.query(`select * from Naruci($1);`,[id_kupca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
                     req.korpa = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getLastIdOfOrder: function (req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select id_narudzbe as broj from narudzba order by id_narudzbe desc limit 1;`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.broj = result.rows[0].broj;
                     next();
                 }
             });
@@ -595,6 +605,7 @@ let helpers = {
                     else{
 
                         let email = result.rows[0].email;
+                        console.info("ISPISUJEM MAIL",email);
 
                         let mail = nodemailer.createTransport({
                             service: 'gmail',
@@ -604,12 +615,11 @@ let helpers = {
                             }
                         });
 
-                        let mailOptions = {
+                        const mailOptions = {
                             from: 'zendev2021@gmail.com',
                             to: email,
                             subject: "Thank you for ordering items 😃",
-                            text: "Your order is sent to our shops. Please wait for delivery.",
-
+                            text: "Your order is sent to our shops. Please wait for delivery."
                         };
 
                         mail.sendMail(mailOptions,function(error,info) {
@@ -884,9 +894,44 @@ router.get('/delete_all_from_basket', function (req, res, next){
     });
 })
 
-router.get('/successfully_ordering',helpers.SendEmailForSuccessfullyOrdering,function(req, res, next){
-    alert('You successfully order items. Check your email for confirmation 😉');
+router.get('/successfully_ordering',function(req, res, next){
     res.redirect('/home/customer');
+})
+
+router.post('/successfully_ordering', database.getAllItemsFromBasket,
+                                           database.getLastIdOfOrder,
+    function(req, res, next){
+    alert('You successfully order items. Check your email for confirmation 😉');
+
+    let id_kupca = req.user.id_korisnika;
+
+    pool.connect(function (err, client, done) {
+        if (err)
+            throw(err);
+        else {
+
+            const d = new Date();
+            let day = d.getDate().toString();
+            let month = (d.getMonth() + 1).toString();
+            let year = d.getFullYear().toString();
+            let fullDate = '' + year + '-' + month + '-' + day;
+            let hours = d.getHours().toString();
+            let minutes = d.getMinutes().toString();
+            let seconds = d.getSeconds().toString();
+            let fullTime = '' + hours + ':' + minutes + ':' + seconds;
+
+            for (let i = 0; i < req.korpa.length; i++) {
+
+                client.query(`call KreirajNarudzbe($1, $2, $3, $4,$5)`,
+                    [req.broj + i + 1, req.korpa[i].id_artikla, id_kupca, fullDate, fullTime], function (err, result) {
+                        done();
+                        if (err)
+                            throw(err);
+                });
+            }
+
+        }
+    });
 })
 
 module.exports = router;

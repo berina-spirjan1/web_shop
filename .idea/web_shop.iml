@@ -17,5 +17,10 @@
     <orderEntry type="library" name="popper.js" level="application" />
     <orderEntry type="library" name="jquery-3.2.1.slim" level="application" />
     <orderEntry type="library" name="@lottiefiles/lottie-player" level="application" />
+    <orderEntry type="module" module-name="Projekat1" />
+    <orderEntry type="library" name="sweetalert2" level="application" />
+    <orderEntry type="library" name="jquery-1.10.2" level="application" />
+    <orderEntry type="library" name="locationpicker.jquery" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
 </module>

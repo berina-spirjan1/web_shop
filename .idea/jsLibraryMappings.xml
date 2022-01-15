@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$" libraries="{@lottiefiles/lottie-player, bootstrap, chartist, jquery-1.11.1, jquery-2.1.3, jquery-3.2.1.slim, popper.js}" />
+    <file url="file://$PROJECT_DIR$" libraries="{@lottiefiles/lottie-player, bootstrap, chartist, jquery, jquery-1.10.2, jquery-1.11.1, jquery-2.1.3, jquery-3.2.1.slim, locationpicker.jquery, popper.js, sweetalert2}" />
     <file url="PROJECT" libraries="{font-awesome}" />
     <includedPredefinedLibrary name="Node.js Core" />
   </component>

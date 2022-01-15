@@ -212,3 +212,32 @@ hr {
   flex-direction: row;
   color: #FFFFFF;
 }
+#map {
+  width: 100%;
+  height: 480px;
+}
+.location-container {
+  display: flex;
+  padding: 1rem;
+  align-items: center;
+  justify-content: space-around;
+}
+.location-container > span {
+  padding: 0.5rem;
+}
+.btn:hover {
+  background-color: darksalmon;
+  transition: 0.5s all ease;
+  cursor: pointer;
+}
+.form-group-location {
+  width: 100%;
+}
+.container {
+  width: 100%;
+}
+.title {
+  text-align: center;
+  border-bottom: 4px solid lightcoral;
+  padding-bottom: 2rem;
+}
