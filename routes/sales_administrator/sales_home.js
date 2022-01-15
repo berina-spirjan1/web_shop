@@ -65,8 +65,11 @@ let database = {
             if(err)
                 res.end(err);
             client.query(`select count(n.id_narudzbe) as ukupan_broj_narudzbi
-                          from narudzba n, trgovina t
-                          where t.id_menadzera = $1`,[id_korisnika],function (err,result) {
+                          from narudzba n, trgovina t, artikal_trgovina at, artikal a
+                          where t.id_menadzera = $1
+                          and at.id_trgovine = t.id_trgovine
+                          and a.id_artikla = n.id_artikla
+                          and a.id_artikla = at.id_artikla`,[id_korisnika],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -275,9 +278,12 @@ let database = {
             if(err)
                 res.end(err);
             client.query(`select count(n.id_narudzbe) as narudzbe_na_cekanju
-                          from narudzba n, trgovina t
+                          from narudzba n, trgovina t, artikal_trgovina at, artikal a
                           where t.id_menadzera = $1
-                          and n.status = 0`,[id_trgovca],function (err,result) {
+                          and at.id_trgovine = t.id_trgovine
+                          and a.id_artikla = n.id_artikla
+                          and n.status = 0
+                          and a.id_artikla = at.id_artikla`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -295,9 +301,12 @@ let database = {
             if(err)
                 res.end(err);
             client.query(`select count(n.id_narudzbe) as odbijene_narudzbe
-                          from narudzba n, trgovina t
+                          from narudzba n, trgovina t, artikal_trgovina at, artikal a
                           where t.id_menadzera = $1
-                          and n.status = -1`,[id_trgovca],function (err,result) {
+                          and at.id_trgovine = t.id_trgovine
+                          and a.id_artikla = n.id_artikla
+                          and n.status = -1
+                          and a.id_artikla = at.id_artikla`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -315,9 +324,12 @@ let database = {
             if(err)
                 res.end(err);
             client.query(`select count(n.id_narudzbe) as odobrene_narudzbe
-                          from narudzba n, trgovina t
+                          from narudzba n, trgovina t, artikal_trgovina at, artikal a
                           where t.id_menadzera = $1
-                          and n.status = 1`,[id_trgovca],function (err,result) {
+                          and at.id_trgovine = t.id_trgovine
+                          and a.id_artikla = n.id_artikla
+                          and n.status = 1
+                          and a.id_artikla = at.id_artikla`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -335,9 +347,12 @@ let database = {
             if(err)
                 res.end(err);
             client.query(`select count(n.id_narudzbe) as isporucene_narudzbe
-                          from narudzba n, trgovina t
+                          from narudzba n, trgovina t, artikal_trgovina at, artikal a
                           where t.id_menadzera = $1
-                          and n.status = 2`,[id_trgovca],function (err,result) {
+                          and at.id_trgovine = t.id_trgovine
+                          and a.id_artikla = n.id_artikla
+                          and n.status = 2
+                          and a.id_artikla = at.id_artikla`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
