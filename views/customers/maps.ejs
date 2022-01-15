@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Maps</title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/customer.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="icon" href="https://www.codester.com/static/uploads/items/000/018/18804/icon.png"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyAPjL2ShXIKKUP1_pUZVEy0GvbH73f6flg&sensor=false&libraries=places"></script>
+    <script type="text/javascript" src="https://rawgit.com/Logicify/jquery-locationpicker-plugin/master/dist/locationpicker.jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body style="background: #0b3251; color: white; font-family: 'Segoe UI',serif">
+<div class="container">
+
+    <div class="form-group-location">
+        <form id="location-form">
+        <h3 style="font-family: 'Segoe UI Semibold',serif; text-align: center; margin-top: 20px; margin-bottom: 0px; color: #9a9fa9">Address for delivery</h3>
+        <br />
+        <div class="location-container">
+            <span>Location:</span>
+            <input required type="text" class="form-control" id="location" name="location" style="margin-bottom: 5px;"/>
+            <span> Latitude: </span>
+            <input required type="text" class="form-control" id="lat" name="lat" style="margin-bottom: 5px;"/>
+            <span> Longitude: </span>
+            <input required type="text" class="form-control" id="lng" name="lng" style="margin-bottom: 5px;"/>
+        </div>
+            <div id="locationPicker" style="width: 100%; height: 350px; margin-bottom: 20px;"></div>
+            <button type="submit" class="btn btn-outline-info">ADD LOCATION</button>
+        </form>
+    </div>
+</div>
+<script>
+    let adresa;
+    $(function () {
+        $('#locationPicker').locationpicker({
+            location: { latitude: 43.854173, longitude: 18.39489 },
+            radius: 0,
+            inputBinding: {
+                latitudeInput: $('#lat'),
+                longitudeInput: $('#lng'),
+                locationNameInput: $('#location'),
+            },
+            oninitialized: function (component) {
+                $('#location').val('');
+                $('#lat').val('');
+                $('#lng').val('');
+            },
+            enableAutocomplete: true,
+            onchanged: function (currentLocation, radius, isMarkerDropped) {
+                adresa = $(this).locationpicker('map').location;
+            },
+        });
+    });
+    $('#map').locationpicker();
+    $('#location-form').submit(function (event) {
+        event.preventDefault();
+        const data = $('#location-form').serializeArray();
+        data.push({ name: 'adresa', value: JSON.stringify(adresa) });
+
+        $.ajax({
+            url: '/add_location/<%=name%>',
+            type: 'post',
+            dataType: 'json',
+            data,
+            success: function (data) {
+                Swal.fire({
+                    title: 'Successfully!'
+                });
+
+                setTimeout(() => (location.href = '/login'), 2000);
+            },
+            error: function (data) {
+                Swal.fire({
+                    title: 'Something went wrong!'
+                });
+            },
+        });
+    });
+</script>
+
+</body></html>
