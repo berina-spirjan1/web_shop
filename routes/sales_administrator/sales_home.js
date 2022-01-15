@@ -64,12 +64,9 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select count(k.id_korpe) as ukupan_broj_narudzbi
-                          from korpa k, trgovina t, artikal_trgovina at, artikal_narudzba an
-                          where t.id_menadzera = $1
-                          and k.id_korpe = an.id_korpe
-                          and t.id_trgovine = at.id_trgovine
-                          and at.id = an.id_artikal_trgovina`,[id_korisnika],function (err,result) {
+            client.query(`select count(n.id_narudzbe) as ukupan_broj_narudzbi
+                          from narudzba n, trgovina t
+                          where t.id_menadzera = $1`,[id_korisnika],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -277,13 +274,10 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select count(k.id_korpe) as narudzbe_na_cekanju
-                          from korpa k, trgovina t, artikal_trgovina at, artikal_narudzba an
+            client.query(`select count(n.id_narudzbe) as narudzbe_na_cekanju
+                          from narudzba n, trgovina t
                           where t.id_menadzera = $1
-                          and k.id_korpe = an.id_korpe
-                          and k.status = 0
-                          and t.id_trgovine = at.id_trgovine
-                          and at.id = an.id_artikal_trgovina`,[id_trgovca],function (err,result) {
+                          and n.status = 0`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -300,13 +294,10 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select count(k.id_korpe) as odbijene_narudzbe
-                          from korpa k, trgovina t, artikal_trgovina at, artikal_narudzba an
+            client.query(`select count(n.id_narudzbe) as odbijene_narudzbe
+                          from narudzba n, trgovina t
                           where t.id_menadzera = $1
-                          and k.id_korpe = an.id_korpe
-                          and k.status = -1
-                          and t.id_trgovine = at.id_trgovine
-                          and at.id = an.id_artikal_trgovina`,[id_trgovca],function (err,result) {
+                          and n.status = -1`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -323,18 +314,35 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select count(k.id_korpe) as odobrene_narudzbe
-                          from korpa k, trgovina t, artikal_trgovina at, artikal_narudzba an
+            client.query(`select count(n.id_narudzbe) as odobrene_narudzbe
+                          from narudzba n, trgovina t
                           where t.id_menadzera = $1
-                          and k.id_korpe = an.id_korpe
-                          and k.status = 1
-                          and t.id_trgovine = at.id_trgovine
-                          and at.id = an.id_artikal_trgovina`,[id_trgovca],function (err,result) {
+                          and n.status = 1`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
                     req.odobrene_narudzbe = result.rows[0].odobrene_narudzbe;
+                    next();
+                }
+            });
+        });
+    },
+    getNumberOfDeliveryOrders: function(req, res, next){
+        let id_trgovca = req.user.id_korisnika;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select count(n.id_narudzbe) as isporucene_narudzbe
+                          from narudzba n, trgovina t
+                          where t.id_menadzera = $1
+                          and n.status = 2`,[id_trgovca],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.isporucene_narudzbe = result.rows[0].isporucene_narudzbe;
                     next();
                 }
             });
@@ -405,6 +413,7 @@ router.get('/', database.getNumberOfShopsForCurrentSales,
                      database.getNumberOfApprovedOrders,
                      database.getNumberOfRejectedOrders,
                      database.getAllChainStores,
+                     database.getNumberOfDeliveryOrders,
     function(req, res, next) {
     res.render('./sales_administrator/sales_administrator_dashboard',{
         number_of_shops: req.ukupan_broj_prodavnica_vodjenih,
@@ -416,7 +425,8 @@ router.get('/', database.getNumberOfShopsForCurrentSales,
         bill: req.cijena_svih_narudzbi,
         pending_orders: req.narudzbe_na_cekanju,
         approved_orders: req.odobrene_narudzbe,
-        rejected_orders: req.odbijene_narudzbe
+        rejected_orders: req.odbijene_narudzbe,
+        delivery_orders: req.isporucene_narudzbe
     });
 });
 
