@@ -578,7 +578,7 @@ let database = {
                           where a.id_artikla = at.id_artikla
                           and t.id_trgovine = at.id_trgovine
                           and n.id_artikla = a.id_artikla
-                          and n.id_kupca = 3
+                          and n.id_kupca = $1
                           group by a.naziv_artikla, a.cijena_artikla, t.naziv_trgovine,a.id_artikla, n.status) y
                           group by y.naziv_artikla, y.cijena_artikla, y.naziv_trgovine, y.id_artikla,y.kolicina, y.status
                           order by y.cijena_artikla;`,[id_kupca],function (err,result) {
