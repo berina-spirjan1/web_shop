@@ -178,34 +178,57 @@
                                                     <td class="td-actions text-right">
                                                         <div class="row">
                                                             <% if(allOrders[i].status === 1){ %>
-                                                                <form action="/home/sales_administrator/approving_orders/approve/<%= allOrders[i].id_korpe %>" method="post">
+                                                                <form action="/home/sales_administrator/approving_orders/approve/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
                                                                     <button type="submit" rel="tooltip" title="Accepted" class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #2fdea6">done_all</i>
                                                                     </button>
-                                                                    <button rel="tooltip" title="Sorry you can't reject this order." class="btn btn-white btn-link btn-sm">
+                                                                    <button rel="tooltip" disabled title="Sorry you can't reject this order." class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #ffffff">close</i>
+                                                                    </button>
+                                                                    <button disabled rel="tooltip" title="Sorry you can't delivery this order." class="btn btn-white btn-link btn-sm">
+                                                                        <i class="material-icons" style="color: #ffffff">local_shipping</i>
                                                                     </button>
                                                                 </form>
                                                             <%}else if(allOrders[i].status === -1){%>
-                                                                <form action="/home/sales_administrator/approving_orders/reject/<%= allOrders[i].id_korpe %>" method="post">
-                                                                    <button rel="tooltip" title="Sorry you can't accept this order." class="btn btn-white btn-link btn-sm">
+                                                                <form action="/home/sales_administrator/approving_orders/reject/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
+                                                                    <button rel="tooltip" disabled title="Sorry you can't accept this order." class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #ffffff">done_all</i>
                                                                     </button>
                                                                     <button type="submit" rel="tooltip" title="Rejected" class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #de0055">close</i>
                                                                     </button>
+                                                                    <button disabled rel="tooltip" title="Sorry you can't delivery this order." class="btn btn-white btn-link btn-sm">
+                                                                        <i class="material-icons" style="color: #ffffff">local_shipping</i>
+                                                                    </button>
                                                                 </form>
                                                             <%}else if(allOrders[i].status === 0){%>
-                                                                <form action="/home/sales_administrator/approving_orders/approve/<%= allOrders[i].id_korpe %>" method="post">
+                                                                <form action="/home/sales_administrator/approving_orders/approve/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
                                                                     <button type="submit" rel="tooltip" title="Accept" class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #ffffff">done_all</i>
                                                                     </button>
                                                                 </form>
-                                                                <form action="/home/sales_administrator/approving_orders/reject/<%= allOrders[i].id_korpe %>" method="post">
+                                                                <form action="/home/sales_administrator/approving_orders/reject/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
                                                                     <button type="submit" rel="tooltip" title="Reject" class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #ffffff">close</i>
                                                                     </button>
                                                                 </form>
+                                                                    <form action="/home/sales_administrator/approving_orders/delivery/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
+                                                                        <button type="submit" rel="tooltip" title="Reject" class="btn btn-white btn-link btn-sm">
+                                                                            <i class="material-icons" style="color: #ffffff">local_shipping</i>
+                                                                        </button>
+                                                                    </form>
+                                                            <%}else if(allOrders[i].status===2){%>
+                                                                    <form action="/home/sales_administrator/approving_orders/delivery/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
+                                                                        <button rel="tooltip" disabled title="Sorry you can't accept this order." class="btn btn-white btn-link btn-sm">
+                                                                            <i class="material-icons" style="color: #ffffff">done_all</i>
+                                                                        </button>
+                                                                        <button disabled rel="tooltip" title="Sorry you can't reject this order." class="btn btn-white btn-link btn-sm">
+                                                                            <i class="material-icons" style="color: #ffffff">close</i>
+                                                                        </button>
+                                                                        <button title="Delivered" class="btn btn-white btn-link btn-sm" disabled>
+                                                                            <i class="material-icons" style="color: #5aa1f3">local_shipping</i>
+                                                                        </button>
+                                                                    </form>
                                                             <%}%>
                                                         </div>
 

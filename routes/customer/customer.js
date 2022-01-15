@@ -921,7 +921,7 @@ router.get('/delete_all_from_basket', function (req, res, next){
     });
 })
 
-router.get('/successfully_ordering',function(req, res, next){
+router.get('/successfully_ordering',helpers.SendEmailForSuccessfullyOrdering,function(req, res, next){
     res.redirect('/home/customer');
 })
 

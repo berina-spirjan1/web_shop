@@ -283,7 +283,7 @@ router.get('/', function(req, res, next) {
         res.redirect('/home/main_administrator');
     }
     else if(req.user.id_tip_korisnika === 3 && req.user.status !== 'blokiran' && req.user.id_adresa!==null) {
-        res.redirect('/home/sales_administrator');
+        res.redirect('/home/sales_administrator/approving_orders');
     }
     else if (req.user.id_tip_korisnika === 2 && req.user.status !== 'blokiran' && req.user.id_adresa!==null){
         res.redirect('/home/customer');
