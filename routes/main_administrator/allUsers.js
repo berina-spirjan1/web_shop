@@ -235,6 +235,60 @@ router.post('/block_user/:id', function(req, res, next) {
     });
 });
 
+router.get('/block_user_for_15',
+    function(req, res, next) {
+        res.redirect('/home/users');
+    });
+
+router.post('/block_user_for_15/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`update korisnik
+                          set status = 'blokiran na 15', datum_blokiranja = current_date 
+                          where id_korisnika = $1
+                          and (id_tip_korisnika = 2
+                          or id_tip_korisnika = 3)`, [req.params.id], function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully blocked user for fifteen days');
+                    res.redirect('/home/users');
+                }
+            });
+        }
+    });
+});
+
+router.get('/unblock_user_for_15',
+    function(req, res, next) {
+        res.redirect('/home/users');
+    });
+
+router.post('/unblock_user_for_15/:id', function(req, res, next) {
+    pool.connect(function (err, client, don) {
+        if (err)
+            throw(err);
+        else {
+            client.query(`update korisnik
+                          set status = 'aktivan' 
+                          where id_korisnika = $1
+                          and (id_tip_korisnika = 2
+                          or id_tip_korisnika = 3)`, [req.params.id], function (err, result) {
+                don();
+                if (err)
+                    throw(err);
+                else{
+                    alert('Successfully unblocked user');
+                    res.redirect('/home/users');
+                }
+            });
+        }
+    });
+});
+
 
 router.get('/delete_user',
     function(req, res, next) {

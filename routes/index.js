@@ -21,6 +21,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const{ ensureAuthenticated } = require('../authentication/allUsers');
+const alert = require("alert");
 
 let database = {
   Validation: function(req, res, next){
@@ -91,10 +92,27 @@ let database = {
         });
       });
     });
+  },
+  CheckIsBlocked: function (req, res, next){
+    pool.connect(function (err, client, don) {
+      if (err)
+        throw(err);
+      else {
+        client.query(`call OdblokirajNakon15Dana();`, function (err, result) {
+          don();
+          if (err)
+            throw(err);
+          else{
+            alert('Successfully unblocked user');
+            res.redirect('/home/users');
+          }
+        });
+      }
+    });
   }
 }
 
-router.get('/', function(req, res, next) {
+router.get('/', database.CheckIsBlocked,function(req, res, next) {
   res.redirect('/login');
 });
 

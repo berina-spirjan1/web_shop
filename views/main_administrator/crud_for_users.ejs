@@ -209,6 +209,19 @@
                                                                     </button>
                                                                 </form>
                                                             <%}%>
+                                                            <% if((listOfUsers[i].id_tip_korisnika === 2 || listOfUsers[i].id_tip_korisnika === 3) && listOfUsers[i].status !== 'blokiran na 15'){ %>
+                                                                <form action="/home/users/block_user_for_15/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                                    <button type="submit" rel="tooltip" title="Block" class="btn btn-white btn-link btn-sm">
+                                                                        <i class="material-icons">block</i>
+                                                                    </button>
+                                                                </form>
+                                                            <%}else if((listOfUsers[i].id_tip_korisnika === 2 || listOfUsers[i].id_tip_korisnika === 3) && listOfUsers[i].status === 'blokiran na 15'){%>
+                                                                <form action="/home/users/unblock_user_for_15/<%= listOfUsers[i].id_korisnika %>" method="post">
+                                                                    <button type="submit" rel="tooltip" title="Unblock" class="btn btn-white btn-link btn-sm">
+                                                                        <i class="material-icons" style="color: #00bcd4">block</i>
+                                                                    </button>
+                                                                </form>
+                                                            <%}%>
                                                         </div>
 
                                                     </td>
