@@ -396,3 +396,10 @@ div.desc {
     height: 100px;
     width: 100px;
 }
+.stars{
+    color: #9A9A9A;
+}
+
+.stars:hover{
+    color: yellow;
+}

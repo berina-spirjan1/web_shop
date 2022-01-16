@@ -591,6 +591,27 @@ let database = {
                 }
             });
         });
+    },
+    getStatusOfMarkForCurrentItem: function (req, res, next){
+        let id_kupca = req.user.id_korisnika;
+        let id_artikla = req.params.id;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select distinct id_ocjene
+                          from ocjene_artikala
+                          where id_kupca = $1
+                          and id_artikal = $2;`,[id_kupca, id_artikla],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.trenutni_artikal_ocjene_trenutnog = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -695,12 +716,14 @@ router.get('/shops',database.getAllChainStores,
 router.get('/single_item/:id',database.getInfoAboutSingleItem,
                                    database.getCoverImage,
                                    database.getMarkOfItem,
+                                   database.getStatusOfMarkForCurrentItem,
     function(req, res, next){
 
    res.render('./customers/single_item_page',{
         single_item: req.informacije_o_artiklu,
         cover_image: req.pozadina,
-        mark_of_item: Math.round(req.ocjena[0].prosjek,2)
+        mark_of_item: Math.round(req.ocjena[0].prosjek,2),
+        is_rated: req.trenutni_artikal_ocjene_trenutnog
    });
 });
 
@@ -1020,5 +1043,53 @@ router.get('/delete_all_from_order', function (req, res, next){
         }
     });
 })
+
+router.get('/mark_item/:id_item/:id',function(req, res, next){
+    res.redirect('/home/customer/single_item/'+req.params.id_item);
+});
+
+router.post('/mark_item/:id_item/:id',function(req, res, next){
+    let id_kupca = req.user.id_korisnika;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`call UpisiOcjenuZaArikal($1, $2, $3);`,[req.params.id, req.params.id_item, id_kupca],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else
+                    alert("Successfully rated item!")
+                    res.redirect('/home/customer/single_item/'+req.params.id_item);
+            });
+        }
+    });
+})
+
+router.get('/mark_shop/:id_shop/:id',function(req, res, next){
+    res.redirect('/home/customer/single_shop/'+req.params.id_shop);
+});
+
+router.post('/mark_shop/:id_shop/:id',function(req, res, next){
+    let id_kupca = req.user.id_korisnika;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`call UpisiOcjenuZaTrgovinu($1, $2, $3);`,[req.params.id, req.params.id_shop, id_kupca],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else
+                    alert("Successfully rated item!")
+                    res.redirect('/home/customer/single_shop/'+req.params.id_shop);
+            });
+        }
+    });
+});
+
+
 
 module.exports = router;

@@ -77,9 +77,12 @@
                                     </div>
                                 <%}%>
                             </div>
-                            <button onclick="AddItemToShoppingBasket(<%= single_item[0].id_artikla%>)" class="btn btn-outline-info" style="margin-right: 10px; margin-top: 20px; margin-left:5px;font-family: 'Segoe UI Semibold',serif">
-                               ADD TO CART
-                            </button>
+                            <form action="/home/customer/basket/<%= single_item[0].id_artikla%>" method="post">
+                                <button class="btn btn-outline-info" style="margin-right: 10px; margin-top: 20px; margin-left:5px;font-family: 'Segoe UI Semibold',serif">
+                                    ADD TO CART
+                                </button>
+                            </form>
+
                         </div>
                     </div>
                         <div class="card pined-item-picture">
@@ -139,6 +142,37 @@
     </div>
     <div class="row" style="margin-left: -15px"><div style="color: #0b3251; margin-right: 5px">AMOUNT OF ITEM: </div> <%= single_item[0].dostupna_kolicina%></div>
     <div class="row" style="margin-left: -15px"><div style="color: #0b3251; margin-right: 5px">PRICE: </div> <%= single_item[0].cijena_artikla%> KM</div>
+    <% if(is_rated.length===0){%>
+        <div class="row" style="margin-left: -15px; margin-top: 20px;">
+            <div style="color: #0b3251; margin-right: 5px">RATE THIS ITEM: </div>
+            <form method="post" action="/home/customer/mark_item/<%= single_item[0].id_artikla%>/1">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars"> star</i></button>
+            </form>
+            <form method="post" action="/home/customer/mark_item/<%= single_item[0].id_artikla%>/2">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars">star</i></button>
+            </form>
+            <form method="post" action="/home/customer/mark_item/<%= single_item[0].id_artikla%>/3">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars">star</i></button>
+            </form>
+            <form method="post" action="/home/customer/mark_item/<%= single_item[0].id_artikla%>/4">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars">star</i></button>
+            </form>
+            <form method="post" action="/home/customer/mark_item/<%= single_item[0].id_artikla%>/5">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars">star</i></button>
+            </form>
+        </div>
+    <%}else{%>
+    <div class="row" style="margin-left: -15px; margin-top: 20px;">
+        <div style="color: #0b3251; margin-right: 5px">YOU RATED THIS ITEM: </div>
+        <div class="row" style="margin-left: 10px;">
+            <%= console.info("OVO ISCRTAVAM",is_rated[0])%>
+            <% for(let i = 0; i<is_rated[0].id_ocjene; i++){%>
+                <i class="material-icons" style="color: yellow"> star</i>
+            <%}%>
+        </div>
+    </div>
+    <%}%>
+
     <div class="row" style="margin-left: -18px; margin-top: 50px">
         <% for(let i=0; i<single_item[0].nazivi_kategorija.length;i++){%>
             <button class="btn btn-outline-dark" style="color: <%= single_item[0].boje_kategorija[i]%>;margin-right: 20px; cursor: auto">
@@ -176,9 +210,4 @@
         </div>
     </section>
 </footer>
-<script>
-    function AddItemToShoppingBasket(item_id){
-        window.location.href="/home/customer/basket/" + item_id;
-    }
-</script>
 </html>
