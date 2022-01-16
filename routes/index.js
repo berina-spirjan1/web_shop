@@ -103,8 +103,7 @@ let database = {
           if (err)
             throw(err);
           else{
-            alert('Successfully unblocked user');
-            res.redirect('/home/users');
+            res.redirect('/login')
           }
         });
       }
