@@ -633,6 +633,27 @@ let database = {
                 }
             });
         });
+    },
+    getCommentsForCurrentShop: function(req, res, next){
+        let id_trgovine = req.params.id_shop;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select tk.tekst_komentara, k.username, tk.datum_objave, tk.vrijeme_objave,k.id_korisnika
+                          from komentari_trgovci tk, korisnik k
+                          where tk.id_trgovine = $1
+                          and k.id_korisnika = tk.id_korisnika
+                          order by tk.datum_objave, tk.vrijeme_objave desc`,[id_trgovine],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.komentari_za_prodavnicu = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -1106,8 +1127,37 @@ router.post('/mark_shop/:id_shop/:id',function(req, res, next){
                 if (err)
                     throw(err);
                 else
-                    alert("Successfully rated item!")
+                    alert("Successfully rated shop!")
                     res.redirect('/home/customer/single_shop/'+req.params.id_shop);
+            });
+        }
+    });
+});
+
+router.get('/add_comment/:id_shop',database.getCommentsForCurrentShop,function(req, res, next){
+    res.render('./customers/comments',{
+        comments: req.komentari_za_prodavnicu,
+        current_user: req.user.id_korisnika,
+        shop: req.params.id_shop
+    })
+});
+
+router.post('/add_comment/:id_shop',function(req, res, next){
+    let id_kupca = req.user.id_korisnika;
+    let tekst_komentara = req.body.text_of_comment;
+    let id_trgovine = req.params.id_shop;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`call KreirajNoviKomentar($1, $2, $3)`,[id_kupca, id_trgovine, tekst_komentara],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else
+                    alert("Successfully added new comment!")
+                res.redirect('/home/customer/add_comment/'+req.params.id_shop);
             });
         }
     });
