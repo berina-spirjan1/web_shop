@@ -266,7 +266,7 @@ let database = {
                 if(err)
                     res.sendStatus(500);
                 else{
-                    req.artikli_po_kategorijama = result.rows;
+                    req.niz_artikala = result.rows;
                     next();
                 }
             });
@@ -612,6 +612,27 @@ let database = {
                 }
             });
         });
+    },
+    getStatusOfMarkForCurrentShop: function (req, res, next){
+        let id_kupca = req.user.id_korisnika;
+        let id_trgovine = req.params.id;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select distinct id_ocjene
+                          from ocjene_trgovina
+                          where id_korisnika = $1
+                          and id_trgovine = $2;`,[id_kupca, id_trgovine],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.trenutna_trgovina_ocjene_trenutnog = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -778,6 +799,7 @@ router.get('/single_item/:id/images',database.getInfoAboutSingleItem,
 router.get('/single_shop/:id', database.getAllItemsForSingleShop,
                                     database.getCoverImageForShop,
                                     database.getDetailInformationsAboutShop,
+                                    database.getStatusOfMarkForCurrentShop,
     function(req, res, next){
 
 
@@ -785,7 +807,8 @@ router.get('/single_shop/:id', database.getAllItemsForSingleShop,
             items: req.niz_artikala,
             cover: req.pozadina_za_prodavnicu,
             info: req.info_o_trgovini,
-            mark_of_item: Math.round(req.info_o_trgovini[0].prosjek,2)
+            mark_of_item: Math.round(req.info_o_trgovini[0].prosjek,2),
+            is_rated: req.trenutna_trgovina_ocjene_trenutnog
         });
 });
 

@@ -133,6 +133,35 @@
     </div>
     <div class="row" style="margin-left: -15px"><div style="color: #0b3251; margin-right: 5px">CHAIN STORE: </div> <%= info[0].naziv_lanca_trgovina%></div>
     <div class="row" style="margin-left: -15px"><div style="color: #0b3251; margin-right: 5px">BRANCH MANAGER: </div> <%= info[0].ime%> <%= info[0].prezime%></div>
+    <% if(is_rated.length===0){%>
+        <div class="row" style="margin-left: -15px; margin-top: 20px;">
+            <div style="color: #0b3251; margin-right: 5px">RATE THIS Shop: </div>
+            <form method="post" action="/home/customer/mark_shop/<%= info[0].id_trgovine%>/1">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars"> star</i></button>
+            </form>
+            <form method="post" action="/home/customer/mark_shop/<%= info[0].id_trgovine%>/2">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars">star</i></button>
+            </form>
+            <form method="post" action="/home/customer/mark_shop/<%= info[0].id_trgovine%>/3">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars">star</i></button>
+            </form>
+            <form method="post" action="/home/customer/mark_shop/<%= info[0].id_trgovine%>/4">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars">star</i></button>
+            </form>
+            <form method="post" action="/home/customer/mark_shop/<%= info[0].id_trgovine%>/5">
+                <button type="submit" style="border: none; background: white"><i class="material-icons stars">star</i></button>
+            </form>
+        </div>
+    <%}else{%>
+        <div class="row" style="margin-left: -15px; margin-top: 20px;">
+            <div style="color: #0b3251; margin-right: 5px">YOU RATED SHOP ITEM: </div>
+            <div class="row" style="margin-left: 10px;">
+                <% for(let i = 0; i<is_rated[0].id_ocjene; i++){%>
+                    <i class="material-icons" style="color: yellow"> star</i>
+                <%}%>
+            </div>
+        </div>
+    <%}%>
 </div>
 </body>
 <footer>
