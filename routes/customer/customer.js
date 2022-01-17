@@ -683,6 +683,62 @@ let database = {
             });
         });
     },
+    getAllItemsFromCatalogs: function(req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select k.id_kataloga, k.naziv_kataloga, k.datum_kraja_trajanja, k.datum_pocetka_trajanja, k.boja_kataloga,
+                                 t.naziv_trgovine, ko.ime, ko.prezime, ko.broj_telefona, ko.email, f.path
+                          from artikal a, fotografija f, katalog k, katalog_artikli ka, trgovina t, korisnik ko, artikal_trgovina at
+                          where a.id_artikla = ka.id_artikla
+                          and f.id_fotografije = k.id_fotografije
+                          and at.id_artikla = a.id_artikla
+                          and k.datum_kraja_trajanja >= current_date
+                          and at.id_trgovine = t.id_trgovine
+                          and ko.id_korisnika = t.id_menadzera
+                          and ka.id_kataloga = k.id_kataloga
+                          order by k.id_kataloga`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.svi_katalozi = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getInformationsAboutSingleCatalog: function (req, res, next){
+
+        let id_kataloga = req.params.id;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select k.id_kataloga, k.naziv_kataloga, k.datum_kraja_trajanja, k.datum_pocetka_trajanja, k.boja_kataloga,
+                               t.naziv_trgovine, ko.ime, ko.prezime, ko.broj_telefona, ko.email, f.path, t.id_trgovine,
+                               a.naziv_artikla, a.id_artikla, a.cijena_artikla, a.popust, a.opis_artikla
+                          from artikal a, fotografija f, katalog k, katalog_artikli ka, trgovina t, korisnik ko, artikal_trgovina at, artikal_fotografija af
+                          where a.id_artikla = ka.id_artikla
+                          and f.id_fotografije = af.id_fotografije
+                          and af.id_artikla = a.id_artikla
+                          and at.id_artikla = a.id_artikla
+                          and k.datum_kraja_trajanja >= current_date
+                          and at.id_trgovine = t.id_trgovine
+                          and k.id_kataloga = $1
+                          and ko.id_korisnika = t.id_menadzera
+                          and ka.id_kataloga= k.id_kataloga
+                          order by k.id_kataloga;`,[id_kataloga],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.pojedinacni_katalog = result.rows;
+                    next();
+                }
+            });
+        });
+    }
 }
 
 let helpers = {
@@ -1049,6 +1105,18 @@ router.get('/all_orders',database.getAllMyOrders,function(req, res, next){
 router.get('/all_delivery_orders',database.getAllMyOrdersThatAreDelivered,function(req, res, next){
     res.render('./customers/my_orders_that_are_delivered',{
         all_my_orders: req.isporucene_narudzbe_moje
+    })
+})
+
+router.get('/all_catalogs',database.getAllItemsFromCatalogs,function(req, res, next){
+    res.render('./customers/all_catalogs',{
+        all_catalogs: req.svi_katalozi
+    })
+})
+
+router.get('/catalog/:id',database.getInformationsAboutSingleCatalog,function(req, res, next){
+    res.render('./customers/single_catalog',{
+        catalog: req.pojedinacni_katalog
     })
 })
 

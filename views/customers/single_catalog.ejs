@@ -1,0 +1,265 @@
+<!--Template iskorišten sa stranice  https://stripo.email/templates/order-email-template-perfect-weekend-for-tourism-industry/
+uz dodatne modifikacije -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<link rel='stylesheet' href='/stylesheets/single_catalog.css' />
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="telephone=no" name="format-detection">
+    <title></title>
+</head>
+
+<body>
+
+<div class="es-wrapper-color">
+    <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0">
+        <tbody>
+        <tr>
+            <td class="esd-email-paddings" valign="top">
+                <table cellpadding="0" cellspacing="0" class="es-content" align="center">
+                    <tbody>
+                    <tr>
+                        <td class="esd-stripe esd-checked" align="center" style="background-color:  #031428">
+                            <table class="es-content-body" align="center" cellpadding="0" cellspacing="0" width="600" style="background-color: transparent;">
+                                <tbody>
+                                <tr>
+                                    <td class="esd-structure es-p20t es-p20r es-p20l" align="left" style="background-position: center top;">
+                                        <table cellpadding="0" cellspacing="0" width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td width="560" class="esd-container-frame" align="center" valign="top">
+                                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td align="center" class="esd-block-spacer" height="40"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="esd-structure es-p20t es-p20b es-p20r es-p20l" align="left" style="background-position: center top; background-color: #114c7e">
+                                        <!--[if mso]><table width="560" cellpadding="0" cellspacing="0"><tr><td width="270" valign="top"><![endif]-->
+                                        <table cellpadding="0" cellspacing="0" class="es-left" align="left">
+                                            <tbody>
+                                            <tr>
+                                                <td width="270" class="es-m-p20b esd-container-frame" align="left">
+                                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td align="left" class="esd-block-text">
+                                                                <h1 style="text-align: center;color: #9a9fa9">Save your<br><span style="font-size:51px;">money</span></h1>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--[if mso]></td><td width="20"></td><td width="270" valign="top"><![endif]-->
+                                        <table cellpadding="0" cellspacing="0" class="es-right" align="right">
+                                            <tbody>
+                                            <tr>
+                                                <td width="270" align="left" class="esd-container-frame">
+                                                    <table cellpadding="0" cellspacing="0" width="100%" style="background-position: center top;">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td align="center" class="esd-block-button es-p5t es-p10b es-p10r es-p10l"><span class="es-button-border" style="border-radius: 0px; border-width: 0px; border-color: #559ec5; background: #1e76bb;">
+                                                                    <a href="/home/customer/all_catalogs" class="es-button es-button-1642453316805" style="border-radius: 0px; border-width: 10px 20px;">Back</a>
+                                                                </span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center" class="esd-block-text" esd-links-color="#333333" esd-links-underline="none">
+                                                                <p style="font-size: 25px;"><a target="_blank" style="font-size: 25px; color: #031428; text-decoration: none;" href="/home/customer/single_shop/<%=catalog[0].id_trgovine%>"><%=catalog[0].naziv_trgovine%></a></p>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--[if mso]></td></tr></table><![endif]-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="esd-structure es-p20t es-p20b es-p20r es-p20l" align="left" style="background-position: center top; background-color: #7fc4e7;" bgcolor="#7ccdc7">
+                                        <table cellpadding="0" cellspacing="0" width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td width="560" class="esd-container-frame" align="center" valign="top">
+                                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td align="left" class="esd-block-text es-p5t es-p10b">
+                                                                <h1 style="font-size: 30px; color: #ffffff;"><%=catalog[0].naziv_kataloga%></h1>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left" class="esd-block-text es-p5t es-p5b">
+                                                                <p style="color: #031428;">STARTING DATE: <%=catalog[0].datum_pocetka_trajanja.getDay()%>/<%=catalog[0].datum_pocetka_trajanja.getMonth()+1%>/<%=catalog[0].datum_pocetka_trajanja.getFullYear()%></p>
+                                                                <p style="color: #031428;">ENDING DATE: <%=catalog[0].datum_kraja_trajanja.getDay()%>/<%=catalog[0].datum_kraja_trajanja.getMonth()+1%>/<%=catalog[0].datum_kraja_trajanja.getFullYear()%></p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left" class="esd-block-text es-p5t es-p5b">
+                                                                <p style="color: #ffffff;">Prices are likely to change so grab them whilst you can.</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left" class="esd-block-text es-p5t es-p5b">
+                                                                <p style="color: #ffffff;">Click 'Add to cart' to avoid missing out this special price.</p>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <% for(let i = 0;i<catalog.length;i++){%>
+                                    <tr>
+                                        <td class="esd-structure es-p20t es-p15b es-p20r es-p20l" align="left" style="background-position: center top; background-color: #559ec5;" bgcolor="#76a5af">
+                                            <!--[if mso]><table width="560" cellpadding="0" cellspacing="0"><tr><td width="270" valign="top"><![endif]-->
+                                            <table cellpadding="0" cellspacing="0" class="es-left" align="left">
+                                                <tbody>
+                                                <tr>
+                                                    <td width="270" class="es-m-p20b esd-container-frame" align="left">
+                                                        <table cellpadding="0" cellspacing="0" width="100%">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td align="center" class="esd-block-image" style="font-size:0"><a target="_blank" class="rollover"><img class="adapt-img rollover-first" src="<%= catalog[i].path%>" alt style="display: block;" width="270">
+                                                                        <div style="mso-hide:all;"><img class="adapt-img rollover-second" style="max-height: 0px;" src="<%= catalog[i].path%>" alt width="270"></div>
+                                                                    </a></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--[if mso]></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="esd-structure es-p20t es-p10b es-p20r es-p20l" align="left" style="background-position: center top; background-color: #559ec5;" bgcolor="#76a5af">
+
+                                            <!--[if mso]></td><td width="20"></td><td width="270" valign="top"><![endif]-->
+                                            <table cellpadding="0" cellspacing="0" class="es-right" align="right">
+                                                <tbody>
+                                                <tr>
+                                                    <td width="270" align="left" class="esd-container-frame">
+                                                        <table cellpadding="0" cellspacing="0" width="100%">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td align="left" class="esd-block-text">
+                                                                    <table border="0" align="left" cellspacing="1" cellpadding="1" style="width:100%;" class="cke_show_border">
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td style="color: #ffffff;">
+                                                                                <h3 style="color: #ffffff;"><b><%= catalog[i].naziv_artikla%></b></h3>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <p style="color: #ffffff;"><br></p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="left" class="esd-block-text es-p10t">
+                                                                    <p><strong>Description: </strong><%= catalog[i].opis_artikla%></p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="left" class="esd-block-text es-p10t">
+                                                                    <p><strong>Price before: </strong><%= catalog[i].cijena_artikla%> KM</p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="left" class="esd-block-text es-p10t">
+                                                                    <p style="color: red"><strong >Special price: </strong><%= catalog[i].cijena_artikla-(catalog[i].cijena_artikla*catalog[i].popust*0.01)%> KM</p>
+                                                                </td>
+                                                            </tr>
+                                                            <form action="/home/customer/basket/<%= catalog[i].id_artikla%>" method="post">
+                                                                <td align="left" class="esd-block-button es-p10t" bgcolor="transparent"><span class="es-button-border es-button-border-1561361841253" style="border-radius: 0px; border-width: 2px; border-color: rgba(11,50,81,0.86); background: #559ec5;"><button type="submit" class="es-button es-button-1642453316815"style="border-radius: 0px; border-width: 10px 20px; font-size: 14px; background: #559ec5; border-color: #559ec5;">Add to cart</button></span></td>
+                                                            </form>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--[if mso]></td></tr></table><![endif]-->
+                                        </td>
+                                    </tr>
+                                <%}%>
+
+                                <tr>
+                                    <td class="esd-structure es-p30t es-p20r es-p20l" align="left" style="background-position: center top; background-color: #114c7e;margin-bottom: 50px;" bgcolor="#076c64">
+                                        <!--[if mso]><table width="560" cellpadding="0" cellspacing="0"><tr><td width="270" valign="top"><![endif]-->
+                                        <table cellpadding="0" cellspacing="0" class="es-left" align="left">
+                                            <tbody>
+                                            <tr>
+                                                <td width="600" class="es-m-p20b esd-container-frame" align="center">
+                                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td align="center" class="esd-block-text">
+                                                                <p style="color: #ffffff;"><%=catalog[0].naziv_trgovine%></p>
+                                                                <p style="color: #ffffff;">Menager: <%=catalog[0].ime%> <%=catalog[0].prezime%></p>
+                                                                <p style="color: #ffffff;">Contact phone: <%=catalog[0].broj_telefona%></p>
+                                                                <p style="color: #ffffff;">Email: <a href="mailto: <%=catalog[0].email%>"><%=catalog[0].email%></a> </p>
+                                                                <p style="margin-bottom: 20px;"/>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                       </td>
+                                </tr>
+                                <tr>
+                                    <td class="esd-structure es-p20t es-p20r es-p20l" align="left">
+                                        <table cellpadding="0" cellspacing="0" width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td width="560" class="esd-container-frame" align="center" valign="top">
+                                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td align="center" class="esd-block-spacer" height="40"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+</html>
