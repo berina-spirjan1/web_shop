@@ -31,6 +31,7 @@ let database = {
                 else{
                     req.podaci = result.rows;
                     res.cookie('korisnik',req.podaci);
+                    console.info("JAVLJANJE IZ FUNKCIJE KOLACICA",req.podaci);
                     next();
                 }
             });
