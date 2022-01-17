@@ -31,7 +31,6 @@ let database = {
                 else{
                     req.podaci = result.rows;
                     res.cookie('korisnik',req.podaci);
-
                     next();
                 }
             });
