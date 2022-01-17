@@ -654,7 +654,35 @@ let database = {
                 }
             });
         });
-    }
+    },
+    getAllMyOrdersThatAreDelivered: function(req, res, next){
+        let id_kupca = req.user.id_korisnika;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select y.naziv_artikla,y.cijena_artikla, y.kolicina, y.naziv_trgovine,y.id_artikla, y.status
+                          from(select  a.naziv_artikla, a.cijena_artikla, count(a.id_artikla) as kolicina, t.naziv_trgovine,
+                                       a.id_artikla, n.status
+                          from artikal a, trgovina t, artikal_trgovina at, narudzba n
+                          where a.id_artikla = at.id_artikla
+                          and t.id_trgovine = at.id_trgovine
+                          and n.id_artikla = a.id_artikla
+                          and n.id_kupca = $1
+                          and n.status = 2
+                          group by a.naziv_artikla, a.cijena_artikla, t.naziv_trgovine,a.id_artikla, n.status) y
+                          group by y.naziv_artikla, y.cijena_artikla, y.naziv_trgovine, y.id_artikla,y.kolicina, y.status
+                          order by y.cijena_artikla;`,[id_kupca],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.isporucene_narudzbe_moje = result.rows;
+                    next();
+                }
+            });
+        });
+    },
 }
 
 let helpers = {
@@ -1016,6 +1044,11 @@ router.post('/successfully_ordering', database.getAllItemsFromBasket,
 router.get('/all_orders',database.getAllMyOrders,function(req, res, next){
     res.render('./customers/my_orders',{
         all_my_orders: req.moje_narudzbe
+    })
+})
+router.get('/all_delivery_orders',database.getAllMyOrdersThatAreDelivered,function(req, res, next){
+    res.render('./customers/my_orders_that_are_delivered',{
+        all_my_orders: req.isporucene_narudzbe_moje
     })
 })
 
