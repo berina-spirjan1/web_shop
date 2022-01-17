@@ -78,6 +78,7 @@
                     <td><%= all_my_orders[i].naziv_trgovine%></td>
                     <td><%= all_my_orders[i].cijena_artikla%> KM</td>
                     <td><%= all_my_orders[i].kolicina%></td>
+                    <td><%= all_my_orders[i].kolicina * all_my_orders[i].cijena_artikla %> KM</td>
                     <% if(all_my_orders[i].status===0){%>
                         <td>pending 🙄</td>
                     <%}else if(all_my_orders[i].status===-1){%>
@@ -87,8 +88,6 @@
                     <%}else if(all_my_orders[i].status===2){%>
                         <td>delivery received🕵️</td>
                     <%}%>
-
-                    <td><%= all_my_orders[i].kolicina * all_my_orders[i].cijena_artikla %> KM</td>
                     <td>
                         <% if(all_my_orders[i].status!==2 && all_my_orders[i].status!==1){%>
                             <button class="btn btn-outline-info" onclick="deleteOneAmountOfItemFromMarketBasket(<%= all_my_orders[i].id_artikla%>)" title="Cancel one amount of item">
