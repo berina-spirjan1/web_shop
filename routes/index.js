@@ -110,6 +110,29 @@ let database = {
     });
   }
 }
+router.get('/poziv_chat/:id',function(req, res, next){
+
+  const userRole = req.user;
+  console.info("OVO JE KORISNICKA ROLA",userRole);
+  console.info("OVO JE KORISnik", req.cookies.korisnik);
+  let pomocna = '';
+  let id= userRole.id_tip_korisnika;
+
+  console.info("OVO KUPIM",id);
+
+  if(id===1){
+    console.info("USAO SAM");
+    pomocna='Admin'
+  }
+  else if(id===2){
+    pomocna='korisnik'
+  }
+  console.info("OVO JE POMOCNA",pomocna)
+
+  res.render('chat',{
+    role: pomocna
+  });
+})
 
 router.get('/', database.CheckIsBlocked,function(req, res, next) {
   res.redirect('/login');
@@ -119,7 +142,7 @@ router.get('/sign_up', function(req, res, next) {
   res.render('./registration/sign_up' );
 });
 
-router.post('/sign_up',database.Validation,database.CreateNewUser, function (req, res, next) {});
+router.post('/sign_up',database.CreateNewUser, function (req, res, next) {});
 
 router.get('/verify_account', function(req, res, next) {
   res.render('./registration/verify_account' );

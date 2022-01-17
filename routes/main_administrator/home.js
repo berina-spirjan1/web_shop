@@ -279,14 +279,17 @@ let database = {
 
 router.get('/', function(req, res, next) {
 
-    if(req.user.id_tip_korisnika === 1 && req.user.status !== 'blokiran' && req.user.id_adresa!==null) {
-        res.redirect('/home/main_administrator');
+    if(req.user.id_tip_korisnika === 1 && req.user.status !== 'blokiran') {
+        res.redirect('/poziv_chat/'+req.user.id_tip_korisnika);
     }
     else if(req.user.id_tip_korisnika === 3 && req.user.status !== 'blokiran' && req.user.id_adresa!==null) {
-        res.redirect('/home/sales_administrator');
+        res.redirect('/poziv_chat/'+req.user.id_tip_korisnika);
     }
     else if (req.user.id_tip_korisnika === 2 && req.user.status !== 'blokiran' && req.user.id_adresa!==null){
-        res.redirect('/home/customer');
+        res.redirect('/poziv_chat/'+req.user.id_tip_korisnika);
+    }
+    if(req.user.id_adresa===null){
+        res.redirect('/add_location/'+req.user.username);
     }
 });
 

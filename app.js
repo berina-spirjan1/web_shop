@@ -41,15 +41,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
   secret: 'svismoprogrameri123',
-  resave: true,
+  resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 100000000 }
 }));
+
 
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
