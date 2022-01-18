@@ -49,10 +49,10 @@
                 <a class="nav-link" href="#"><i class="material-icons">local_grocery_store</i></a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <div class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" id="search_input" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" onclick="OnSearch()">Search</button>
+        </div>
     </div>
 </nav>
 <div class="container" style="margin-top: 20px;">
@@ -117,4 +117,10 @@
         </div>
     </section>
 </footer>
+<script>
+    function OnSearch(){
+        console.log("POZIVAM");
+        window.location.href="/home/customer/"+document.getElementById("search_input").value;
+    }
+</script>
 </html>
