@@ -338,6 +338,9 @@ router.post('/add_location/:name',function(req, res, next){
       }
   );
 })
+router.get('/error_page',function (req, res, next){
+  res.render('404page');
+})
 
 
 module.exports = router;
