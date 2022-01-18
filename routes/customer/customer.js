@@ -825,7 +825,8 @@ let helpers = {
                           and a.id_artikla = aka.id_artikla
                           and (opis_artikla ilike $1
                           or sadrzaj_artikla ilike $1
-                          or naziv_artikla ilike $1)
+                          or naziv_artikla ilike $1
+                          or ka.naziv_kategorije ilike $1)
                           and at.id_trgovine = t.id_trgovine
                           and af.id_artikla = a.id_artikla
                           and f.id_fotografije = af.id_fotografije
