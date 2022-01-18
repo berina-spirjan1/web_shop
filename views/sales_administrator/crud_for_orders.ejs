@@ -175,7 +175,6 @@
                                                     </td>
                                                     <td class="td-actions text-right">
                                                         <div class="row">
-                                                            <%=console.info("OVO ISPISUJEM S FRONTA",allOrders[i].status)%>
                                                             <% if(allOrders[i].status === 1){ %>
                                                                 <form action="/home/sales_administrator/approving_orders/approve/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
                                                                     <button type="submit" rel="tooltip" title="Accepted" class="btn btn-white btn-link btn-sm">
