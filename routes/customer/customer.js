@@ -733,6 +733,29 @@ let database = {
                 }
             });
         });
+    },
+    orderChanged: function(req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+
+            client.on('notification', data=>{
+                console.info("usao");
+                const payload = JSON.parse(data.payload);
+                req.notifikacije = payload;
+                console.info("DODAN RED",payload);
+            });
+
+            client.query(`LISTEN new_event`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    next();
+                }
+            });
+
+        });
     }
 }
 
@@ -1201,6 +1224,7 @@ router.get('/successfully_ordering',helpers.SendEmailForSuccessfullyOrdering,fun
 })
 
 router.post('/successfully_ordering', database.getAllItemsFromBasket,
+                                           database.orderChanged,
                                            database.getLastIdOfOrder,
     function(req, res, next){
     alert('You successfully order items. Check your email for confirmation 😉');
@@ -1216,6 +1240,9 @@ router.post('/successfully_ordering', database.getAllItemsFromBasket,
                         done();
                         if (err)
                             throw(err);
+                        else{
+                            res.redirect('/home/customer');
+                        }
                 });
         }
     });

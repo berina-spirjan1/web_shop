@@ -280,12 +280,12 @@ let database = {
 router.get('/', function(req, res, next) {
 
     if(req.user.id_tip_korisnika === 1 && req.user.status !== 'blokiran') {
-        res.redirect('/poziv_chat/'+req.user.id_tip_korisnika);
+        res.redirect('/home/main_administrator');
     }
     else if(req.user.id_tip_korisnika === 3 && req.user.status !== 'blokiran' && req.user.id_adresa!==null) {
-        res.redirect('/poziv_chat/'+req.user.id_tip_korisnika);
+        res.redirect('/home/sales_administrator');
     }
-    else if (req.user.id_tip_korisnika === 2 && req.user.status !== 'blokiran' && req.user.id_adresa!==null){
+    else if (req.user.id_tip_korisnika === 2 && req.user.status !== 'blokiran' && req.user.status !== 'blokiran na 15' && req.user.id_adresa!==null){
         res.redirect('/poziv_chat/'+req.user.id_tip_korisnika);
     }
     if(req.user.id_adresa===null){
