@@ -26,7 +26,7 @@ let database={
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select n.id_narudzbe as id_korpe, sum(at.kolicina*a.cijena_artikla) as pojedinacni_racun, ko.ime, ko.prezime, ko.email,
+            client.query(`select n.id_narudzbe as id_korpe, sum(at.kolicina*a.cijena_artikla) as pojedinacni_racun, ko.ime, ko.prezime, ko.email, n.status,
                           array_agg(a.naziv_artikla) as artikli, array_agg(t.naziv_trgovine) as prodavnice, n.status, array_agg(n.vrijeme_narudzbe) as vrijeme_narudzbi, n.datum_narudzbe
                           from artikal a, artikal_trgovina at, korpa k, artikal_narudzba an, trgovina t, korisnik ko, narudzba n
                           where an.id_artikal_trgovina = at.id
@@ -36,12 +36,13 @@ let database={
                           and n.id_narudzbe = an.id_narudzbe
                           and a.id_artikla = at.id_artikla
                           and k.id_korpe = an.id_korpe
-                          group by k.id_korpe, ko.ime, ko.prezime,n.status, n.datum_narudzbe, n.id_narudzbe, ko.email
+                          group by k.id_korpe, ko.ime, ko.prezime,n.status, n.datum_narudzbe, n.id_narudzbe, ko.email, n.status
                           order by n.datum_narudzbe`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
+                    console.info("Result je ",result.rows);
                     req.sve_narudzbe = result.rows;
                     next();
                 }
