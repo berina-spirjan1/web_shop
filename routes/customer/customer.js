@@ -437,15 +437,13 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select (y.suma*1.00)/count(o1.id_ocjene_trgovina) as prosjek, y.naziv_trgovine, y.id_trgovine, y.path
-                          from (select sum(o.ocjena) as suma, t.naziv_trgovine, t.id_trgovine, f.path
-                                from ocjena o, trgovina t, ocjene_trgovina ot, fotografija f
-                                where o.id_ocjena = ot.id_ocjene
-                                and f.id_fotografije = t.id_pozadina
-                                and t.id_trgovine = ot.id_trgovine
-                                group by  t.naziv_trgovine, t.id_trgovine, f.path
-                                order by t.id_trgovine) y, ocjene_trgovina o1
-                          group by y.id_trgovine, y.naziv_trgovine, y.suma, y.path`,function (err,result) {
+            client.query(`select t.naziv_trgovine, t.id_trgovine, f.path
+                          from ocjena o, trgovina t, ocjene_trgovina ot, fotografija f
+                          where o.id_ocjena = ot.id_ocjene
+                          and f.id_fotografije = t.id_pozadina
+                          and t.id_trgovine = ot.id_trgovine
+                          group by t.naziv_trgovine, t.id_trgovine, f.path
+                          order by t.id_trgovine`,function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -460,17 +458,14 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select y.naziv_trgovine, y.id_trgovine, y.path
-                          from (select t.naziv_trgovine, t.id_trgovine, f.path
-                                from ocjena o, trgovina t, ocjene_trgovina ot, fotografija f, lanac_trgovina lt
-                                where o.id_ocjena = ot.id_ocjene
-                                and f.id_fotografije = lt.id_logo
-                                and lt.id_lanca_trgovina = t.id_lanca_trgovina
-                                and t.id_trgovine = ot.id_trgovine
-                                group by  t.naziv_trgovine, t.id_trgovine, f.path
-                                order by t.id_trgovine) y, ocjene_trgovina o1
-                        group by y.id_trgovine, y.naziv_trgovine, y.path
-                        order by y.id_trgovine`,function (err,result) {
+            client.query(`select t.naziv_trgovine, t.id_trgovine, f.path
+                          from ocjena o, trgovina t, ocjene_trgovina ot, fotografija f, lanac_trgovina lt
+                          where o.id_ocjena = ot.id_ocjene
+                          and f.id_fotografije = lt.id_logo
+                          and t.id_lanca_trgovina = lt.id_lanca_trgovina
+                          and t.id_trgovine = ot.id_trgovine
+                          group by t.naziv_trgovine, t.id_trgovine, f.path
+                          order by t.id_trgovine`,function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -872,6 +867,72 @@ let helpers = {
             });
         });
     },
+    searchForShop: function(req, res, next){
+        let name = req.params.search_key_shop.toLowerCase();
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select t.naziv_trgovine, t.id_trgovine, f.path
+                          from trgovina t, fotografija f, lanac_trgovina lt
+                          where (t.naziv_trgovine ilike $1
+                          or lt.naziv_lanca_trgovina ilike $1)
+                          and f.id_fotografije = t.id_pozadina
+                          group by t.naziv_trgovine, t.id_trgovine, f.path
+                          order by t.id_trgovine`,['%'+name+'%'],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.pretrazene_prodavnice = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getChainStoreImagesForSearch: function(req,res,next){
+        let name = req.params.search_key_shop.toLowerCase();
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select t.naziv_trgovine, t.id_trgovine, f.path
+                          from trgovina t, fotografija f, lanac_trgovina lt
+                          where (t.naziv_trgovine ilike $1
+                          or lt.naziv_lanca_trgovina ilike $1)
+                          and f.id_fotografije = lt.id_logo
+                          group by t.naziv_trgovine, t.id_trgovine, f.path
+                          order by t.id_trgovine`,['%'+name+'%'],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.naslovnice_pretrazenih_trgovina = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    searchChainStore: function(req, res, next){
+        let name = req.params.search_key_shop.toLowerCase();
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select lt.naziv_lanca_trgovina, f.path, lt.id_lanca_trgovina
+                          from lanac_trgovina lt, fotografija f
+                          where lt.id_logo = f.id_fotografije
+                          and lt.naziv_lanca_trgovina ilike $1;`,['%'+name+'%'],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.pretrazeni_lanci_trgovina = result.rows;
+                    next();
+                }
+            });
+        });
+    }
 }
 
 
@@ -1191,6 +1252,16 @@ router.get('/:search_key',helpers.getCoverImagesForSearchItems,
         all_items: req.pretraga_artikala
     });
 });
+
+router.get('/shops/:search_key_shop',helpers.searchChainStore,
+    helpers.searchForShop, helpers.getChainStoreImagesForSearch,
+    function(req,res,next){
+        res.render('./customers/all_shops',{
+            chain_stores: req.pretrazeni_lanci_trgovina,
+            top_rated_shops: req.pretrazene_prodavnice,
+            images: req.naslovnice_pretrazenih_trgovina
+        }) ;
+    });
 
 
 router.get('/delete_from_order/:id', function (req,res,next){

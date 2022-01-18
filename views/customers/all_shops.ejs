@@ -49,10 +49,10 @@
                 <a class="nav-link" href="/home/customer/basket"><i class="material-icons">local_grocery_store</i></a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <div class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" id="search_input" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" onclick="OnSearch()">Search</button>
+        </div>
     </div>
 </nav>
 <div class="container">
@@ -72,7 +72,7 @@
     <h2 class="most-popular-title">TOP RATED SHOPS</h2>
     <div class="scrolling-wrapper">
         <%for(let i=0; i<top_rated_shops.length;i++){%>
-        <div class="item" style="margin-bottom: 20px;">
+        <div class="item" style="margin-bottom: 20px;margin-right: 15px;">
             <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
                 <div class="list-card-image">
                     <div class="item-logo" style="background-image: url(<%=images[i].path%>);"></div>
@@ -122,4 +122,9 @@
         </div>
     </section>
 </footer>
+<script>
+    function OnSearch(){
+        window.location.href="/home/customer/shops/"+document.getElementById("search_input").value;
+    }
+</script>
 </html>
