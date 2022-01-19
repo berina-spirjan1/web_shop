@@ -270,5 +270,38 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
+router.post('/add_shop_image',function(req, res, next){
+    let file = req.files.uploaded_image;
+    let img_name=file.name;
+
+    if(file.mimetype === "image/jpeg" ||file.mimetype === "image/png" || file.mimetype === "image/gif" ){
+
+        file.mv('public/images/'+file.name, function(err) {
+            if (err)
+                return res.status(500).send(err);
+            else{
+                pool.connect(function (err,client,done) {
+                    if(err)
+                        throw(err);
+                    else {
+                        client.query("call DodajArtikal($1,$2,$3,$4,$5);",
+                            [naziv, tip, img_name, cijena, req.user.id_korisnika], function (err, result) {
+                            done();
+                            if (err)
+                                throw(err);
+                            else {
+                                req.flash('success_msg', 'Uspješno dodat novi artikal');
+                                res.redirect('/adminRestorana/dodajArtikal');
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    } else {
+        req.flash('error', 'Format of image that you try to upload is not allowed.');
+        res.redirect('/adminRestorana/dodajArtikal');
+    }
+})
 
 module.exports = router;

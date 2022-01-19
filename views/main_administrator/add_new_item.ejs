@@ -149,7 +149,7 @@
                                 <p class="card-category">Do you want to add new item for shop? Just go ahead.</p>
                             </div>
                             <div class="card-body">
-                                <form action="/home/items/add_item" method="post" >
+                                <form action="/home/sales_administrator/shops_items/add_item" method="post"  enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-md-10">
                                             <div class="form-group">
@@ -188,20 +188,57 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="customer">Item category</label>
+                                            <label for="card_number">Starting date for special price</label>
                                             <div class="form-group">
-                                                <select name="category" id="category" class="btn btn-danger">
-                                                    <% for(let i = 0; i< itemCategory.length; i++){%>
-                                                        <option class = "select-option" value="<%= itemCategory[i].id_kategorija_artikla%>" ><%= itemCategory[i].naziv_kategorije%></option>
-                                                    <%}%>
-                                                </select>
+                                                <input type="date" class="form-control" name="starting_date" id="starting_date">
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="col-md-4">
+                                            <label for="card_number">Ending date for special price</label>
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" name="ending_date" id="ending_date">
+                                            </div>
+                                        </div></div><br><br>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label for="card_number">Discount</label>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="discount" id="discount">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="customer">Item category</label>
+                                                <div class="form-group">
+                                                    <select name="category" id="category" class="btn btn-danger">
+                                                        <% for(let i = 0; i< itemCategory.length; i++){%>
+                                                            <option class = "select-option" value="<%= itemCategory[i].id_kategorija_artikla%>" ><%= itemCategory[i].naziv_kategorije%></option>
+                                                        <%}%>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="customer">Shop</label>
+                                                <div class="form-group">
+                                                    <select name="shop" id="shop" class="btn btn-danger">
+                                                        <% for(let i = 0; i< shops.length; i++){%>
+                                                            <option class = "select-option" value="<%= shops[i].id_trgovine%>" ><%= shops[i].naziv_trgovine%></option>
+                                                        <%}%>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div><br><br>
+                                <div>
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <label for="uploaded_image" class="text-danger">Add images:</label><br>
+                                                <input type="file" id="image" name ="image" multiple="multiple" accept=""
+                                                       value="<%= typeof Slika != "undefined" ? Slika : '' %>"/>
+                                            </div>
+                                        </div>
+                                </div>
                                     <br><br>
                                     <button type="submit" class="btn btn-danger pull-right">Add</button>
                                     <div class="clearfix"></div>
-
                                 </form>
                             </div>
                         </div>
@@ -246,6 +283,7 @@
 <script src="../assets/js/plugins/bootstrap-notify.js"></script>
 
 <script>
+
     $(document).ready(function() {
         $().ready(function() {
             $sidebar = $('.sidebar');
