@@ -18,7 +18,7 @@ const pool = new pg.Pool(config);
 
 let database={
     getAllItemsFromYourShops: function(req, res, next){
-        // let id_korisnika = req.user.id_korisnika;
+        let id_korisnika = req.user.id_korisnika;
 
         pool.connect(function (err,client,done) {
             if(err)
@@ -30,7 +30,7 @@ let database={
                           and t.id_trgovine = at.id_trgovine
                           and t.id_menadzera = $1
                           group by t.id_trgovine
-                          order by t.id_trgovine`,[3],function (err,result) {
+                          order by t.id_trgovine`,[id_korisnika],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -57,7 +57,7 @@ let database={
         });
     },
     getAllCurrentImagesAdded: function(req, res, next){
-        // let id_trgovca = req.user.id_korisnika;
+        let id_trgovca = req.user.id_korisnika;
 
         pool.connect(function (err,client,done) {
             if(err)
@@ -65,12 +65,34 @@ let database={
             client.query(`select * 
                           from trenutne_fotografije 
                           where id_trgovca = $1 
-                          order by id_trenutne_fotografije`,[3],function (err,result) {
+                          order by id_trenutne_fotografije`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
                 else{
                     req.trenutne_fotografije = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getAllPosibleCategoriesForCurrentItem: function (req, res, next){
+        let id_trgovca = req.user.id_korisnika;
+
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select *
+                          from kategorija_artikla
+                          where id_kategorija_artikla not in (select kt.id_kategorija_artikla
+                                                              from kategorije_za_trenutni_artikal kt
+                                                              where kt.id_trgovca = $1
+                                                              order by kt.id_trenutna_kategorija)`,[id_trgovca],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.moguce_kategorije = result.rows;
                     next();
                 }
             });
@@ -164,8 +186,8 @@ router.post('/add_item',function(req, res, next) {
                                 if(err)
                                     throw(err);
                                 else {
-                                    client.query(`call ZavrsiArtikalBezSnizenja($1, $2, $3, $4, $5, $6, $7, $8); `,
-                                        [name, description, amount, price, content,'public/images/'+img_name,shop,3],
+                                    client.query(`call ZavrsiBezPopusta($1, $2, $3, $4, $5, $6, $7, $8); `,
+                                        [name, description, amount, price, content,'public/images/'+img_name,shop,req.user.id_korisnika],
                                         function (err, result) {
                                         done();
                                         if (err)
@@ -196,9 +218,9 @@ router.post('/add_item',function(req, res, next) {
                                 if(err)
                                     throw(err);
                                 else {
-                                    client.query(`call ZavrsiArtikalSnizeni($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`,
+                                    client.query(`call ZavrsiSnizeni($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`,
                                         [name, description, amount, price,req.body.starting_date, req.body.discount,
-                                            content,req.body.ending_date,'public/images/'+img_name,shop,3], function (err, result) {
+                                            content,req.body.ending_date,'public/images/'+img_name,shop,req.user.id_korisnika], function (err, result) {
                                             done();
                                             if (err)
                                                 throw(err);
@@ -272,6 +294,32 @@ router.post('/add_new_tag',function(req, res, next) {
                     throw(err);
                 else {
                     res.redirect('/home/sales_administrator/shops_items/add_new_tag');
+                }
+            });
+        }
+    });
+});
+
+router.get('/add_item_category', database.getAllPosibleCategoriesForCurrentItem,
+    function(req, res, next) {
+        res.render('./main_administrator/add_item_category',{
+            itemCategory: req.moguce_kategorije
+    });
+});
+
+router.post('/add_item_category', function(req, res, next){
+   let category = req.body.category;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`call  DodajArtikluKategoriju($1, $2)`,[3, category], function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else {
+                    res.redirect('/home/sales_administrator/shops_items/add_item_category');
                 }
             });
         }

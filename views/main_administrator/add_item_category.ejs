@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Add new item
+        Add item category
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
@@ -149,87 +149,23 @@
                                 <p class="card-category">Do you want to add new item for shop? Just go ahead.</p>
                             </div>
                             <div class="card-body">
-                                <form action="/home/sales_administrator/shops_items/add_item" method="post"  enctype="multipart/form-data">
+                                <form action="/home/sales_administrator/shops_items/add_item_category" method="post">
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-4">
+                                            <label for="customer">Item category</label>
                                             <div class="form-group">
-                                                <label class="bmd-label-floating">Item name</label>
-                                                <input type="text" class="form-control" id="name" name="name">
+                                                <select name="category" id="category" class="btn btn-danger">
+                                                    <% for(let i = 0; i< itemCategory.length; i++){%>
+                                                        <option class = "select-option" value="<%= itemCategory[i].id_kategorija_artikla%>" ><%= itemCategory[i].naziv_kategorije%></option>
+                                                    <%}%>
+                                                </select>
+                                                <button type="submit" class="btn btn-outline-danger">Add selected category</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <br><br>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="order_date">Description</label>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="description" name="description">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="order_time">Amount</label>
-                                            <div class="form-group">
-                                                <input type="number" class="form-control" id="amount" name="amount">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="card_number">Price</label>
-                                            <div class="form-group">
-                                                <input type="number" class="form-control" name="price" id="price">
-                                            </div>
-                                        </div>
-
-                                    </div><br><br>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="card_number">Content</label>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" name="content" id="content">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="card_number">Starting date for special price</label>
-                                            <div class="form-group">
-                                                <input type="date" class="form-control" name="starting_date" id="starting_date">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="card_number">Ending date for special price</label>
-                                            <div class="form-group">
-                                                <input type="date" class="form-control" name="ending_date" id="ending_date">
-                                            </div>
-                                        </div></div><br><br>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label for="card_number">Discount</label>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" name="discount" id="discount">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="customer">Shop</label>
-                                                <div class="form-group">
-                                                    <select name="shop" id="shop" class="btn btn-danger">
-                                                        <% for(let i = 0; i< shops.length; i++){%>
-                                                            <option class = "select-option" value="<%= shops[i].id_trgovine%>" ><%= shops[i].naziv_trgovine%></option>
-                                                        <%}%>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div><br><br>
-                                <div>
-                                        <div class="row">
-                                            <div class="col-md-7">
-                                                <label for="uploaded_image" class="text-danger">Add cover image:</label><br>
-                                                <input type="file" id="image" name ="image" multiple="multiple" accept=""
-                                                       value="<%= typeof Slika != "undefined" ? Slika : '' %>"/>
-                                            </div>
-                                        </div>
-                                </div>
-                                    <br><br>
-                                    <button type="submit" class="btn btn-danger pull-right">Add</button>
-                                    <div class="clearfix"></div>
                                 </form>
+                                <br><br>
+                                <a href="/home/sales_administrator/shops_items/add_photo" class="btn btn-danger pull-right">Next</a>
                             </div>
                         </div>
                     </div>

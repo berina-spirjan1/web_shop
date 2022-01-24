@@ -144,17 +144,12 @@
                                             </thead>
                                             <tbody>
                                             <% for(let i = 0; i<items_from_shops.length; i++){%>
+                                                <% for(let j = 0; j<items_from_shops[i].nazivi_artikala.length; j++){%>
                                                 <tr>
                                                     <td><%= items_from_shops[i].id_trgovine %></td>
                                                     <td><%= items_from_shops[i].naziv_trgovine %></td>
                                                     <td><%= items_from_shops[i].id_artikala.length %></td>
-                                                    <td>
-                                                        <select name="type_of_payment" id="type_of_payment" class="btn btn-danger">
-                                                            <% for(let j = 0; j<items_from_shops[i].nazivi_artikala.length; j++){%>
-                                                                <option class = "select-option"><%= items_from_shops[i].nazivi_artikala[j] %></option>
-                                                            <%}%>
-                                                        </select>
-                                                    </td>
+                                                    <td><%= items_from_shops[i].nazivi_artikala[j] %></td>
                                                     <td class="td-actions text-right">
                                                         <div class="row">
                                                             <form method="post" action="/home/sales_administrator/shops_items/edit_shop_item/<%= items_from_shops[i].id_trgovine %>">
@@ -170,6 +165,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <%}%>
                                             <%}%>
                                             </tbody>
                                         </table>

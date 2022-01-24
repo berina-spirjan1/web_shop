@@ -291,7 +291,7 @@ router.post('/add_shop_image',function(req, res, next){
                                 throw(err);
                             else {
                                 req.flash('success_msg', 'Uspješno dodat novi artikal');
-                                res.redirect('/adminRestorana/dodajArtikal');
+                                res.redirect('/home/sales_administrator/shops');
                             }
                         });
                     }
@@ -300,7 +300,7 @@ router.post('/add_shop_image',function(req, res, next){
         });
     } else {
         req.flash('error', 'Format of image that you try to upload is not allowed.');
-        res.redirect('/adminRestorana/dodajArtikal');
+        res.redirect('/home/sales_administrator/shops');
     }
 })
 
