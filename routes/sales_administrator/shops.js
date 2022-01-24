@@ -109,7 +109,7 @@ let database = {
     },
     getAllDifferentChainStores: function(req,res,next){
         pool.connect(function (err,client,done) {
-            if(err)1
+            if(err)
                 res.end(err);
             client.query(`select distinct l.naziv_lanca_trgovina, l.id_lanca_trgovina
                           from lanac_trgovina l, trgovina t
@@ -208,8 +208,7 @@ router.post('/add_shop',function(req, res, next) {
         if(err)
             throw(err);
         else {
-            client.query(`INSERT INTO trgovina(naziv_trgovine, id_kategorije, id_menadzera, id_lanca_trgovina)
-                          VALUES ($1,$2,$3,$4)`,[shop_name, category, sales_administrator, chain_store], function (err,result) {
+            client.query(`call DodajTrgovinu($1,$2,$3,$4)`,[shop_name, category, sales_administrator, chain_store], function (err,result) {
                 done();
                 if (err)
                     throw(err);
@@ -270,6 +269,12 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
+router.get('/add_shop_image',
+    function(req, res, next) {
+        res.render('./main_administrator/add_new_shop_image');
+    });
+
+
 router.post('/add_shop_image',function(req, res, next){
     let file = req.files.uploaded_image;
     let img_name=file.name;
@@ -284,12 +289,14 @@ router.post('/add_shop_image',function(req, res, next){
                     if(err)
                         throw(err);
                     else {
-                        client.query("call DodajArtikal($1,$2,$3,$4,$5);",
-                            [naziv, tip, img_name, cijena, req.user.id_korisnika], function (err, result) {
+                        client.query("select * from DodajSlikuPozadine($1);",
+                            ['public/images/'+img_name], function (err, result) {
                             done();
                             if (err)
                                 throw(err);
                             else {
+                                req.slika_za_prodavnicu = result;
+                                console.info("SLika je",result);
                                 req.flash('success_msg', 'Uspješno dodat novi artikal');
                                 res.redirect('/home/sales_administrator/shops');
                             }
