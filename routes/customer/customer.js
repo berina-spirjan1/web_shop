@@ -756,6 +756,21 @@ let database = {
             });
 
         });
+    },
+    getAllTags: function(req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select * from tagovi_za_artikle;`,function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.svi_tagovi = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -1108,6 +1123,12 @@ router.get('/single_shop/:id/categories/:id_category',
             categories: req.kategorije_artikala_za_prodavnicu
         });
 });
+router.get('/interest',database.getAllTags,function(req,res,next){
+    res.render('./customers/interest_list',{
+        tags: req.svi_tagovi
+    });
+})
+
 
 router.get('/all_items',database.getAllItems,
                              database.getCoverImagesForAllItems,
@@ -1434,7 +1455,6 @@ router.post('/add_comment/:id_shop',function(req, res, next){
         }
     });
 });
-
 
 
 module.exports = router;
