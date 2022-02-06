@@ -343,4 +343,10 @@ router.get('/error_page',function (req, res, next){
 })
 
 
+router.get('/logout',function (req,res,next) {
+  req.logout();
+  alert('Successfully logout!');
+  res.redirect('/login');
+});
+
 module.exports = router;
