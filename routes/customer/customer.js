@@ -15,6 +15,9 @@ const config = {
     idleTimeoutMillis: 30000,
 };
 
+const{ ensureAuthenticatedCustomer } = require('../../authentication/customer');
+const{ ensureAuthenticatedArchiveCustomer } = require('../../authentication/archive_customers');
+
 const pool = new pg.Pool(config);
 
 let database = {
@@ -1028,7 +1031,7 @@ let helpers = {
 
 
 
-router.get('/', database.getMostPopularItems,
+router.get('/', ensureAuthenticatedCustomer,ensureAuthenticatedArchiveCustomer,database.getMostPopularItems,
                      database.getRandomItems,
                      database.getItemsFromUserTags,
                      database.getPopularItemsWithImage,
@@ -1043,7 +1046,7 @@ router.get('/', database.getMostPopularItems,
         chain_stores: req.lanci_trgovina
     });
 });
-router.get('/shops',database.getAllChainStores,
+router.get('/shops',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getAllChainStores,
                          database.getShopsTopRated,
                          database.getImagesForChainStores,
     function (req, res, next){
@@ -1055,7 +1058,7 @@ router.get('/shops',database.getAllChainStores,
 });
 
 
-router.get('/single_item/:id',database.getInfoAboutSingleItem,
+router.get('/single_item/:id',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getInfoAboutSingleItem,
                                    database.getCoverImage,
                                    database.getMarkOfItem,
                                    database.getStatusOfMarkForCurrentItem,
@@ -1069,7 +1072,7 @@ router.get('/single_item/:id',database.getInfoAboutSingleItem,
    });
 });
 
-router.get('/single_item/:id/description',database.getInfoAboutSingleItem,
+router.get('/single_item/:id/description',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getInfoAboutSingleItem,
     database.getCoverImage,
     database.getMarkOfItem,
     function(req, res, next){
@@ -1081,7 +1084,7 @@ router.get('/single_item/:id/description',database.getInfoAboutSingleItem,
         });
 });
 
-router.get('/single_item/:id/content',database.getInfoAboutSingleItem,
+router.get('/single_item/:id/content',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getInfoAboutSingleItem,
     database.getCoverImage,
     database.getMarkOfItem,
     function(req, res, next){
@@ -1093,7 +1096,7 @@ router.get('/single_item/:id/content',database.getInfoAboutSingleItem,
         });
 });
 
-router.get('/single_item/:id/shops',database.getInfoAboutSingleItem,
+router.get('/single_item/:id/shops',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getInfoAboutSingleItem,
     database.getCoverImage,
     database.getMarkOfItem,
     database.getCoverImageForShops,
@@ -1106,7 +1109,7 @@ router.get('/single_item/:id/shops',database.getInfoAboutSingleItem,
         });
 });
 
-router.get('/single_item/:id/images',database.getInfoAboutSingleItem,
+router.get('/single_item/:id/images',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getInfoAboutSingleItem,
     database.getCoverImage,
     database.getMarkOfItem,
     function(req, res, next){
@@ -1117,7 +1120,7 @@ router.get('/single_item/:id/images',database.getInfoAboutSingleItem,
         });
 });
 
-router.get('/single_shop/:id', database.getAllItemsForSingleShop,
+router.get('/single_shop/:id', ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getAllItemsForSingleShop,
                                     database.getCoverImageForShop,
                                     database.getDetailInformationsAboutShop,
                                     database.getStatusOfMarkForCurrentShop,
@@ -1133,7 +1136,7 @@ router.get('/single_shop/:id', database.getAllItemsForSingleShop,
         });
 });
 
-router.get('/single_shop/:id/items', database.getAllItemsForSingleShop,
+router.get('/single_shop/:id/items',ensureAuthenticatedArchiveCustomer, ensureAuthenticatedCustomer,database.getAllItemsForSingleShop,
     database.getCoverImageForShop,
     database.getDetailInformationsAboutShop,
     database.getOneImageForItem,
@@ -1146,7 +1149,7 @@ router.get('/single_shop/:id/items', database.getAllItemsForSingleShop,
         });
 });
 
-router.get('/single_shop/:id/categories',
+router.get('/single_shop/:id/categories',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,
     database.getAllItemsForSingleShop,
     database.getCoverImageForShop,
     database.getDetailInformationsAboutShop,
@@ -1160,7 +1163,7 @@ router.get('/single_shop/:id/categories',
         });
 });
 
-router.get('/single_shop/:id/categories/:id_category',
+router.get('/single_shop/:id/categories/:id_category',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,
     database.getAllItemsForSingleShop,
     database.getCoverImageForShop,
     database.getDetailInformationsAboutShop,
@@ -1176,7 +1179,7 @@ router.get('/single_shop/:id/categories/:id_category',
             categories: req.kategorije_artikala_za_prodavnicu
         });
 });
-router.get('/interest',database.getAllTags,function(req,res,next){
+router.get('/interest',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getAllTags,function(req,res,next){
 
     res.render('./customers/interest_list',{
         tags: req.svi_tagovi
@@ -1184,7 +1187,7 @@ router.get('/interest',database.getAllTags,function(req,res,next){
 })
 
 
-router.post('/interest',function(req, res, next){
+router.post('/interest',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,function(req, res, next){
 
     let interesi = req.body.interest;
 
@@ -1207,7 +1210,7 @@ router.post('/interest',function(req, res, next){
 });
 
 
-router.get('/all_items',database.getAllItems,
+router.get('/all_items',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getAllItems,
                              database.getCoverImagesForAllItems,
     function (req, res, next) {
 
@@ -1217,13 +1220,13 @@ router.get('/all_items',database.getAllItems,
     });
 })
 
-router.get('/basket',database.getAllItemsFromBasket,function(req, res, next){
+router.get('/basket',ensureAuthenticatedCustomer,database.getAllItemsFromBasket,function(req, res, next){
     res.render('./customers/market_basket',{
         basket: req.korpa
     });
 })
 
-router.get('/profile', database.getLocationForUser,
+router.get('/profile', ensureAuthenticatedCustomer,database.getLocationForUser,
                             database.getProfileImage,
                             database.getTypeOfUser,
     function(req, res, next){
@@ -1236,7 +1239,7 @@ router.get('/profile', database.getLocationForUser,
 })
 
 
-router.post('/profile',function(req, res, next){
+router.post('/profile',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,function(req, res, next){
 
     let ime = req.body.ime;
     let prezime = req.body.prezime;
@@ -1274,13 +1277,13 @@ router.post('/profile',function(req, res, next){
             }
         });
     } else {
-        req.flash('error', 'Format of image that you try to upload is not allowed.');
+        alert('Format of image that you try to upload is not allowed.');
         res.redirect('/home/sales_administrator/shops');
     }
 });
 
 
-router.post('/basket/:id',helpers.count,function(req, res, next){
+router.post('/basket/:id',ensureAuthenticatedCustomer,helpers.count,function(req, res, next){
 
     let id_artikla= req.params.id;
     let id_kupca = req.user.id_korisnika;
@@ -1305,7 +1308,7 @@ router.post('/basket/:id',helpers.count,function(req, res, next){
     });
 });
 
-router.post('/basket/:id',helpers.count,function(req, res, next){
+router.post('/basket/:id',ensureAuthenticatedCustomer,helpers.count,function(req, res, next){
 
     let id_artikla= req.params.id;
     let id_kupca = req.user.id_korisnika;
@@ -1331,7 +1334,7 @@ router.post('/basket/:id',helpers.count,function(req, res, next){
 });
 
 
-router.post('/basket/:id',helpers.count,function(req, res, next){
+router.post('/basket/:id',ensureAuthenticatedCustomer,helpers.count,function(req, res, next){
 
     let id_artikla= req.params.id;
     let id_kupca = req.user.id_korisnika;
@@ -1356,7 +1359,7 @@ router.post('/basket/:id',helpers.count,function(req, res, next){
     });
 });
 
-router.get('/delete_from_basket/:id', function (req,res,next){
+router.get('/delete_from_basket/:id', ensureAuthenticatedCustomer,function (req,res,next){
 
     let id_kupca = req.user.id_korisnika;
     let id_artikla = req.params.id;
@@ -1381,7 +1384,7 @@ router.get('/delete_from_basket/:id', function (req,res,next){
     });
 });
 
-router.get('/delete_all_amount_from_basket/:id', function (req,res,next){
+router.get('/delete_all_amount_from_basket/:id',ensureAuthenticatedCustomer, function (req,res,next){
 
     let id_kupca = req.user.id_korisnika;
     let id_artikla = req.params.id;
@@ -1405,7 +1408,7 @@ router.get('/delete_all_amount_from_basket/:id', function (req,res,next){
     });
 });
 
-router.get('/delete_all_from_basket', function (req, res, next){
+router.get('/delete_all_from_basket', ensureAuthenticatedCustomer,function (req, res, next){
 
     let id_kupca = req.user.id_korisnika;
 
@@ -1425,7 +1428,7 @@ router.get('/delete_all_from_basket', function (req, res, next){
     });
 })
 
-router.get('/successfully_ordering',helpers.SendEmailForSuccessfullyOrdering,function(req, res, next){
+router.get('/successfully_ordering',ensureAuthenticatedCustomer,helpers.SendEmailForSuccessfullyOrdering,function(req, res, next){
     res.redirect('/home/customer');
 })
 
@@ -1454,30 +1457,30 @@ router.post('/successfully_ordering', database.getAllItemsFromBasket,
     });
 });
 
-router.get('/all_orders',database.getAllMyOrders,function(req, res, next){
+router.get('/all_orders',ensureAuthenticatedCustomer,database.getAllMyOrders,function(req, res, next){
     res.render('./customers/my_orders',{
         all_my_orders: req.moje_narudzbe
     })
 })
-router.get('/all_delivery_orders',database.getAllMyOrdersThatAreDelivered,function(req, res, next){
+router.get('/all_delivery_orders',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getAllMyOrdersThatAreDelivered,function(req, res, next){
     res.render('./customers/my_orders_that_are_delivered',{
         all_my_orders: req.isporucene_narudzbe_moje
     })
 })
 
-router.get('/all_catalogs',database.getAllItemsFromCatalogs,function(req, res, next){
+router.get('/all_catalogs',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getAllItemsFromCatalogs,function(req, res, next){
     res.render('./customers/all_catalogs',{
         all_catalogs: req.svi_katalozi
     })
 })
 
-router.get('/catalog/:id',database.getInformationsAboutSingleCatalog,function(req, res, next){
+router.get('/catalog/:id',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,database.getInformationsAboutSingleCatalog,function(req, res, next){
     res.render('./customers/single_catalog',{
         catalog: req.pojedinacni_katalog
     })
 })
 
-router.get('/:search_key',helpers.getCoverImagesForSearchItems,
+router.get('/:search_key',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,helpers.getCoverImagesForSearchItems,
                                helpers.searchForItem,
     function(req,res,next){
     res.render('./customers/all_items',{
@@ -1486,7 +1489,7 @@ router.get('/:search_key',helpers.getCoverImagesForSearchItems,
     });
 });
 
-router.get('/shops/:search_key_shop',helpers.searchChainStore,
+router.get('/shops/:search_key_shop',ensureAuthenticatedArchiveCustomer,ensureAuthenticatedCustomer,helpers.searchChainStore,
     helpers.searchForShop, helpers.getChainStoreImagesForSearch,
     function(req,res,next){
         res.render('./customers/all_shops',{
@@ -1497,7 +1500,7 @@ router.get('/shops/:search_key_shop',helpers.searchChainStore,
     });
 
 
-router.get('/delete_from_order/:id', function (req,res,next){
+router.get('/delete_from_order/:id', ensureAuthenticatedCustomer,function (req,res,next){
 
     let id_kupca = req.user.id_korisnika;
     let id_artikla = req.params.id;
@@ -1522,7 +1525,7 @@ router.get('/delete_from_order/:id', function (req,res,next){
     });
 });
 
-router.get('/delete_all_amount_from_order/:id', function (req,res,next){
+router.get('/delete_all_amount_from_order/:id', ensureAuthenticatedCustomer,function (req,res,next){
 
     let id_kupca = req.user.id_korisnika;
     let id_artikla = req.params.id;
@@ -1546,7 +1549,7 @@ router.get('/delete_all_amount_from_order/:id', function (req,res,next){
     });
 });
 
-router.get('/delete_all_from_order', function (req, res, next){
+router.get('/delete_all_from_order', ensureAuthenticatedCustomer,function (req, res, next){
 
     let id_kupca = req.user.id_korisnika;
 
@@ -1566,7 +1569,7 @@ router.get('/delete_all_from_order', function (req, res, next){
     });
 })
 
-router.get('/mark_item/:id_item/:id',function(req, res, next){
+router.get('/mark_item/:id_item/:id',ensureAuthenticatedCustomer,function(req, res, next){
     res.redirect('/home/customer/single_item/'+req.params.id_item);
 });
 
@@ -1589,7 +1592,7 @@ router.post('/mark_item/:id_item/:id',function(req, res, next){
     });
 })
 
-router.get('/mark_shop/:id_shop/:id',function(req, res, next){
+router.get('/mark_shop/:id_shop/:id',ensureAuthenticatedCustomer,function(req, res, next){
     res.redirect('/home/customer/single_shop/'+req.params.id_shop);
 });
 
@@ -1612,7 +1615,7 @@ router.post('/mark_shop/:id_shop/:id',function(req, res, next){
     });
 });
 
-router.get('/add_comment/:id_shop',database.getCommentsForCurrentShop,function(req, res, next){
+router.get('/add_comment/:id_shop',ensureAuthenticatedCustomer,database.getCommentsForCurrentShop,function(req, res, next){
     res.render('./customers/comments',{
         comments: req.komentari_za_prodavnicu,
         current_user: req.user.id_korisnika,
@@ -1620,7 +1623,7 @@ router.get('/add_comment/:id_shop',database.getCommentsForCurrentShop,function(r
     })
 });
 
-router.post('/add_comment/:id_shop',function(req, res, next){
+router.post('/add_comment/:id_shop',ensureAuthenticatedCustomer,function(req, res, next){
     let id_kupca = req.user.id_korisnika;
     let tekst_komentara = req.body.text_of_comment;
     let id_trgovine = req.params.id_shop;
