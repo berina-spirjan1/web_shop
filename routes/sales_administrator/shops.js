@@ -131,8 +131,8 @@ let database = {
                 res.end(err);
             client.query(`select distinct k.ime, k.prezime, k.id_korisnika
                           from korisnik k, trgovina t
-                          where t.id_menadzera = k.id_korisnika
-                          order by k.ime,k.prezime`,function (err,result) {
+                          where t.id_menadzera = $1
+                          order by k.ime,k.prezime`,[3],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -194,14 +194,14 @@ router.get('/add_shop', database.getAllDifferentCategories,
     res.render('./sales_administrator/add_new_shop',{
         categories: req.niz_kategorija,
         stores: req.niz_lanca_trgovina,
-        sales: [req.user.id_korisnika, req.user.ime, req.user.prezime]
+        sales: [3, "Berina", "Spirjan"]
     });
 });
 
 router.post('/add_shop',function(req, res, next) {
     let shop_name = req.body.shop_name;
     let category = req.body.category;
-    let sales_administrator = req.user.id_korisnika;
+    let sales_administrator = 3;
     let chain_store = req.body.chain_store;
 
     pool.connect(function (err,client,done) {
@@ -213,7 +213,7 @@ router.post('/add_shop',function(req, res, next) {
                 if (err)
                     throw(err);
                 else {
-                    res.redirect('/home/sales_administrator/shops')
+                    res.redirect('/home/sales_administrator/shops/add_location/'+shop_name);
                 }
             });
         }
@@ -309,6 +309,41 @@ router.post('/add_shop_image',function(req, res, next){
         req.flash('error', 'Format of image that you try to upload is not allowed.');
         res.redirect('/home/sales_administrator/shops');
     }
+})
+
+
+router.get('/add_location/:shop_name', function (req, res, next){
+    res.render('./sales_administrator/maps_for_shop',{name: req.params.shop_name});
+})
+
+router.post('/add_location/:shop_name',function(req, res, next){
+
+    const adresa = JSON.parse(req.body.adresa2);
+    console.info("OVO JE PRODAVNICA",req.params.shop_name);
+    console.info("OVO JE ADRESA",adresa);
+
+    pool.query(
+        'insert into adresa(latituda, longituda, ulica, grad) values ($1,$2,$3,$4) returning id_adresa',
+        [adresa.latitude,adresa.longitude, adresa.formattedAddress,adresa.addressComponents.city], (err, resp) => {
+            if (err) {
+
+                return res.render('error');
+            }
+
+            pool.query('update trgovina set id_adresa=$1 where naziv_trgovine = $2', [resp.rows[0].id_adresa, req.params.shop_name],
+                (err, resp) => {
+                    if (err) {
+                        console.error(err);
+                        return res.render('error');
+                    }
+                    else{
+                        console.log("OVO SE SALJE",resp);
+                    }
+                    res.redirect('/home/sales_administrator/shops');
+                }
+            );
+        }
+    );
 })
 
 module.exports = router;
