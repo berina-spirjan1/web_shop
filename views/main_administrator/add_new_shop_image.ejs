@@ -5,26 +5,24 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-       Shops
+        Add shop image
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-    <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-    <!-- CSS Files -->
     <link rel='stylesheet' href='/stylesheets/material-dashboard.css' />
 </head>
 
 <body class="dark-edition">
 <div class="wrapper ">
-    <div class="sidebar" data-color="green" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
+    <div class="sidebar" data-color="danger" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
         <div class="logo"><a href="http://localhost:3000/home/main_administrator" class="simple-text logo-normal">
                 Web shop
             </a></div>
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator">
+                    <a class="nav-link" href="http://localhost:3000/home/main_administrator">
                         <i class="material-icons">dashboard</i>
                         <p>Homepage</p>
                     </a>
@@ -35,40 +33,58 @@
                         <p>User Profile</p>
                     </a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator/shops">
-                        <i class="material-icons">location_city</i>
-                        <p>Shops</p>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator/shops_items">
-                        <i class="material-icons">local_grocery_store</i>
-                        <p>Items</p>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/home/shop_category">
+                        <i class="material-icons">store</i>
+                        <p>Shop category</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator/approving_orders">
+                    <a class="nav-link" href="http://localhost:3000/home/chain_store">
+                        <i class="material-icons">shop_two</i>
+                        <p>Chain store</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/home/users">
+                        <i class="material-icons">people</i>
+                        <p>Customers</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/home/user_type">
+                        <i class="material-icons">people</i>
+                        <p>User types</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/home/items">
+                        <i class="material-icons">shopping_basket</i>
+                        <p>Items</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/home/item_category">
+                        <i class="material-icons">redeem</i>
+                        <p>Item category</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/home/orders">
                         <i class="material-icons">shopping_basket</i>
                         <p>Orders</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator/approving_orders/accepted_orders">
-                        <i class="material-icons">local_taxi</i>
-                        <p>Deliver orders</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/home/sales_administrator/catalog">
-                        <i class="material-icons">local_shipping</i>
-                        <p>Catalogs</p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="http://localhost:3000/home/payment">
                         <i class="material-icons">payment</i>
-                        <p>Bill</p>
+                        <p>Payment</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/home/statistics">
+                        <i class="material-icons">pie_chart</i>
+                        <p>Statistic</p>
                     </a>
                 </li>
                 <li class="nav-item ">
@@ -81,7 +97,6 @@
         </div>
     </div>
     <div class="main-panel">
-        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
             <div class="container-fluid">
                 <div class="navbar-wrapper">
@@ -126,65 +141,48 @@
 
         <div class="content">
             <div class="container-fluid">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header card-header-success">
-                                    <h4 class="card-title ">LIST OF SHOPS</h4>
-                                    <p class="card-category"> All shops that are registered in our system.</p>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class=" text-primary">
-                                            <th>ID</th>
-                                            <th>NAME</th>
-                                            <th>CATEGORY</th>
-                                            <th>CHAIN STORE</th>
-                                            <th>SALES ADMINISTRATOR</th>
-                                            <th></th>
-                                            </thead>
-                                            <tbody>
-                                            <% for(let i = 0; i<listOfShops.length; i++){%>
-                                                <tr>
-                                                    <td><%= listOfShops[i].id_trgovine %></td>
-                                                    <td><%= listOfShops[i].naziv_trgovine %></td>
-                                                    <td><%= categories[i].naziv_kategorije%></td>
-                                                    <td><%= chainStore[i].naziv_lanca_trgovina%></td>
-                                                    <td><%= sale[0]%> <%= sale[1]%></td>
-                                                    <td class="td-actions text-right">
-                                                        <div class="row">
-                                                            <button type="button" rel="tooltip" title="Edit shop" class="btn btn-white btn-link btn-sm">
-                                                                <i class="material-icons">edit</i>
-                                                            </button>
-                                                            <form method="post" action="/home/sales_administrator/shops/delete_shop/<%= listOfShops[i].id_trgovine %>">
-                                                                <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
-                                                                    <i class="material-icons">close</i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            <%}%>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-10">
-                                <form method="post" action="/home/sales_administrator/shops/delete_all">
-                                    <button type="submit" class="btn btn-success pull-right">Delete all</button>
-                                    <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header card-header-danger">
+                                <h4 class="card-title">Add shop image</h4>
+                                <p class="card-category">Do you want to add new image for shop? Just go ahead.</p>
+                            </div>
+                            <div class="card-body">
+                                <form action="/home/sales_administrator/shops/add_shop_image" method="post" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <label for="uploaded_image" class="text-danger">Add images:</label><br>
+                                                <input type="file" id="image" name ="image" multiple="multiple" accept=""
+                                                       value="<%= typeof Slika != "undefined" ? Slika : '' %>"/>
+                                                <button type="submit" class="btn btn-danger pull-right">Add</button>
+                                            </div>
+                                        </div>
                                 </form>
+                                    <br><br>
+                                    <a href="/home/sales_administrator/shops/add_shop" class="btn btn-danger pull-right">Next</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-profile">
+                            <div class="card-avatar">
+                                <a href="#pablo">
+                                    <img class="img" src="https://www.pngitem.com/pimgs/m/22-220721_circled-user-male-type-user-colorful-icon-png.png" />
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-category">Main administrator</h6>
+                                <h4 class="card-title"></h4>
+                                <p class="card-description">
+                                    No matter how many customers you have, each is an individual. The day you start thinking of them as this amorphous ‘collection’ and stop thinking of them as people is the day you start going out of business.
+                                </p>
+                                <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
 
                             </div>
-                            <div class="col-2">
-                                <a class="btn btn-success pull-right" href="http://localhost:3000/home/sales_administrator/shops/add_shop_image">Add shop</a>
-                                <div class="clearfix"></div>
-                            </div>
                         </div>
+                    </div>
+                </div>
             </div>
         </div>
         <script>
@@ -194,33 +192,6 @@
         </script>
     </div>
 </div>
-        <script>
-            function updateShop(id) {
-                let shop = document.getElementById(id).value;
-                let category_type = $("#"+id+"b").val();
-
-                let category;
-                let category_name;
-                category_type = category_type.split('$');
-                category = category_type[0];
-                category_name = category_type[1];
-
-                $.ajax({
-                    url:'/home/shops/update',
-                    method: 'put',
-                    data: {
-                        id,
-                        shop,
-                        category
-                    },
-                    success:function (result) {
-                        $('#' + id + 'a').text(shop);
-                        $('#' + id + 'c').text(category_name);
-                        $('.skriveno').hide();
-                    }
-                });
-            }
-        </script>
 
 <script src="../assets/js/core/jquery.min.js"></script>
 <script src="../assets/js/core/popper.min.js"></script>
@@ -233,6 +204,7 @@
 <script src="../assets/js/plugins/bootstrap-notify.js"></script>
 
 <script>
+
     $(document).ready(function() {
         $().ready(function() {
             $sidebar = $('.sidebar');

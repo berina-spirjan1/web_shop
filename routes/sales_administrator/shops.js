@@ -132,7 +132,7 @@ let database = {
             client.query(`select distinct k.ime, k.prezime, k.id_korisnika
                           from korisnik k, trgovina t
                           where t.id_menadzera = $1
-                          order by k.ime,k.prezime`,[3],function (err,result) {
+                          order by k.ime,k.prezime`,[req.user.id_korisnika],function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -194,7 +194,7 @@ router.get('/add_shop', database.getAllDifferentCategories,
     res.render('./sales_administrator/add_new_shop',{
         categories: req.niz_kategorija,
         stores: req.niz_lanca_trgovina,
-        sales: [3, "Berina", "Spirjan"]
+        sales: [req.user.id_korisnika, req.user.ime, req.user.prezime]
     });
 });
 
@@ -319,8 +319,6 @@ router.get('/add_location/:shop_name', function (req, res, next){
 router.post('/add_location/:shop_name',function(req, res, next){
 
     const adresa = JSON.parse(req.body.adresa2);
-    console.info("OVO JE PRODAVNICA",req.params.shop_name);
-    console.info("OVO JE ADRESA",adresa);
 
     pool.query(
         'insert into adresa(latituda, longituda, ulica, grad) values ($1,$2,$3,$4) returning id_adresa',
