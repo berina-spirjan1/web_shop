@@ -77,8 +77,7 @@ let database = {
             client.query(`select a.id_artikla, a.cijena_artikla, a.naziv_artikla, a.opis_artikla, a.dostupna_kolicina,a.sadrzaj_artikla, array_agg(f.path) as slike_artikla
                           from artikal a, interesi_korisnika ik, kategorija k, kategorija_artikla ak, artikal_tagovi at, artikal_kategorija_artikla aka,
                                trgovina t, fotografija f, artikal_fotografija af
-                          where ik.id_kategorija_artikla = ak.id_kategorija_artikla
-                          and f.id_fotografije = af.id_fotografije
+                          where f.id_fotografije = af.id_fotografije
                           and a.id_artikla = af.id_artikla
                           and at.id_taga = ik.id_tagovi_artikla
                           and at.id_artikla = a.id_artikla
@@ -761,7 +760,7 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select * from tagovi_za_artikle;`,function (err,result) {
+            client.query(`select * from kategorija_artikla;`,function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -1178,10 +1177,34 @@ router.get('/single_shop/:id/categories/:id_category',
         });
 });
 router.get('/interest',database.getAllTags,function(req,res,next){
+
     res.render('./customers/interest_list',{
         tags: req.svi_tagovi
     });
 })
+
+
+router.post('/interest',function(req, res, next){
+
+    let interesi = req.body.interest;
+
+    for(let i = 0; i<interesi.length;i++){
+        pool.connect(function (err,client,done) {
+            if(err)
+                throw(err);
+            else {
+                client.query(` INSERT INTO interesi_korisnika (id_korisnika, id_tagovi_artikla)
+                               values ($1, $2);`, [3,parseInt(interesi[i])],function (err,result) {
+                    done();
+                    if (err)
+                        throw(err);
+                });
+            }
+        });
+    }
+    res.redirect('/home/customer/');
+
+});
 
 
 router.get('/all_items',database.getAllItems,

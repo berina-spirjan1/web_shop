@@ -17,22 +17,22 @@
 <section class="ftco-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-4">
+            <form class="col-md-4" method="post" action="/home/customer/interest">
                 <div class="wrap w-100">
                     <div class="heading-title mb-4 text-center">
                         <h3>Choose your interest</h3>
                     </div>
-                    <ul class="ks-cboxtags p-0 m-0">
+                    <ul class="p-0 m-0" style="list-style: none;">
                         <% for (let i = 0; i<tags.length;i++){%>
-                            <li style="background: <%= tags[i].boja_taga%>">
-                                <input type="checkbox" value="<%= tags[i].id_taga%>">
-                                <label for="checkboxOne"><%= tags[i].naziv_taga%></label>
+                            <li style="background: <%= tags[i].boja_kategorije%>;  margin-bottom: 10px; padding: 10px; font-size: 16px; color: #000000; border-radius: 10px;">
+                                <input type="checkbox" name="interest" value="<%= tags[i].id_kategorija_artikla%>" style="margin-right: 10px;">
+                                <label for="checkboxOne"><%= tags[i].naziv_kategorije%></label>
                             </li>
                         <%}%>
-
+                            <button class="btn-outline-info" type="submit">SAVE</button>
                     </ul>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </section>
