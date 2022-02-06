@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pg = require('pg');
+
 const randtoken = require('rand-token');
 
 let sendEmailForResetPassword = require('../functions/SendEmailForResetPassword');

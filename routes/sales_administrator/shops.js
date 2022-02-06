@@ -1,6 +1,7 @@
 const express = require('express');
 const pg = require("pg");
 const router = express.Router();
+let alert = require('alert');
 
 const config = {
     user: 'vhaxxure',
@@ -14,7 +15,6 @@ const config = {
 
 const pool = new pg.Pool(config);
 
-const alert = require("alert");
 
 let database = {
     getAllShops: function(req,res,next){
@@ -297,7 +297,7 @@ router.post('/add_shop_image',function(req, res, next){
                             else {
                                 req.slika_za_prodavnicu = result;
                                 console.info("SLika je",result);
-                                req.flash('success_msg', 'Uspješno dodat novi artikal');
+                                alert('Successfully added shop image!');
                                 res.redirect('/home/sales_administrator/shops');
                             }
                         });

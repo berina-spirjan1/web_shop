@@ -1,6 +1,7 @@
 const express = require('express');
 const pg = require("pg");
 const router = express.Router();
+let alert = require('alert');
 
 const config = {
     user: 'vhaxxure',
