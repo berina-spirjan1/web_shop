@@ -3,6 +3,7 @@ const router = express.Router();
 
 const pg = require("pg");
 const alert = require("alert");
+const {ensureAuthenticatedSalesAdministrator} = require("../../authentication/salesAdministrator");
 
 const config = {
     user: 'vhaxxure',
@@ -46,17 +47,17 @@ let database = {
 }
 
 
-router.get('/', database.getAllCatalogsForYourShops,function(req, res, next) {
+router.get('/', ensureAuthenticatedSalesAdministrator,database.getAllCatalogsForYourShops,function(req, res, next) {
     res.render('./sales_administrator/crud_for_catalog',{catalogs: req.katalog});
 });
 
-router.get('/delete_catalog',
+router.get('/delete_catalog',ensureAuthenticatedSalesAdministrator,
     function(req, res, next) {
         res.redirect('/home/sales_administrator/catalog');
     });
 
 
-router.post('/delete_catalog/:id', function(req, res, next) {
+router.post('/delete_catalog/:id',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -78,12 +79,12 @@ router.post('/delete_catalog/:id', function(req, res, next) {
 
 
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedSalesAdministrator,
     function(req, res, next) {
         res.redirect('/home/sales_administrator/catalog');
     });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all', ensureAuthenticatedSalesAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);

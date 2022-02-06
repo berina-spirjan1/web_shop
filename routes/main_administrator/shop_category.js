@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pg = require("pg");
 const alert = require("alert");
-
+const { ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 const config = {
     user: 'vhaxxure',
     database: 'vhaxxure',
@@ -54,20 +54,20 @@ let database={
 }
 
 
-router.get('/', database.getAllCategoriesForShops,
+router.get('/', ensureAuthenticatedMainAdministrator,database.getAllCategoriesForShops,
                      database.getAllNumberOfShops,
     function(req, res, next) {
         res.render('./main_administrator/crud_for_shop_category',{categories: req.niz_kategorija, number_of_shops: req.broj_prodavnica});
     });
 
 
-router.get('/delete_shop_category',
+router.get('/delete_shop_category',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/shop_category');
     });
 
 
-router.post('/delete_shop_category/:id', function(req, res, next) {
+router.post('/delete_shop_category/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -87,12 +87,12 @@ router.post('/delete_shop_category/:id', function(req, res, next) {
 });
 
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/shop_category');
     });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -111,12 +111,12 @@ router.post('/delete_all', function(req, res, next) {
 });
 
 
-router.get('/add_new_shop_category',
+router.get('/add_new_shop_category',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.render('./main_administrator/add_new_shop_category');
     });
 
-router.post('/add_new_shop_category',function(req, res, next) {
+router.post('/add_new_shop_category',ensureAuthenticatedMainAdministrator,function(req, res, next) {
 
     let category_name = req.body.category_name;
     let category_logo = req.body.category_logo;

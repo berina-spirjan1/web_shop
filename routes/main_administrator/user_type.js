@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pg = require("pg");
 const alert = require("alert");
-
+const { ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 const config = {
     user: 'vhaxxure',
     database: 'vhaxxure',
@@ -54,20 +54,20 @@ let database={
 }
 
 
-router.get('/', database.getAllTypesOfUser,
+router.get('/',ensureAuthenticatedMainAdministrator, database.getAllTypesOfUser,
                      database.getAllNumberOfUsers,
     function(req, res, next) {
         res.render('./main_administrator/crud_for_type_of_user',{user_types: req.tip_korisnika, number_of_users: req.broj_korisnika});
     });
 
 
-router.get('/delete_user_type',
+router.get('/delete_user_type',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/user_type');
     });
 
 
-router.post('/delete_user_type/:id', function(req, res, next) {
+router.post('/delete_user_type/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -88,12 +88,12 @@ router.post('/delete_user_type/:id', function(req, res, next) {
 });
 
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/user_type');
     });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -111,12 +111,12 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
-router.get('/add_user_type',
+router.get('/add_user_type',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.render('./main_administrator/add_user_type');
     });
 
-router.post('/add_user_type',function(req, res, next) {
+router.post('/add_user_type',ensureAuthenticatedMainAdministrator,function(req, res, next) {
 
     let position = req.body.position;
 

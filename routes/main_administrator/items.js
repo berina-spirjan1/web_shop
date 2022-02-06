@@ -12,6 +12,7 @@ const config = {
     max: 100,
     idleTimeoutMillis: 30000,
 };
+const { ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 
 const pool = new pg.Pool(config);
 
@@ -57,20 +58,20 @@ let database={
 
 
 
-router.get('/', database.getAllItems,
+router.get('/', ensureAuthenticatedMainAdministrator,database.getAllItems,
     function(req, res, next) {
         res.render('./main_administrator/crud_for_items',{
             items: req.niz_svih_informacija
         });
 });
 
-router.get('/add_item', database.getAllDifferentCategories,
+router.get('/add_item', ensureAuthenticatedMainAdministrator,database.getAllDifferentCategories,
     function(req, res, next) {
         res.render('./main_administrator/add_new_item',{itemCategory: req.niz_kategorija});
 });
 
 
-router.post('/add_item',function(req, res, next) {
+router.post('/add_item',ensureAuthenticatedMainAdministrator,function(req, res, next) {
     let name = req.body.name;
     let description = req.body.description;
     let amount = req.body.amount;
@@ -95,12 +96,12 @@ router.post('/add_item',function(req, res, next) {
     });
 });
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/items');
     });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -118,13 +119,13 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
-router.get('/delete_item',
+router.get('/delete_item',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/items');
     });
 
 
-router.post('/delete_item/:id', function(req, res, next) {
+router.post('/delete_item/:id',ensureAuthenticatedMainAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);

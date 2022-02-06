@@ -1,6 +1,7 @@
 const express = require('express');
 const pg = require("pg");
 const alert = require("alert");
+const {ensureAuthenticatedSalesAdministrator} = require("../../authentication/salesAdministrator");
 const router = express.Router();
 
 const config = {
@@ -419,7 +420,7 @@ let database = {
 
 
 
-router.get('/', database.getNumberOfShopsForCurrentSales,
+router.get('/',ensureAuthenticatedSalesAdministrator, database.getNumberOfShopsForCurrentSales,
                      database.getNumberOfChainStoresForCurrentSales,
                      database.getNumberOfOrdersForSales,
                      database.getAllShops,
@@ -446,7 +447,7 @@ router.get('/', database.getNumberOfShopsForCurrentSales,
 });
 
 
-router.get('/bill',database.getSingleBill,
+router.get('/bill',ensureAuthenticatedSalesAdministrator,database.getSingleBill,
                         database.getTotalProfit,
     function (req,res,next){
    res.render('./sales_administrator/all_shops_bills',{

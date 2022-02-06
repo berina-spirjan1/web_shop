@@ -2,6 +2,7 @@ const express = require('express');
 const pg = require("pg");
 const router = express.Router();
 let alert = require('alert');
+const {ensureAuthenticatedSalesAdministrator} = require("../../authentication/salesAdministrator");
 
 const config = {
     user: 'vhaxxure',
@@ -147,7 +148,7 @@ let database = {
 
 
 
-router.get('/', database.getAllShops,
+router.get('/',ensureAuthenticatedSalesAdministrator, database.getAllShops,
                 database.getAllSalesAdministratorsFromShops,
                 database.getAllCategoriesFromShops,
                 database.getAllChainStoresFromShop,
@@ -162,7 +163,7 @@ router.get('/', database.getAllShops,
     });
 });
 
-router.put('/update', function(req, res, next) {
+router.put('/update',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     let id = req.body.id;
     let shop_name = req.body.shop;
     let category = req.body.category;
@@ -187,7 +188,7 @@ router.put('/update', function(req, res, next) {
     });
 });
 
-router.get('/add_shop', database.getAllDifferentCategories,
+router.get('/add_shop',ensureAuthenticatedSalesAdministrator, database.getAllDifferentCategories,
                              database.getAllDifferentChainStores,
                              database.getAllDifferentSalesAdministrators,
     function(req, res, next) {
@@ -198,7 +199,7 @@ router.get('/add_shop', database.getAllDifferentCategories,
     });
 });
 
-router.post('/add_shop',function(req, res, next) {
+router.post('/add_shop',ensureAuthenticatedSalesAdministrator,function(req, res, next) {
     let shop_name = req.body.shop_name;
     let category = req.body.category;
     let sales_administrator = 3;
@@ -220,13 +221,13 @@ router.post('/add_shop',function(req, res, next) {
     });
 });
 
-router.get('/delete_shop',
+router.get('/delete_shop',ensureAuthenticatedSalesAdministrator,
     function(req, res, next) {
         res.redirect('/home/sales_administrator/shops');
     });
 
 
-router.post('/delete_shop/:id', function(req, res, next) {
+router.post('/delete_shop/:id', ensureAuthenticatedSalesAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -246,12 +247,12 @@ router.post('/delete_shop/:id', function(req, res, next) {
     });
 });
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedSalesAdministrator,
     function(req, res, next) {
         res.redirect('/home/sales_administrator/shops');
     });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -269,13 +270,13 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
-router.get('/add_shop_image',
+router.get('/add_shop_image',ensureAuthenticatedSalesAdministrator,
     function(req, res, next) {
         res.render('./main_administrator/add_new_shop_image');
     });
 
 
-router.post('/add_shop_image',function(req, res, next){
+router.post('/add_shop_image',ensureAuthenticatedSalesAdministrator,function(req, res, next){
     let file = req.files.uploaded_image;
     let img_name=file.name;
 
@@ -312,7 +313,7 @@ router.post('/add_shop_image',function(req, res, next){
 })
 
 
-router.get('/add_location/:shop_name', function (req, res, next){
+router.get('/add_location/:shop_name', ensureAuthenticatedSalesAdministrator,function (req, res, next){
     res.render('./sales_administrator/maps_for_shop',{name: req.params.shop_name});
 })
 

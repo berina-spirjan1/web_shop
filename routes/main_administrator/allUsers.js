@@ -126,7 +126,7 @@ let database = {
 
 
 
-router.get('/', database.getAllUsers,
+router.get('/',ensureAuthenticatedMainAdministrator, database.getAllUsers,
     database.getAllPositions,
     database.getAllCategoriesFromShops,
     database.getAllChainStoresFromShop,
@@ -140,7 +140,7 @@ router.get('/', database.getAllUsers,
         });
     });
 
-router.get('/add_user', database.getAllDifferentPositions,
+router.get('/add_user', ensureAuthenticatedMainAdministrator,database.getAllDifferentPositions,
                              database.getAllStatus,
                              function(req, res, next) {
     res.render('./main_administrator/add_new_user',{
@@ -150,7 +150,7 @@ router.get('/add_user', database.getAllDifferentPositions,
 });
 
 
-router.post('/add_user',function(req, res, next) {
+router.post('/add_user',ensureAuthenticatedMainAdministrator,function(req, res, next) {
 
     let first_name = req.body.first_name;
     let last_name = req.body.last_name;
@@ -181,12 +181,12 @@ router.post('/add_user',function(req, res, next) {
     });
 });
 
-router.get('/archive_user',
+router.get('/archive_user',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/users');
 });
 
-router.post('/archive_user/:id', function(req, res, next) {
+router.post('/archive_user/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -208,12 +208,12 @@ router.post('/archive_user/:id', function(req, res, next) {
     });
 });
 
-router.get('/block_user',
+router.get('/block_user',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/users');
     });
 
-router.post('/block_user/:id', function(req, res, next) {
+router.post('/block_user/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -235,12 +235,12 @@ router.post('/block_user/:id', function(req, res, next) {
     });
 });
 
-router.get('/block_user_for_15',
+router.get('/block_user_for_15',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/users');
     });
 
-router.post('/block_user_for_15/:id', function(req, res, next) {
+router.post('/block_user_for_15/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -262,12 +262,12 @@ router.post('/block_user_for_15/:id', function(req, res, next) {
     });
 });
 
-router.get('/unblock_user_for_15',
+router.get('/unblock_user_for_15',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/users');
     });
 
-router.post('/unblock_user_for_15/:id', function(req, res, next) {
+router.post('/unblock_user_for_15/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -290,13 +290,13 @@ router.post('/unblock_user_for_15/:id', function(req, res, next) {
 });
 
 
-router.get('/delete_user',
+router.get('/delete_user',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/users');
 });
 
 
-router.post('/delete_user/:id', function(req, res, next) {
+router.post('/delete_user/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -316,7 +316,7 @@ router.post('/delete_user/:id', function(req, res, next) {
     });
 });
 
-router.get('/update_user/:id', database.getAllDifferentPositions,
+router.get('/update_user/:id', ensureAuthenticatedMainAdministrator,database.getAllDifferentPositions,
     function(req, res, next) {
         pool.connect(function (err,client,done) {
             if(err)
@@ -336,7 +336,7 @@ router.get('/update_user/:id', database.getAllDifferentPositions,
         });
 });
 
-router.post('/update_user/:id', function(req, res, next) {
+router.post('/update_user/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -356,12 +356,12 @@ router.post('/update_user/:id', function(req, res, next) {
     });
 });
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/users');
 });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -379,12 +379,12 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
-router.get('/unarchived_user',
+router.get('/unarchived_user',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/users');
     });
 
-router.post('/unarchived_user/:id', function(req, res, next) {
+router.post('/unarchived_user/:id',ensureAuthenticatedMainAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -406,12 +406,12 @@ router.post('/unarchived_user/:id', function(req, res, next) {
     });
 });
 
-router.get('/unblock_user',
+router.get('/unblock_user',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/users');
     });
 
-router.post('/unblock_user/:id', function(req, res, next) {
+router.post('/unblock_user/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);

@@ -2,7 +2,7 @@ const express = require('express');
 const pg = require("pg");
 const router = express.Router();
 let alert = require('alert');
-
+const { ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 const config = {
     user: 'vhaxxure',
     database: 'vhaxxure',
@@ -92,14 +92,14 @@ let database = {
     }
 }
 
-router.get('/', database.getAllOrders,
+router.get('/',ensureAuthenticatedMainAdministrator, database.getAllOrders,
     function(req, res, next) {
         res.render('./main_administrator/crud_for_orders',{
             orders: req.niz_svih_narudzbi
         });
 });
 
-router.get('/add_order', database.getAllTypesOfPayment,
+router.get('/add_order',ensureAuthenticatedMainAdministrator, database.getAllTypesOfPayment,
                               database.getAllCustomers,
                               function(req, res, next) {
     res.render('./main_administrator/add_new_order',{

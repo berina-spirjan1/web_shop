@@ -14,7 +14,7 @@ const config = {
 };
 
 const pool = new pg.Pool(config);
-
+const { ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 
 let database={
     getAllCategoriesForItems:function(req,res,next){
@@ -55,20 +55,20 @@ let database={
 }
 
 
-router.get('/', database.getAllCategoriesForItems,
+router.get('/',ensureAuthenticatedMainAdministrator, database.getAllCategoriesForItems,
                      database.getAllNumberOfItems,
     function(req, res, next) {
         res.render('./main_administrator/crud_for_item_category',{categories: req.niz_kategorija, number_of_shops: req.broj_prodavnica});
     });
 
 
-router.get('/delete_item_category',
+router.get('/delete_item_category',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/item_category');
     });
 
 
-router.post('/delete_item_category/:id', function(req, res, next) {
+router.post('/delete_item_category/:id',ensureAuthenticatedMainAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -88,12 +88,12 @@ router.post('/delete_item_category/:id', function(req, res, next) {
 });
 
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/shop_category');
     });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -112,12 +112,12 @@ router.post('/delete_all', function(req, res, next) {
 });
 
 
-router.get('/add_new_item',
+router.get('/add_new_item',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.render('./main_administrator/add_new_item_category');
 });
 
-router.post('/add_new_item',function(req, res, next) {
+router.post('/add_new_item',ensureAuthenticatedMainAdministrator,function(req, res, next) {
 
     let category_name = req.body.category_name;
     let category_logo = req.body.category_logo;

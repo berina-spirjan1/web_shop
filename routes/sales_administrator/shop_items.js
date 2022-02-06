@@ -3,6 +3,7 @@ const router = express.Router();
 
 const pg = require("pg");
 const alert = require("alert");
+const {ensureAuthenticatedSalesAdministrator} = require("../../authentication/salesAdministrator");
 
 const config = {
     user: 'vhaxxure',
@@ -100,14 +101,14 @@ let database={
     }
 }
 
-router.get('/', database.getAllItemsFromYourShops,function(req, res, next) {
+router.get('/',ensureAuthenticatedSalesAdministrator, database.getAllItemsFromYourShops,function(req, res, next) {
     res.render('./sales_administrator/crud_for_items_from_shops',{
         items_from_shops: req.artikli_iz_trgovina
     });
 });
 
 
-router.get('/add_photo',database.getAllCurrentImagesAdded,
+router.get('/add_photo',ensureAuthenticatedSalesAdministrator,database.getAllCurrentImagesAdded,
     function(req, res, next) {
 
         res.render('./main_administrator/add_new_image',{
@@ -115,7 +116,7 @@ router.get('/add_photo',database.getAllCurrentImagesAdded,
         })
 });
 
-router.post('/add_photo',
+router.post('/add_photo',ensureAuthenticatedSalesAdministrator,
     function(req, res, next) {
 
         let file = req.files.image;
@@ -151,7 +152,7 @@ router.post('/add_photo',
             res.redirect('/home/sales_administrator/shops_items/add_photo');
         }
 });
-router.get('/add_item', database.getAllDifferentCategories,
+router.get('/add_item',ensureAuthenticatedSalesAdministrator, database.getAllDifferentCategories,
     database.getAllItemsFromYourShops,
     function(req, res, next) {
         res.render('./main_administrator/add_new_item',{
@@ -160,7 +161,7 @@ router.get('/add_item', database.getAllDifferentCategories,
         });
     });
 
-router.post('/add_item',function(req, res, next) {
+router.post('/add_item',ensureAuthenticatedSalesAdministrator,function(req, res, next) {
     let name = req.body.name;
     let description = req.body.description;
     let amount = req.body.amount;
@@ -245,7 +246,7 @@ router.post('/add_item',function(req, res, next) {
     });
 });
 
-router.get('/edit_shop_item/:id', function(req, res, next) {
+router.get('/edit_shop_item/:id',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
 
     let id_trgovca = req.user.id_korisnika;
 
@@ -273,7 +274,7 @@ router.get('/edit_shop_item/:id', function(req, res, next) {
 });
 
 
-router.get('/add_new_tag',
+router.get('/add_new_tag',ensureAuthenticatedSalesAdministrator,
     function(req, res, next) {
         res.render('./sales_administrator/add_tags_for_items');
     });
@@ -300,14 +301,14 @@ router.post('/add_new_tag',function(req, res, next) {
     });
 });
 
-router.get('/add_item_category', database.getAllPosibleCategoriesForCurrentItem,
+router.get('/add_item_category',ensureAuthenticatedSalesAdministrator, database.getAllPosibleCategoriesForCurrentItem,
     function(req, res, next) {
         res.render('./main_administrator/add_item_category',{
             itemCategory: req.moguce_kategorije
     });
 });
 
-router.post('/add_item_category', function(req, res, next){
+router.post('/add_item_category',ensureAuthenticatedSalesAdministrator, function(req, res, next){
    let category = req.body.category;
 
     pool.connect(function (err,client,done) {

@@ -13,6 +13,10 @@ const config = {
     idleTimeoutMillis: 30000,
 };
 
+const { ensureAuthenticated} = require('../../authentication/allUsers');
+const { ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
+
+
 const pool = new pg.Pool(config);
 
 let database = {
@@ -278,7 +282,7 @@ let database = {
 }
 
 
-router.get('/', function(req, res, next) {
+router.get('/',  ensureAuthenticated,function(req, res, next) {
 
     if(req.user.id_tip_korisnika === 1 && req.user.status !== 'blokiran') {
         res.redirect('/home/main_administrator');
@@ -294,7 +298,7 @@ router.get('/', function(req, res, next) {
     }
 });
 
-router.get('/main_administrator', database.getTotalNumberOfSalesAdministrators,
+router.get('/main_administrator', ensureAuthenticatedMainAdministrator,database.getTotalNumberOfSalesAdministrators,
                                   database.getTotalNumberOfCustomers,
                                   database.getTotalNumberOfItems,
                                   database.getTotalNumberOfOrders,
@@ -322,13 +326,13 @@ router.get('/main_administrator', database.getTotalNumberOfSalesAdministrators,
         });
 });
 
-router.get('/user',function(req, res, next) {
+router.get('/user',ensureAuthenticatedMainAdministrator,function(req, res, next) {
     res.render('./main_administrator/main_administrator_profile',{
         data: req.user
     });
 });
 
-router.get('/statistics',database.getNumberOfOrdersForSingleDay,
+router.get('/statistics',ensureAuthenticatedMainAdministrator,database.getNumberOfOrdersForSingleDay,
                               database.getMostPopularCategoryOfArticleForSingleDays,
                               database.getNumberOfOrdersByDay,
                               database.getTotalProfitForSingleDay,

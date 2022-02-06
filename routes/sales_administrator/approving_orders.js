@@ -15,6 +15,8 @@ const config = {
     idleTimeoutMillis: 30000,
 };
 
+const {ensureAuthenticatedSalesAdministrator} = require('../../authentication/salesAdministrator');
+
 const pool = new pg.Pool(config);
 
 let database={
@@ -111,7 +113,7 @@ let database={
 
 
 
-router.get('/', database.getListOfOrders,
+router.get('/',ensureAuthenticatedSalesAdministrator, database.getListOfOrders,
     function(req, res, next) {
     res.render('./sales_administrator/crud_for_orders',{
         allOrders: req.sve_narudzbe
@@ -119,12 +121,12 @@ router.get('/', database.getListOfOrders,
 });
 
 
-router.get('/approve',database.SendEmailChangedStatus,
+router.get('/approve',ensureAuthenticatedSalesAdministrator,database.SendEmailChangedStatus,
     function(req, res, next) {
         res.redirect('/home/sales_administrator/approving_orders');
     });
 
-router.post('/approve/:id/:email', function(req, res, next) {
+router.post('/approve/:id/:email',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -144,12 +146,12 @@ router.post('/approve/:id/:email', function(req, res, next) {
     });
 });
 
-router.get('/reject',database.SendEmailChangedStatus,
+router.get('/reject',ensureAuthenticatedSalesAdministrator,database.SendEmailChangedStatus,
     function(req, res, next) {
         res.redirect('/home/sales_administrator/approving_orders');
     });
 
-router.post('/reject/:id/:email', function(req, res, next) {
+router.post('/reject/:id/:email',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -170,12 +172,12 @@ router.post('/reject/:id/:email', function(req, res, next) {
 });
 
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedSalesAdministrator,
     function(req, res, next) {
         res.redirect('/home/sales_administrator/approving_orders');
     });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -193,7 +195,7 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
-router.get('/accepted_orders',database.getListOfAcceptedOrders,
+router.get('/accepted_orders',ensureAuthenticatedSalesAdministrator,database.getListOfAcceptedOrders,
     function(req, res, next) {
         res.render('./sales_administrator/crud_for_delivery',{
             allOrders: req.prihvacene_narudzbe
@@ -201,12 +203,12 @@ router.get('/accepted_orders',database.getListOfAcceptedOrders,
 });
 
 
-router.get('/delivery', database.SendEmailChangedStatus,
+router.get('/delivery',ensureAuthenticatedSalesAdministrator, database.SendEmailChangedStatus,
     function(req, res, next) {
         res.redirect('/home/sales_administrator/approving_orders');
 });
 
-router.post('/delivery/:id/:email', function(req, res, next) {
+router.post('/delivery/:id/:email',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -226,12 +228,12 @@ router.post('/delivery/:id/:email', function(req, res, next) {
     });
 });
 
-router.get('/deliver_all',
+router.get('/deliver_all',ensureAuthenticatedSalesAdministrator,
     function(req, res, next) {
         res.redirect('/home/sales_administrator/approving_orders');
 });
 
-router.post('/deliver_all', database.getListOfAcceptedOrders, function(req, res, next) {
+router.post('/deliver_all',ensureAuthenticatedSalesAdministrator, database.getListOfAcceptedOrders, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);

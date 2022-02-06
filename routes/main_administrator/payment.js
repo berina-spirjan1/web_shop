@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pg = require("pg");
 const alert = require("alert");
-
+const { ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 const config = {
     user: 'vhaxxure',
     database: 'vhaxxure',
@@ -35,19 +35,19 @@ let database={
 }
 
 
-router.get('/', database.getAllTypesOfPayment,
+router.get('/',ensureAuthenticatedMainAdministrator, database.getAllTypesOfPayment,
                      function(req, res, next) {
     res.render('./main_administrator/crud_for_payment',{payment_types: req.tip_placanja});
 });
 
 
-router.get('/delete_payment',
+router.get('/delete_payment',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/payment');
 });
 
 
-router.post('/delete_payment/:id', function(req, res, next) {
+router.post('/delete_payment/:id',ensureAuthenticatedMainAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -68,12 +68,12 @@ router.post('/delete_payment/:id', function(req, res, next) {
 });
 
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/payment');
 });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -91,12 +91,12 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
-router.get('/add_payment',
+router.get('/add_payment',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.render('./main_administrator/add_payment');
     });
 
-router.post('/add_payment',function(req, res, next) {
+router.post('/add_payment',ensureAuthenticatedMainAdministrator,function(req, res, next) {
 
     let payment = req.body.payment;
 

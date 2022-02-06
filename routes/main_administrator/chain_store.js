@@ -3,6 +3,8 @@ const router = express.Router();
 const pg = require("pg");
 const alert = require("alert");
 
+const {ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
+
 const config = {
     user: 'vhaxxure',
     database: 'vhaxxure',
@@ -91,7 +93,7 @@ let database={
 }
 
 
-router.get('/', database.getAllChainStore,
+router.get('/',ensureAuthenticatedMainAdministrator, database.getAllChainStore,
                      database.getAllNumberOfShops,
                      database.getAllSalesAdministrators,
     function(req, res, next) {
@@ -99,13 +101,13 @@ router.get('/', database.getAllChainStore,
 });
 
 
-router.get('/delete_chain_store',
+router.get('/delete_chain_store',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/chain_store');
     });
 
 
-router.post('/delete_chain_store/:id', function(req, res, next) {
+router.post('/delete_chain_store/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -125,12 +127,12 @@ router.post('/delete_chain_store/:id', function(req, res, next) {
 });
 
 
-router.get('/delete_all',
+router.get('/delete_all',ensureAuthenticatedMainAdministrator,
     function(req, res, next) {
         res.redirect('/home/chain_store');
     });
 
-router.post('/delete_all', function(req, res, next) {
+router.post('/delete_all', ensureAuthenticatedMainAdministrator,function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -148,14 +150,14 @@ router.post('/delete_all', function(req, res, next) {
     });
 });
 
-router.get('/add_new_chain_store', database.getAllDifferentSalesAdministrators,
+router.get('/add_new_chain_store', ensureAuthenticatedMainAdministrator,database.getAllDifferentSalesAdministrators,
     function(req, res, next) {
         res.render('./main_administrator/add_new_chain_store',{
             sales: req.niz_trgovaca
         });
 });
 
-router.post('/add_new_chain_store',function(req, res, next) {
+router.post('/add_new_chain_store',ensureAuthenticatedMainAdministrator,function(req, res, next) {
 
     let chain_store_name = req.body.chain_store_name;
     let sales_administrator = req.body.sales_administrator;
