@@ -131,7 +131,7 @@ router.post('/add_photo',
                         if(err)
                             throw(err);
                         else {
-                           client.query("select * from DodajFotografiju($1,$2);", ['public/images/'+img_name,req.user.id_korisnika], function (err, result) {
+                           client.query("select * from DodajFotografiju($1,$2);", [img_name,req.user.id_korisnika], function (err, result) {
                                done();
                                if (err)
                                    throw(err);
@@ -187,7 +187,7 @@ router.post('/add_item',function(req, res, next) {
                                     throw(err);
                                 else {
                                     client.query(`call ZavrsiBezPopusta($1, $2, $3, $4, $5, $6, $7, $8); `,
-                                        [name, description, amount, price, content,'public/images/'+img_name,shop,req.user.id_korisnika],
+                                        [name, description, amount, price, content,img_name,shop,req.user.id_korisnika],
                                         function (err, result) {
                                         done();
                                         if (err)
@@ -220,7 +220,7 @@ router.post('/add_item',function(req, res, next) {
                                 else {
                                     client.query(`call ZavrsiSnizeni($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`,
                                         [name, description, amount, price,req.body.starting_date, req.body.discount,
-                                            content,req.body.ending_date,'public/images/'+img_name,shop,req.user.id_korisnika], function (err, result) {
+                                            content,req.body.ending_date,img_name,shop,req.user.id_korisnika], function (err, result) {
                                             done();
                                             if (err)
                                                 throw(err);

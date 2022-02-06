@@ -286,7 +286,7 @@ router.get('/', function(req, res, next) {
         res.redirect('/home/sales_administrator');
     }
     else if (req.user.id_tip_korisnika === 2 && req.user.status !== 'blokiran' && req.user.status !== 'blokiran na 15' && req.user.id_adresa!==null){
-        res.redirect('/poziv_chat/'+req.user.id_tip_korisnika);
+        res.redirect('/home/customer/profile');
     }
     if(req.user.id_adresa===null){
         res.redirect('/add_location/'+req.user.username);

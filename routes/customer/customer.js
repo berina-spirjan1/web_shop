@@ -771,6 +771,60 @@ let database = {
                 }
             });
         });
+    },
+    getLocationForUser: function(req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select a.latituda, a.longituda, a.grad, a.id_adresa
+                          from adresa a, korisnik k 
+                          where k.id_korisnika = $1 
+                          and k.id_adresa = a.id_adresa;`,[req.user.id_korisnika],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.adresa = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getTypeOfUser: function(req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select t.pozicija_korisnika
+                          from tip_korisnika t, korisnik k 
+                          where k.id_korisnika = $1 
+                          and t.id_tip_korisnika = k.id_tip_korisnika;`,[req.user.id_korisnika],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.tip_korisnika = result.rows;
+                    next();
+                }
+            });
+        });
+    },
+    getProfileImage: function(req, res, next){
+        pool.connect(function (err,client,done) {
+            if(err)
+                res.end(err);
+            client.query(`select f.path
+                          from fotografija f, korisnik k 
+                          where k.id_korisnika = $1 
+                          and f.id_fotografije = k.id_fotografije;`,[req.user.id_korisnika],function (err,result) {
+                done();
+                if(err)
+                    res.sendStatus(500);
+                else{
+                    req.slika_korisnika = result.rows;
+                    next();
+                }
+            });
+        });
     }
 }
 
@@ -1145,6 +1199,114 @@ router.get('/basket',database.getAllItemsFromBasket,function(req, res, next){
         basket: req.korpa
     });
 })
+
+router.get('/profile', database.getLocationForUser,
+                            database.getProfileImage,
+                            database.getTypeOfUser,
+    function(req, res, next){
+    res.render('./customers/user_profile',{
+        info: req.user,
+        address: req.adresa,
+        user_type: req.tip_korisnika,
+        image: req.slika_korisnika
+    });
+})
+
+
+router.post('/profile',function(req, res, next){
+
+    let ime = req.body.ime;
+    let prezime = req.body.prezime;
+    let email = req.body.email;
+    let broj_telefona = req.body.broj_telefona;
+
+    console.info("ispisi pokupljenu adresu",req.files);
+    let file = req.files.image;
+    let img_name=file.name;
+
+
+
+    if(file.mimetype === "image/jpeg" ||file.mimetype === "image/png" || file.mimetype === "image/gif" ){
+
+        file.mv('public/images/'+file.name, function(err) {
+            if (err)
+                return res.status(500).send(err);
+            else{
+                pool.connect(function (err,client,done) {
+                    if(err)
+                        throw(err);
+                    else {
+                        client.query("call AzurirajPodatkeOKorisniku($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);",
+                            [ime, prezime, broj_telefona, email, req.user.id_korisnika, img_name, req.body.lng, req.body.lat,req.body.location, 'Sarajevo'], function (err, result) {
+                                done();
+                                if (err)
+                                    throw(err);
+                                else {
+                                    alert("Updated information's about user");
+                                    res.redirect('/home/customer/profile');
+                                }
+                            });
+                    }
+                });
+            }
+        });
+    } else {
+        req.flash('error', 'Format of image that you try to upload is not allowed.');
+        res.redirect('/home/sales_administrator/shops');
+    }
+});
+
+
+router.post('/basket/:id',helpers.count,function(req, res, next){
+
+    let id_artikla= req.params.id;
+    let id_kupca = req.user.id_korisnika;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`insert into trenutna_korpa(id_artikla, id_kupca)
+                          values($1,$2);`, [id_artikla, id_kupca],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else {
+                    let brojac = req.brojac;
+                    brojac.parseInt;
+                    brojac++;
+                    alert("Successfully added item to your basket!");
+                }
+            });
+        }
+    });
+});
+
+router.post('/basket/:id',helpers.count,function(req, res, next){
+
+    let id_artikla= req.params.id;
+    let id_kupca = req.user.id_korisnika;
+
+    pool.connect(function (err,client,done) {
+        if(err)
+            throw(err);
+        else {
+            client.query(`insert into trenutna_korpa(id_artikla, id_kupca)
+                          values($1,$2);`, [id_artikla, id_kupca],function (err,result) {
+                done();
+                if (err)
+                    throw(err);
+                else {
+                    let brojac = req.brojac;
+                    brojac.parseInt;
+                    brojac++;
+                    alert("Successfully added item to your basket!");
+                }
+            });
+        }
+    });
+});
+
 
 router.post('/basket/:id',helpers.count,function(req, res, next){
 

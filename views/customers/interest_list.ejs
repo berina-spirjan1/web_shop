@@ -25,7 +25,7 @@
                     <ul class="ks-cboxtags p-0 m-0">
                         <% for (let i = 0; i<tags.length;i++){%>
                             <li style="background: <%= tags[i].boja_taga%>">
-                                <input type="checkbox" id="checkboxOne" value="<%= tags[i].id_taga%>" checked>
+                                <input type="checkbox" value="<%= tags[i].id_taga%>">
                                 <label for="checkboxOne"><%= tags[i].naziv_taga%></label>
                             </li>
                         <%}%>

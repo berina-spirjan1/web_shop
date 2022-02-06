@@ -290,7 +290,7 @@ router.post('/add_shop_image',function(req, res, next){
                         throw(err);
                     else {
                         client.query("select * from DodajSlikuPozadine($1);",
-                            ['public/images/'+img_name], function (err, result) {
+                            [img_name], function (err, result) {
                             done();
                             if (err)
                                 throw(err);

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All items</title>
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/customer.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="icon" href="https://www.codester.com/static/uploads/items/000/018/18804/icon.png"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyAPjL2ShXIKKUP1_pUZVEy0GvbH73f6flg&sensor=false&libraries=places"></script>
+    <script type="text/javascript" src="https://rawgit.com/Logicify/jquery-locationpicker-plugin/master/dist/locationpicker.jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body style="background: #031428; font-family: 'Segoe UI', sans-serif">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: #06203d;padding-left: 50px; padding-right: 50px">
+    <a class="navbar-brand" href="#">LUXURY SHOPS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/customer/shops">Shops</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Items
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/home/customer/all_items">List of all items</a>
+                    <a class="dropdown-item" href="#">Catalogs</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Orders
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/home/customer/all_orders">List of all your orders</a>
+                    <a class="dropdown-item" href="/home/customer/all_delivery_orders">List of orders that are waiting to delivery</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/customer/basket"><i class="material-icons">local_grocery_store</i></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/home/customer/profile"><i class="material-icons">person_pin</i></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<form class="container rounded bg-white mt-5 mb-5" method="post" action="/home/customer/profile" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <% if(image.length!==0){%>
+                    <img class="rounded-circle mt-5" width="150px" height="150px" src="http://localhost:3000/images/<%= image[0].path%>">
+                <%}else{%>
+                    <img class="rounded-circle mt-5" width="150px"  src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <%}%>
+                <span class="font-weight-bold">
+                    <%= info.username%></span>
+                <span class="text-black-50"><%= info.email%></span>
+                <span>
+                    <input type="file" id="image" name ="image" multiple="multiple" accept="" style="margin-top: 50px; margin-left: 50px;"
+                           value="<%= typeof Slika != "undefined" ? Slika : '' %>"/>
+                </span>
+
+            </div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" id="ime" name = "ime" placeholder="first name" value="<%= info.ime%>"></div>
+                    <div class="col-md-6"><label class="labels">Surname</label><input type="text" id="prezime" name = "prezime" class="form-control" value="<%= info.prezime%>" placeholder="surname"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" id="broj_telefona" name = "broj_telefona" class="form-control" placeholder="enter phone number" value="<%= info.broj_telefona%>"></div>
+                    <div class="col-md-12"><label class="labels">Email address</label><input type="text" id="ime" name = "email" class="form-control" placeholder="enter email address" value="<%= info.email%>"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6"><label class="labels">Status</label><input type="text" class="form-control" value="<%= info.status%>" disabled></div>
+                    <div class="col-md-6"><label class="labels">Type of user</label><input type="text" class="form-control" value="<%= user_type[0].pozicija_korisnika%>" disabled></div>
+                </div>
+                <div class="mt-xl-5 text-center"><button class="btn btn-outline-info profile-button" type="submit">UPDATE INFORMATION'S</button></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group-location">
+                <form id="location-form">
+                    <h5 style="font-family: 'Segoe UI Semibold',serif; text-align: center; margin-top: 20px; margin-bottom: 0px; color: #9a9fa9">Your address</h5>
+                    <br />
+                    <div class="location-container">
+                        <span>Location:</span>
+                        <input required type="text" class="form-control" id="location" name="location" style="margin-bottom: 5px;"/>
+                        <span> Latitude: </span>
+                        <input required type="text" class="form-control" id="lat" name="lat" value="<%= address[0].latituda%>" style="margin-bottom: 5px;"/>
+                        <span> Longitude: </span>
+                        <input required type="text" class="form-control" id="lng" name="lng" value="<%= address[0].longituda%>"style="margin-bottom: 5px;"/>
+                    </div>
+                    <div id="locationPicker" style="width: 100%; height: 350px; margin-bottom: 20px;"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    let adresa;
+    $(function () {
+        $('#locationPicker').locationpicker({
+            location: { latitude: 43.854173, longitude: 18.39489 },
+            radius: 0,
+            inputBinding: {
+                latitudeInput: $('#lat'),
+                longitudeInput: $('#lng'),
+                locationNameInput: $('#location'),
+            },
+            oninitialized: function (component) {
+                $('#location').val('');
+                $('#lat').val('');
+                $('#lng').val('');
+            },
+            enableAutocomplete: true,
+            onchanged: function (currentLocation, radius, isMarkerDropped) {
+                adresa = $(this).locationpicker('map').location;
+            },
+        });
+    });
+    $('#map').locationpicker();
+    $('#location-form').submit(function (event) {
+        event.preventDefault();
+        const data = $('#location-form').serializeArray();
+        data.push({ name: 'adresa', value: JSON.stringify(adresa) });
+    });
+</script>
+</html>
