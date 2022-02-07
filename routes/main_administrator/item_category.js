@@ -37,8 +37,9 @@ let database={
             if(err)
                 res.end(err);
             client.query(`select count(*), ka.id_kategorija_artikla
-                          from artikal a, kategorija_artikla ka
-                          where a.id_kategorija_artikla = ka.id_kategorija_artikla
+                          from artikal a, kategorija_artikla ka, artikal_kategorija_artikla aka
+                          where aka.id_kategorija_artikla = ka.id_kategorija_artikla
+                          and aka.id_artikla = a.id_artikla
                           group by ka.id_kategorija_artikla
                           order by ka.id_kategorija_artikla`,function (err,result) {
                 done();

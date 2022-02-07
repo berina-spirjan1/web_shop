@@ -6,7 +6,7 @@ module.exports = {
             if(req.user.id_tipa_korisnika === 1)
                 return next();
         }
-        alert('You need to login to be able to continue using app.');
+        alert('You need to login to be able to continue using app4.');
         res.redirect('/login');
     }
 }

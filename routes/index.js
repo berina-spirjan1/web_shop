@@ -201,7 +201,7 @@ router.post('/verify_account', function(req, res, next) {
 })
 
 router.get('/successfully_verified_account', function(req, res, next) {
-  res.render('successfully_verified_account');
+  res.render('./registration/successfully_verified_account');
 });
 
 
@@ -254,7 +254,7 @@ router.post('/forgot_password', function(req, res, next) {
 
     }
 
-    req.flash(type, msg);
+    alert(msg);
     res.redirect('/login');
   });
 
@@ -304,7 +304,7 @@ router.post('/reset_password', function(req, res, next) {
 
     }
 
-    req.flash(type, msg);
+    alert(msg);
     res.redirect('/login');
   });
 })

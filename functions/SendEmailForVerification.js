@@ -54,7 +54,7 @@ module.exports =
                                     <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tr>
-                                                <td align="center" style="border-radius: 3px;" bgcolor="#3089c2"><a href="http://localhost:3000/verify_account?token=' + ${token} + '" style="font-size: 20px; font-family: 'Segoe UI Semibold'; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #3089c2; display: inline-block; border-radius: 20px">Confirm Account</a></td>
+                                                <td align="center" style="border-radius: 3px;" bgcolor="#3089c2"><a href="http://localhost:3000/successfully_verified_account" style="font-size: 20px; font-family: 'Segoe UI Semibold'; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #3089c2; display: inline-block; border-radius: 20px">Confirm Account</a></td>
                                             </tr>
                                         </table>
                                     </td>

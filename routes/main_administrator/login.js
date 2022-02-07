@@ -45,7 +45,7 @@ router.get('/',function(req, res, next) {
 router.post('/', database.getAllInformationAboutCurrentUser,(req,res,next) =>{
     if (!req.body.username || !req.body.password) {
         console.info("Nisu podaci popunjeni");
-        req.flash('error', 'Molim Vas popunite sva polja.');
+        alert('Molim Vas popunite sva polja.');
         res.redirect('/login');
     } else {
         passport.authenticate('local', {

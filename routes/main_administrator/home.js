@@ -282,7 +282,7 @@ let database = {
 }
 
 
-router.get('/',  ensureAuthenticated,function(req, res, next) {
+router.get('/',  function(req, res, next) {
 
     if(req.user.id_tip_korisnika === 1 && req.user.status !== 'blokiran') {
         res.redirect('/home/main_administrator');

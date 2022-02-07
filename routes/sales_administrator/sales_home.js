@@ -420,7 +420,7 @@ let database = {
 
 
 
-router.get('/',ensureAuthenticatedSalesAdministrator, database.getNumberOfShopsForCurrentSales,
+router.get('/', database.getNumberOfShopsForCurrentSales,
                      database.getNumberOfChainStoresForCurrentSales,
                      database.getNumberOfOrdersForSales,
                      database.getAllShops,
@@ -447,7 +447,7 @@ router.get('/',ensureAuthenticatedSalesAdministrator, database.getNumberOfShopsF
 });
 
 
-router.get('/bill',ensureAuthenticatedSalesAdministrator,database.getSingleBill,
+router.get('/bill',database.getSingleBill,
                         database.getTotalProfit,
     function (req,res,next){
    res.render('./sales_administrator/all_shops_bills',{
