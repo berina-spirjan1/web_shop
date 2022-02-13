@@ -5,11 +5,11 @@ const saltRounds = 10;
 let alert = require('alert');
 
 const config = {
-    user: 'vhaxxure',
-    database: 'vhaxxure',
-    password: 'PRTQj-BsWP_lwQCZdqJH94vbpZHUkuAx',
-    host: 'tai.db.elephantsql.com',
-    port: 5432,
+    user: 'postgres',
+    database: 'postgres',
+    password: 'berina123',
+    host: 'localhost',
+    port: 5433,
     max: 100,
     idleTimeoutMillis: 30000,
 };
@@ -18,6 +18,7 @@ const pool = new pg.Pool(config);
 
 const {ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 const bcrypt = require("bcrypt");
+const {ensureAuthenticatedSalesAdministrator} = require("../../authentication/salesAdministrator");
 
 let database = {
     getAllUsers: function(req,res,next){
@@ -94,9 +95,8 @@ let database = {
         pool.connect(function (err,client,done) {
             if(err)
                 res.end(err);
-            client.query(`select distinct t.pozicija_korisnika, t.id_tip_korisnika 
-                          from korisnik k, tip_korisnika t
-                          where k.id_tip_korisnika = t.id_tip_korisnika`,function (err,result) {
+            client.query(`select distinct t.id_tip_korisnika,t.pozicija_korisnika
+                          from tip_korisnika t`,function (err,result) {
                 done();
                 if(err)
                     res.sendStatus(500);
@@ -328,8 +328,8 @@ router.get('/update_user/:id', ensureAuthenticatedMainAdministrator,database.get
                 if(err)
                     res.sendStatus(500);
                 else{
-                    console.info("-------------",result.rows[0]);
-                    res.render('update_user', {data: result.rows[0], positions: req.niz_pozicija});
+                    console.info("-------------",req.niz_pozicija);
+                    res.render('./main_administrator/update_user_type', {data: result.rows[0], positions: req.niz_pozicija});
                     next();
                 }
             });
@@ -337,13 +337,16 @@ router.get('/update_user/:id', ensureAuthenticatedMainAdministrator,database.get
 });
 
 router.post('/update_user/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
+
+    let user_type = req.body.id_tip_korisnika
+
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
         else {
             client.query(`update korisnik
-                          set status = 'deaktiviran' 
-                          where id_korisnika = $1`, [req.params.id], function (err, result) {
+                          set id_tip_korisnika = $2 
+                          where id_korisnika = $1`, [req.params.id,user_type], function (err, result) {
                 don();
                 if (err)
                     throw(err);

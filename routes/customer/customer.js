@@ -6,15 +6,14 @@ const alert = require("alert");
 const nodemailer = require("nodemailer");
 
 const config = {
-    user: 'vhaxxure',
-    database: 'vhaxxure',
-    password: 'PRTQj-BsWP_lwQCZdqJH94vbpZHUkuAx',
-    host: 'tai.db.elephantsql.com',
-    port: 5432,
+    user: 'postgres',
+    database: 'postgres',
+    password: 'berina123',
+    host: 'localhost',
+    port: 5433,
     max: 100,
     idleTimeoutMillis: 30000,
 };
-
 const{ ensureAuthenticatedCustomer } = require('../../authentication/customer');
 const{ ensureAuthenticatedArchiveCustomer } = require('../../authentication/archive_customers');
 
@@ -1276,57 +1275,6 @@ router.post('/profile',ensureAuthenticatedCustomer,function(req, res, next){
         alert('Format of image that you try to upload is not allowed.');
         res.redirect('/home/sales_administrator/shops');
     }
-});
-
-
-router.post('/basket/:id',ensureAuthenticatedArchiveCustomer,helpers.count,function(req, res, next){
-
-    let id_artikla= req.params.id;
-    let id_kupca = req.user.id_korisnika;
-
-    pool.connect(function (err,client,done) {
-        if(err)
-            throw(err);
-        else {
-            client.query(`insert into trenutna_korpa(id_artikla, id_kupca)
-                          values($1,$2);`, [id_artikla, id_kupca],function (err,result) {
-                done();
-                if (err)
-                    throw(err);
-                else {
-                    let brojac = req.brojac;
-                    brojac.parseInt;
-                    brojac++;
-                    alert("Successfully added item to your basket!");
-                }
-            });
-        }
-    });
-});
-
-router.post('/basket/:id',ensureAuthenticatedArchiveCustomer,helpers.count,function(req, res, next){
-
-    let id_artikla= req.params.id;
-    let id_kupca = req.user.id_korisnika;
-
-    pool.connect(function (err,client,done) {
-        if(err)
-            throw(err);
-        else {
-            client.query(`insert into trenutna_korpa(id_artikla, id_kupca)
-                          values($1,$2);`, [id_artikla, id_kupca],function (err,result) {
-                done();
-                if (err)
-                    throw(err);
-                else {
-                    let brojac = req.brojac;
-                    brojac.parseInt;
-                    brojac++;
-                    alert("Successfully added item to your basket!");
-                }
-            });
-        }
-    });
 });
 
 

@@ -174,11 +174,11 @@
                                                     <td><%= listOfUsers[i].status %></td>
                                                     <td class="td-actions text-right">
                                                         <div class="row">
-                                                            <form method="get" action="/home/users/update_user/<%= listOfUsers[i].id_korisnika %>">
+                                                            <a href="/home/users/update_user/<%= listOfUsers[i].id_korisnika %>">
                                                                 <button type="submit" rel="tooltip" title="Edit user" class="btn btn-white btn-link btn-sm">
                                                                     <i class="material-icons">edit</i>
                                                                 </button>
-                                                            </form>
+                                                            </a>
                                                             <form action="/home/users/delete_user/<%= listOfUsers[i].id_korisnika %>" method="post">
                                                                 <button type="submit" rel="tooltip" title="Delete" class="btn btn-white btn-link btn-sm">
                                                                     <i class="material-icons">close</i>
@@ -212,7 +212,7 @@
                                                             <%}%>
                                                             <% if((listOfUsers[i].id_tip_korisnika === 2 || listOfUsers[i].id_tip_korisnika === 3) && listOfUsers[i].status !== 'blokiran na 15'){ %>
                                                                 <form action="/home/users/block_user_for_15/<%= listOfUsers[i].id_korisnika %>" method="post">
-                                                                    <button type="submit" rel="tooltip" title="Block" class="btn btn-white btn-link btn-sm">
+                                                                    <button type="submit" rel="tooltip" title="Block on 15" class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons">block</i>
                                                                     </button>
                                                                 </form>

@@ -3,15 +3,14 @@ const bcrypt = require('bcrypt');
 const pg = require('pg');
 
 const config = {
-    user: 'vhaxxure',
-    database: 'vhaxxure',
-    password: 'PRTQj-BsWP_lwQCZdqJH94vbpZHUkuAx',
-    host: 'tai.db.elephantsql.com',
-    port: 5432,
+    user: 'postgres',
+    database: 'postgres',
+    password: 'berina123',
+    host: 'localhost',
+    port: 5433,
     max: 100,
     idleTimeoutMillis: 30000,
 };
-
 const pool = new pg.Pool(config);
 
 
@@ -35,11 +34,11 @@ module.exports = function(passport) {
                                 if (isMatch) {
                                     return done(null, user);
                                 } else {
-                                    return done(null, false, {message: "Password nije validan. "});
+                                    return done(null, false, {message: "Password is not valid. "});
                                 }
                             })
                         } else {
-                            return done(null, false, {message: "Username nije validan."})
+                            return done(null, false, {message: "Username is not valid."})
                         }
                     });
                 }

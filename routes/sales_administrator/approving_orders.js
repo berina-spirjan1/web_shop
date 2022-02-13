@@ -6,11 +6,11 @@ const alert = require("alert");
 const nodemailer = require("nodemailer");
 
 const config = {
-    user: 'vhaxxure',
-    database: 'vhaxxure',
-    password: 'PRTQj-BsWP_lwQCZdqJH94vbpZHUkuAx',
-    host: 'tai.db.elephantsql.com',
-    port: 5432,
+    user: 'postgres',
+    database: 'postgres',
+    password: 'berina123',
+    host: 'localhost',
+    port: 5433,
     max: 100,
     idleTimeoutMillis: 30000,
 };
@@ -91,7 +91,7 @@ let database={
             service: 'gmail',
             auth: {
                 user: 'zendev2021@gmail.com', // Your email id
-                pass: '*****' // Your password
+                pass: '*' // Your password
             }
         });
 
@@ -100,6 +100,34 @@ let database={
             to: email,
             subject: "We are having some news for you 😃",
             text: "We changed status for your delivery. Please login to your account to see informations."
+        };
+
+        mail.sendMail(mailOptions,function(error,info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Successfully sent email." + info.response);
+            }});
+    },
+    SendEmailAcceptStatus:function (req,res,next) {
+
+        let email = req.params.email;
+
+        console.info("ISPISUJEM MAIL",email);
+
+        let mail = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'zendev2021@gmail.com', // Your email id
+                pass: '*' // Your password
+            }
+        });
+
+        const mailOptions = {
+            from: 'zendev2021@gmail.com',
+            to: email,
+            subject: "We are having some news for you 😃",
+            text: "We accepted for your delivery. Please login to your account to see informations."
         };
 
         mail.sendMail(mailOptions,function(error,info) {
@@ -139,7 +167,7 @@ router.post('/approve/:id/:email',ensureAuthenticatedSalesAdministrator, functio
                     throw(err);
                 else{
                     alert('Successfully accepted order!');
-                    res.redirect('/home/sales_administrator/approving_orders');
+                    res.redirect('/home/sales_administrator/confirm'+req.params.email);
                 }
             });
         }
@@ -164,7 +192,7 @@ router.post('/reject/:id/:email',ensureAuthenticatedSalesAdministrator, function
                     throw(err);
                 else{
                     alert('Successfully rejected order!');
-                    res.redirect('/home/sales_administrator/approving_orders');
+                    res.redirect('/home/sales_administrator/change_status'+req.params.email);
                 }
             });
         }
@@ -208,6 +236,17 @@ router.get('/delivery',ensureAuthenticatedSalesAdministrator, database.SendEmail
         res.redirect('/home/sales_administrator/approving_orders');
 });
 
+router.get('/confirm/:email',ensureAuthenticatedSalesAdministrator,database.SendEmailAcceptStatus,
+    function(req, res, next) {
+        res.redirect('/home/sales_administrator/delivery');
+});
+
+router.get('/change_status/:email',ensureAuthenticatedSalesAdministrator,database.SendEmailChangedStatus,
+    function(req, res, next) {
+        res.redirect('/home/sales_administrator/delivery');
+});
+
+
 router.post('/delivery/:id/:email',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
@@ -221,7 +260,7 @@ router.post('/delivery/:id/:email',ensureAuthenticatedSalesAdministrator, functi
                     throw(err);
                 else{
                     alert('Successfully delivered order!');
-                    res.redirect('/home/sales_administrator/approving_orders');
+                    res.redirect('/home/sales_administrator/confirm'+req.params.email);
                 }
             });
         }

@@ -6,7 +6,7 @@ module.exports = {
             if(req.user.status!=='arhiviran')
                 return next();
         }
-        alert('You need to login to be able to continue using app2.');
+        alert('You need to login to be able to continue using app.');
         res.redirect('/login');
     }
 }

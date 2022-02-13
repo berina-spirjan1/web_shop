@@ -4,11 +4,11 @@ const pg = require("pg");
 const alert = require("alert");
 const { ensureAuthenticatedMainAdministrator} = require('../../authentication/mainAdministrator');
 const config = {
-    user: 'vhaxxure',
-    database: 'vhaxxure',
-    password: 'PRTQj-BsWP_lwQCZdqJH94vbpZHUkuAx',
-    host: 'tai.db.elephantsql.com',
-    port: 5432,
+    user: 'postgres',
+    database: 'postgres',
+    password: 'berina123',
+    host: 'localhost',
+    port: 5433,
     max: 100,
     idleTimeoutMillis: 30000,
 };
