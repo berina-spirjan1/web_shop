@@ -335,10 +335,10 @@ router.get('/update_user/:id', ensureAuthenticatedMainAdministrator,database.get
             });
         });
 });
-
+0
 router.post('/update_user/:id', ensureAuthenticatedMainAdministrator,function(req, res, next) {
 
-    let user_type = req.body.id_tip_korisnika
+    let user_type = req.body.id_tip_korisnika;
 
     pool.connect(function (err, client, don) {
         if (err)
@@ -351,7 +351,7 @@ router.post('/update_user/:id', ensureAuthenticatedMainAdministrator,function(re
                 if (err)
                     throw(err);
                 else{
-                    alert('Successfully archived user');
+                    alert('Successfully updated user');
                     res.redirect('/home/users');
                 }
             });

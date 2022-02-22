@@ -30,15 +30,14 @@ let database={
                 res.end(err);
             client.query(`select n.id_narudzbe as id_korpe, sum(at.kolicina*a.cijena_artikla) as pojedinacni_racun, ko.ime, ko.prezime, ko.email, n.status,
                           array_agg(a.naziv_artikla) as artikli, array_agg(t.naziv_trgovine) as prodavnice, n.status, array_agg(n.vrijeme_narudzbe) as vrijeme_narudzbi, n.datum_narudzbe
-                          from artikal a, artikal_trgovina at, korpa k, artikal_narudzba an, trgovina t, korisnik ko, narudzba n
-                          where an.id_artikal_trgovina = at.id
-                          and ko.id_korisnika = k.id_kupca
-                          and t.id_trgovine = at.id_trgovine
+                          from artikal a, artikal_trgovina at,  trgovina t, korisnik ko, narudzba n
+                          where t.id_trgovine = at.id_trgovine
+                          and n.id_kupca = ko.id_korisnika
                           and t.id_menadzera = $1
-                          and n.id_narudzbe = an.id_narudzbe
+                          and n.id_artikla = a.id_artikla
+                          and n.id_artikla = at.id_artikla
                           and a.id_artikla = at.id_artikla
-                          and k.id_korpe = an.id_korpe
-                          group by k.id_korpe, ko.ime, ko.prezime,n.status, n.datum_narudzbe, n.id_narudzbe, ko.email, n.status
+                          group by n.id_narudzbe, ko.ime, ko.prezime,n.status, n.datum_narudzbe, ko.email, n.status
                           order by n.datum_narudzbe`,[id_trgovca],function (err,result) {
                 done();
                 if(err)
@@ -91,7 +90,7 @@ let database={
             service: 'gmail',
             auth: {
                 user: 'zendev2021@gmail.com', // Your email id
-                pass: '*' // Your password
+                pass: 'zendev123' // Your password
             }
         });
 
@@ -119,7 +118,7 @@ let database={
             service: 'gmail',
             auth: {
                 user: 'zendev2021@gmail.com', // Your email id
-                pass: '*' // Your password
+                pass: 'zendev123' // Your password
             }
         });
 
@@ -154,7 +153,7 @@ router.get('/approve',ensureAuthenticatedSalesAdministrator,database.SendEmailCh
         res.redirect('/home/sales_administrator/approving_orders');
     });
 
-router.post('/approve/:id/:email',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
+router.post('/approve/:id',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -167,7 +166,7 @@ router.post('/approve/:id/:email',ensureAuthenticatedSalesAdministrator, functio
                     throw(err);
                 else{
                     alert('Successfully accepted order!');
-                    res.redirect('/home/sales_administrator/confirm'+req.params.email);
+                    res.redirect('/home/sales_administrator/approving_orders');
                 }
             });
         }
@@ -179,7 +178,7 @@ router.get('/reject',ensureAuthenticatedSalesAdministrator,database.SendEmailCha
         res.redirect('/home/sales_administrator/approving_orders');
     });
 
-router.post('/reject/:id/:email',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
+router.post('/reject/:id',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);
@@ -192,7 +191,7 @@ router.post('/reject/:id/:email',ensureAuthenticatedSalesAdministrator, function
                     throw(err);
                 else{
                     alert('Successfully rejected order!');
-                    res.redirect('/home/sales_administrator/change_status'+req.params.email);
+                    res.redirect('/home/sales_administrator/approving_orders');
                 }
             });
         }
@@ -247,7 +246,7 @@ router.get('/change_status/:email',ensureAuthenticatedSalesAdministrator,databas
 });
 
 
-router.post('/delivery/:id/:email',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
+router.post('/delivery/:id',ensureAuthenticatedSalesAdministrator, function(req, res, next) {
     pool.connect(function (err, client, don) {
         if (err)
             throw(err);

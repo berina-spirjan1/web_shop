@@ -177,7 +177,7 @@
                                                     <td class="td-actions text-right">
                                                         <div class="row">
                                                             <% if(allOrders[i].status === 1){ %>
-                                                                <form action="/home/sales_administrator/approving_orders/approve/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
+                                                                <form action="/home/sales_administrator/approving_orders/approve/<%= allOrders[i].id_korpe %>" method="post">
                                                                     <button type="submit" rel="tooltip" title="Accepted" class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #2fdea6;margin-left: 10px;">done_all</i>
                                                                     </button>
@@ -186,7 +186,7 @@
                                                                     </button>
                                                                 </form>
                                                             <%}else if(allOrders[i].status === -1){%>
-                                                                <form action="/home/sales_administrator/approving_orders/reject/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
+                                                                <form action="/home/sales_administrator/approving_orders/reject/<%= allOrders[i].id_korpe %>" method="post">
                                                                     <button rel="tooltip" disabled title="Sorry you can't accept this order." class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #ffffff;margin-left: 10px;">done_all</i>
                                                                     </button>
@@ -195,17 +195,17 @@
                                                                     </button>
                                                                 </form>
                                                             <%}else if(allOrders[i].status === 0){%>
-                                                                <form action="/home/sales_administrator/approving_orders/approve/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
+                                                                <form action="/home/sales_administrator/approving_orders/approve/<%= allOrders[i].id_korpe %>" method="post">
                                                                     <button type="submit" rel="tooltip" title="Accept" class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #ffffff;margin-left: 10px;">done_all</i>
                                                                     </button>
                                                                 </form>
-                                                                <form action="/home/sales_administrator/approving_orders/reject/<%= allOrders[i].id_korpe %>/<%= allOrders[i].email %>" method="post">
+                                                                <form action="/home/sales_administrator/approving_orders/reject/<%= allOrders[i].id_korpe %>" method="post">
                                                                     <button type="submit" rel="tooltip" title="Reject" class="btn btn-white btn-link btn-sm">
                                                                         <i class="material-icons" style="color: #ffffff">close</i>
                                                                     </button>
                                                                 </form>
-                                                            <%}else{%>
+                                                            <%}else if(allOrders[i].status === 2){%>
                                                                 <button type="submit" rel="tooltip" title="Deliveried" class="btn btn-white btn-link btn-sm" style="margin-left: 10px;">
                                                                     <i class="material-icons" style="color: #2fdea6;margin-left: 15px;">local_shipping</i>
                                                                 </button>

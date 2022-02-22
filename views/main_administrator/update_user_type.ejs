@@ -162,8 +162,10 @@
                                     <div class="col-md-4">
                                         <label for="status">Type of user</label>
                                         <div class="dropdown">
-                                            <select name="type_of_user" name="id_tip_korisnika" id="type_of_user" class="btn btn-primary">
-                                                <option class = "select-option" value="<%= positions.id_tip_korisnika %>" ><%= positions.pozicija_korisnika%></option>
+                                            <select name="id_tip_korisnika" id="type_of_user" class="btn btn-primary">
+                                                <% for(let i = 0;i<positions.length; i++){%>
+                                                        <option class = "select-option" value="<%= positions[i].id_tip_korisnika %>" ><%= positions[i].pozicija_korisnika%></option>
+                                                <%}%>
                                             </select>
                                         </div>
                                     </div>
